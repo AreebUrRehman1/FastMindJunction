@@ -1,0 +1,115 @@
+.first {
+  margin-top: 80px;
+  width: 1400px;
+  margin: 80px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.first-left-side {
+  flex: 1 1 50%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.first-right-side {
+  flex: 1 1 45%;
+  padding: 20px;
+  text-align: left;
+}
+
+.start-img{
+  width: 650px;
+  height: 650px;
+  mix-blend-mode: multiply;
+}
+
+
+.first h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.first p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 300px;
+}
+
+.btn {
+  text-align: center;
+  padding: 14px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #2b92ff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #2179d9;
+}
+
+.btn-secondary {
+  background-color: #f2f2f2;
+  color: #2b92ff;
+  border: 2px solid #2b92ff;
+}
+
+.btn-secondary:hover {
+  background-color: #e6e6e6;
+}
+
+
+.ab-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 100px auto;
+}
+
+.idea-image, .learning-image, .path-image{
+  width: 400px;
+  height: 400px;
+  margin-right: 100px;
+  margin-left: 100px;
+  mix-blend-mode: multiply;
+}
+
+.ab-text {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2b92ff;
+  line-height: 1.2;
+  text-align: center;
+  max-width: 700px;
+}
+
+.ab-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1a2938;
+  margin-top: 1.5em;
+}
+
+.ab-body {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #34495e;
+  text-align: justify;
+}

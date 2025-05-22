@@ -1,0 +1,154 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.LISU-box {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  padding: 30px;
+  max-width: 1300px;
+  width: 100%;
+  height: 600px;
+}
+
+.LISU-design{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.SU-box, .LI-box{
+  width: 750px;
+}
+
+.text{
+  color: darkblue;
+  font-weight: bold;
+  font-size: 45px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.text-body{
+  color: grey;
+  font-size: 25px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+input {
+  width: 70%;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.un, .ea, .p, .su, .li{
+  text-align: center;
+}
+
+.su, .li{
+  margin-top: 40px;
+}
+
+.error{
+  text-align: center;
+  color: red;
+  margin-bottom: 10px;
+}
+
+.su-btn {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #2b92ff, #1a70e0);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(43, 146, 255, 0.3);
+}
+
+.su-btn:hover {
+  background: linear-gradient(135deg, #1a70e0, #2b92ff);
+  box-shadow: 0 8px 20px rgba(43, 146, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.su-btn.login {
+  background: linear-gradient(135deg, #4CAF50, #2e7d32); /* Green */
+  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+.su-btn.login:hover {
+  background: linear-gradient(135deg, #2e7d32, #4CAF50);
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+.r-box{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 620px;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 2;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.r-box-li{
+  left: 0;
+}
+
+.r-box-su{
+  right: 0;
+}
+
+.r-text {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.r-button {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #2b92ff, #1a70e0);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(43, 146, 255, 0.3);
+}
+
+.r-button:hover {
+  background: linear-gradient(135deg, #1a70e0, #2b92ff);
+  box-shadow: 0 8px 20px rgba(43, 146, 255, 0.4);
+  transform: translateY(-2px);
+}
