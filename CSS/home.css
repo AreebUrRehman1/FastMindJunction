@@ -1,34 +1,30 @@
 .first {
-  margin-top: 80px;
-  width: 1400px;
   margin: 80px auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.first-left-side {
-  flex: 1 1 50%;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
+  max-width: 1400px; /* Use max-width for flexibility */
+  padding: 0 20px; /* Add padding for smaller screens */
 }
 
 .first-right-side {
-  flex: 1 1 45%;
-  padding: 20px;
+  width: 50%; /* Use percentage for flexibility */
   text-align: left;
 }
 
-.start-img{
-  width: 650px;
-  height: 650px;
+.first-left-side{
+  text-align: center;
+}
+
+.start-img {
+  width: 70%; /* Use percentage for flexibility */
+  height: auto; /* Maintain aspect ratio */
   mix-blend-mode: multiply;
 }
 
-
 .first h1 {
   font-size: 2.5rem;
+  line-height: 40px;
   margin-bottom: 20px;
   color: #222;
 }
@@ -74,20 +70,22 @@
   background-color: #e6e6e6;
 }
 
-
-.ab-container{
+.ab-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   margin: 100px auto;
+  max-width: 1400px;
+  padding: 0 20px;
 }
 
-.idea-image, .learning-image, .path-image{
-  width: 400px;
-  height: 400px;
-  margin-right: 100px;
-  margin-left: 100px;
+.idea-image,
+.learning-image,
+.path-image {
+  width: 45%;
+  height: auto;
+  margin: 0 50px; /* Use smaller, consistent margin */
   mix-blend-mode: multiply;
 }
 
@@ -102,9 +100,10 @@
 
 .ab-title {
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 800;
   color: #1a2938;
   margin-top: 1.5em;
+  margin-bottom: 1rem;
 }
 
 .ab-body {
@@ -112,4 +111,56 @@
   line-height: 1.6;
   color: #34495e;
   text-align: justify;
+}
+
+/* Media Query for screens up to 768px */
+@media (max-width: 768px) {
+  .first {
+    flex-direction: column; /* Stack elements, with text first for better flow */
+    text-align: center;
+    margin-top: 150px;
+  }
+
+  .first-right-side {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .start-img {
+    width: 80%; /* Make image larger on mobile */
+    height: auto;
+  }
+
+  .first h1 {
+    font-size: 1.8rem;
+    line-height: 30px;
+  }
+
+  .first p {
+    font-size: 1rem;
+  }
+
+  .ab-container {
+    flex-direction: column; /* Stack image and text */
+    text-align: center;
+  }
+
+  .abc-changes{
+    flex-direction: column-reverse;
+  }
+
+  .idea-image,
+  .learning-image,
+  .path-image {
+    width: 80%;
+    height: auto;
+    margin: 0 auto 30px; /* Center images and add bottom margin */
+  }
+
+  .ab-text {
+    font-size: 1.2rem;
+    max-width: 100%;
+    margin-top: 10px;
+  }
 }
