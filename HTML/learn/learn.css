@@ -1,0 +1,76 @@
+.title {
+  text-align: center;
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 100px;
+}
+
+.first-section-grid,
+.second-section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  column-gap: 20px;
+  row-gap: 40px;
+  max-width: 1040px;
+  margin: 50px auto;
+  padding: 0 10px;
+}
+
+/* Hides the second grid by default */
+.second-section-grid {
+  display: none;
+}
+
+/* Class to display the second grid */
+.display {
+  display: grid;
+}
+
+
+.box {
+  border: 0.5px solid rgb(164, 164, 164);
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out; 
+}
+
+
+.box:hover {
+  transform: scale(1.03);
+}
+
+
+.box-text {
+  font-weight: bold;
+}
+
+.box-text2 {
+  font-size: 13px;
+  color: grey;
+}
+
+
+.box-image {
+  width: 40px;
+  height: 40px;
+}
+
+/* Class for selecting the box in the first-section-grid */
+.lightgreyBC-whiteFC {
+  background-color: lightgrey;
+  color: white;
+}
+
+.whitesmokeFC {
+  color: rgb(255, 255, 255);
+}
+
+/*Media Query for smaller screens (e.g., mobile phones)*/
+@media (max-width: 768px) {
+  .title {
+    font-size: 28px;
+    margin-top: 70px;
+  }
+}

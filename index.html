@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="CSS/home.css">
     <link rel="stylesheet" href="CSS/header.css">
     <link rel="stylesheet" href="CSS/footer.css">
-    <link rel="stylesheet" href="CSS/Changes.css">
 
 </head>
 <body>
@@ -41,7 +40,7 @@
     <h1>The smarter way to study and succeed.</h1>
     <p>Practice. Learn. Achieve. Join thousands of students using FastMindJunction to master exam topics.</p>
     <div class="first-buttons">
-      <a href="#" class="btn btn-primary">Get Started</a>
+      <a href="HTML/learn/learn.html" class="btn btn-primary">Get Started</a>
     </div>
   </div>
 </div>
@@ -133,7 +132,7 @@
 
   window.addEventListener("scroll", () => {
     if(window.scrollY > 50){
-      headerButton.innerHTML = `<button class = "get-started">GET STARTED</button>`;
+      headerButton.innerHTML = `<a href="HTML/learn/learn.html"><button class = "get-started">GET STARTED</button></a>`;
       header.classList.add('header-border');
     }
     else{
