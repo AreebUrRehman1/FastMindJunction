@@ -110,6 +110,7 @@
 </div>
 
 <script>
+  const firstSection = document.querySelector(".first");
   const headerButton = document.querySelector(".header_button");
   const header = document.querySelector(".header");
 
@@ -131,11 +132,14 @@
   });
 
   window.addEventListener("scroll", () => {
-    if(window.scrollY > 50){
+    // Calculate the position to trigger the change
+    const scrollTriggerPosition = firstSection.offsetTop + firstSection.offsetHeight;
+    
+    // Check if the user has scrolled past the bottom of the first section
+    if(window.scrollY > scrollTriggerPosition) {
       headerButton.innerHTML = `<a href="HTML/learn/learn.html"><button class = "get-started">GET STARTED</button></a>`;
       header.classList.add('header-border');
-    }
-    else{
+    } else {
       headerButton.innerHTML = "SITE LANGUAGE: ENGLISH";
       header.classList.remove('header-border');
     }

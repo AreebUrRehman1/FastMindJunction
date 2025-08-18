@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <!--Icon-->
+    <link rel="shortcut icon" type="x-icon" href="/Images/Repeated-Images/Logo.png">
+    
+    <!--CSS-->
+    <link rel="stylesheet" href="/CSS/general.css">
+    <link rel="stylesheet" href="physics.css">
+    <link rel="stylesheet" href="/CSS/footer.css">
+
+</head>
+<body>
+
+<div class="header">
+
+  <div class="header-design">
+
+    <div class="logo">
+    <div><img src="/Images/Repeated-Images/Logo.png" class="logo_image" alt="logo"></div>
+    <div class="logo_name">FASTMINDJUNCTION</div>
+    </div>
+
+    <div class="progress">
+      <div class="component-details">
+      <div class="component-text component-js">WPH11</div>
+      <div><img class="physics-icon" src="Physics.png" alt="physics icon"></div>
+      <div class="component-level">11</div>
+      </div>
+      <div class="streak-details">
+        <div><img class="streak-icon" src="Streak.png" alt="streak icon"></div>
+        <div class="streak-day">10</div>
+      </div>
+      <div class="coin-details">
+        <div><img class="coin-icon" src="coins.png" alt="coin icon"></div>
+        <div class="coin-amount">10</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="title"><hr>Let's begin our journey...<hr></div>
+
+<div class="unit-details">
+<div class="unit bluebg">Unit 1</div>
+
+<div class="levels-list">
+  <div style="width: 70.5px; height: 70.5px;"><div class="level blue-bsbg active"><img class="coin2-icon" src="act-coin.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin2"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin-1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin-2"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin-1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+</div>
+</div>
+
+<div class="unit-details">
+  <hr>
+<div class="unit redbg">Unit 2</div>
+
+<div class="levels-list">
+  <div style="width: 70.5px; height: 70.5px;"><div class="level red-bsbg active"><img class="coin2-icon" src="act-coin.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin2"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin-1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin-2"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+  <div style="width: 70.5px; height: 70.5px;"><div class="level margin-1"><img class="coin2-icon" src="coin2.png" alt="coin icon"></div></div>
+</div>
+</div>
+
+<div class="footer">
+
+  <div class="footer_content">
+
+  <div class="top_section">
+
+    <div class="column">
+      <div class="row_title">About Us</div>
+      <div class="row">Who we are</div>
+      <div class="row">Purpose</div>
+      <div class="row">Commitment</div>
+      <div class="row">FAQ</div>
+    </div>
+
+    <div class="column">
+    <div class="row_title">Course</div>
+    <div class="row">WPH11</div>
+    <div class="row">WPH12</div>
+    </div>
+
+    <div class="column">
+    <div class="row_title">Social Media</div>
+    <div class="row">Youtube</div>
+    <div class="row">Twitter</div>
+    <div class="row">Instagram</div>
+    </div>
+
+  </div>
+
+  <div class="bottom_section">
+    <div class="bs_text">© Copyright 2024-2025 FastMindJunction. All Rights Reserved.</div>
+  </div>
+
+  </div>
+
+</div>
+
+<script>
+  let valueOfLocalStorage = localStorage.getItem('subjectComponent');
+
+  if(valueOfLocalStorage === null){
+    document.title = 'CNS'; //Component Not Selected
+  } else{
+  document.title = valueOfLocalStorage;
+  }
+
+</script>
+</body>
+</html>
