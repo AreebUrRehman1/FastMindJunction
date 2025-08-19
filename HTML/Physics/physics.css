@@ -107,7 +107,7 @@
   text-align: center;
   font-weight: 400;
   font-size: 25px;
-  width: 300px;
+  width: 400px;
   border-radius: 20px;
 }
 
@@ -116,6 +116,12 @@
   flex-direction: column;
   align-items: center;
   row-gap: 20px;
+}
+
+.level-container{
+  width: 70.5px;
+  height: 70.5px;
+  position: relative;
 }
 
 .level{
@@ -155,6 +161,58 @@
 .unit-details hr{
   margin-top: 50px;
 }
+
+/*Click Details Styles*/
+
+.click-details{
+  display: none;
+  position: absolute;
+  width: 180px;
+  height: auto;
+  padding: 8px;
+  border-radius: 20px;
+  margin-top: 15px;
+  z-index: 2;
+}
+
+.click-details-text{
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+  margin-top: 7px;
+}
+
+.click-details-start{
+  border-radius: 10px;
+  width: 82%;
+  height: 30px;
+  border: none;
+  background-color: white;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 10%;
+  margin-bottom: 17px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow: 0px 4px 1px rgba(128, 128, 128, 0.388);
+}
+
+.click-details-start:hover{
+  zoom: 103%;
+}
+
+.active{
+  display: block;
+}
+
+.blue-cd{
+  background-color: rgb(77, 212, 253);
+}
+
+.red-cd{
+  background-color: rgb(248, 156, 156);
+}
+
 
 /*Color Section*/
 

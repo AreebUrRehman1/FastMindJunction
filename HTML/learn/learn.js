@@ -213,6 +213,7 @@
       separateComponent.addEventListener('click',() => {
         let componentText = separateComponent.querySelector('.box-text').textContent;
         localStorage.setItem(`subjectComponent`, componentText);
+        window.location.href="../physics/physics.html";
       })
 
     })
