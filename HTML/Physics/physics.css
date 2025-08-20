@@ -14,7 +14,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  max-width: 1400px; /* Use max-width instead of fixed width */
   margin: 0 auto;
   padding: 0 20px; /* Add horizontal padding for mobile */
 }
@@ -54,6 +53,7 @@
   justify-content: center;
   column-gap: 8px;
   mix-blend-mode: multiply;
+  position: relative;
 }
 
 .coin-details{
@@ -75,22 +75,20 @@
   padding-top: 3px;
 }
 
-.component-level, .streak-day, .coin-amount{
+.streak-day, .coin-amount{
   font-weight: bold;
   font-size: 20px;
 }
 
-.component-text, .component-level{
+.component-text{
   padding-bottom: 3px;
 }
 
 
 /*Main Section*/
 
-
 .title hr{
   border-color: transparent;
-  max-width: 1440px;
 }
 
 .title{
@@ -99,7 +97,6 @@
   font-weight: bold;
   font-size: 35px;
   background-color: lightgrey;
-  max-width: 1440px;
 }
 
 .unit{
@@ -140,6 +137,89 @@
   height: 50px;
 }
 
+
+
+/*Headers Popups*/
+
+.component-popUp{
+  display: none;
+  position: absolute;
+  background-color: rgb(199, 199, 199) ;
+  border: 0.5px solid grey;
+  width: 180px;
+  height: auto;
+  border-radius: 20px;
+  margin-top: 15px;
+  z-index: 3;
+  top: 70%;
+}
+
+.my-course, .component-name, .add-more{
+  width: 91%;
+  height: auto;
+  padding: 8px;
+  font-size: 15px;
+}
+
+.my-course{
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  margin-left: 5px;
+}
+
+.component-name{
+  background-color: rgb(223, 222, 222);
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+
+.my-course span{
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.course-img{
+  width: 25px;
+  height: 25px;
+}
+
+.add-more{
+  display: flex;
+  align-items: center;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.add-more span{
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.add-more:hover{
+  background-color: rgb(223, 222, 222);
+  cursor: pointer;
+}
+
+.component-details{
+  width: 140px;
+}
+
+.component-details:hover{
+  background-color: rgba(128, 128, 128, 0.251);
+  border-radius: 20px;
+}
+
+.component-details:hover .component-popUp {
+  display: block;
+}
+
+
+
+
 /*S Shape Using Margin*/
 .margin1{
   margin-left: 50px;
@@ -161,6 +241,8 @@
 .unit-details hr{
   margin-top: 50px;
 }
+
+
 
 /*Click Details Styles*/
 
@@ -213,6 +295,18 @@
   background-color: rgb(248, 156, 156);
 }
 
+.yellow-cd{
+  background-color: rgb(238, 230, 77);
+}
+
+.pink-cd{
+  background-color: rgb(242, 106, 240);
+}
+
+.orange-cd{
+  background-color: rgb(245, 202, 46);
+}
+
 
 /*Color Section*/
 
@@ -252,4 +346,95 @@
   width: 70.5px;
   height: 70.5px;
   box-shadow: 0px 7px 1px rgba(218, 80, 80, 0.8);
+}
+
+
+.yellowbg{
+  background-color: rgba(240, 233, 114, 0.8);
+}
+
+.yellow-bsbg{
+  background-color: rgba(240, 233, 114, 0.8);
+  box-shadow: 0px 9px 1px rgba(216, 210, 96, 0.8);
+  cursor: pointer;
+}
+
+.yellow-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(216, 210, 96, 0.8);
+}
+
+.orangebg{
+  background-color: rgba(245, 202, 46, 0.8);
+}
+
+.orange-bsbg{
+  background-color: rgba(247, 209, 70, 0.8);
+  box-shadow: 0px 9px 1px rgba(224, 187, 55, 0.8);
+  cursor: pointer;
+}
+
+.orange-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(224, 187, 55, 0.8);
+}
+
+.pinkbg{
+  background-color: rgba(242, 106, 240, 0.8);
+}
+
+.pink-bsbg{
+  background-color: rgba(242, 106, 240, 0.8);
+  box-shadow: 0px 9px 1px rgba(234, 81, 231, 0.8);
+  cursor: pointer;
+}
+
+.pink-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(234, 81, 231, 0.8);
+}
+
+
+
+
+
+/* Mobile-specific styles for smaller screens (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Header adjustments */
+  .header-design {
+    flex-wrap: wrap; /* Allow items to wrap to a new line */
+    justify-content: center; /* Center items for a better look */
+  }
+
+  .progress {
+    column-gap: 15px; /* Reduce gap between progress elements */
+    margin-top: 10px; /* Add some space below the logo */
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo_name {
+    font-size: 20px; /* Smaller font for logo name */
+  }
+  
+  /* Main content adjustments */
+  .title {
+    font-size: 25px; /* Smaller font for the title */
+    margin: 140px auto; /* Adjust margin to bring content up */
+    width: 100%;
+  }
+
+  .unit {
+    font-size: 20px; /* Smaller font for unit name */
+    width: auto;
+  }
+
+  /* Adjustments for pop-up positioning to prevent it from going off-screen */
+  .click-details, .component-popUp {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }

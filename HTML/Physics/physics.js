@@ -20,8 +20,6 @@ if(valueOfLocalStorage === null){
 //HTML Generator
 
 const unitDQS = document.querySelector('.unit');
-const levelCounterHeader = document.querySelector('.component-level');
-let levelCompletedCounter = 0;
 
 
 function generateUnitHTML() {
@@ -52,7 +50,6 @@ unitDetails.forEach((details, index) => {
           buttonContent = 'PRACTICE +5 XP';
           newImage = 'tick.png';
           classStatusColor = 'green-bsbg';
-          levelCompletedCounter++;
           }
 
           if (gameTopic.status === "current"){
@@ -60,7 +57,6 @@ unitDetails.forEach((details, index) => {
           buttonContent = 'LAUNCH +10 XP';
           newImage = 'act-coin.png';
           classStatusColor = topic.cellColor;
-          levelCompletedCounter++
           }
 
         }
@@ -92,7 +88,6 @@ return allUnitsHTML;
 }
 
 unitDQS.innerHTML = generateUnitHTML();
-levelCounterHeader.innerHTML = levelCompletedCounter;
 
 
 

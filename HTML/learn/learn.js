@@ -28,27 +28,27 @@
           box2HTML = `
             <div class="box">
               <div class="box-text">WPH11</div>
-              <div class="box-text2">5 modules</div>
+              <div class="box-text2">6 Topics</div>
             </div>
             <div class="box">
               <div class="box-text ">WPH12</div>
-              <div class="box-text2">4 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WPH13</div>
-              <div class="box-text2">3 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WPH14</div>
-              <div class="box-text2">2 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WPH15</div>
-              <div class="box-text2">6 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WPH16</div>
-              <div class="box-text2">7 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
           `;
 
@@ -59,27 +59,27 @@
           box2HTML = `
             <div class="box">
               <div class="box-text">WMA11</div>
-              <div class="box-text2">5 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text ">WMA12</div>
-              <div class="box-text2">4 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WMA13</div>
-              <div class="box-text2">3 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WMA14</div>
-              <div class="box-text2">2 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WMA15</div>
-              <div class="box-text2">6 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WMA16</div>
-              <div class="box-text2">7 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
           `;
 
@@ -90,35 +90,35 @@
           box2HTML = `
             <div class="box">
               <div class="box-text">WIT11</div>
-              <div class="box-text2">5 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text ">WIT12</div>
-              <div class="box-text2">4 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WIT13</div>
-              <div class="box-text2">3 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WIT14</div>
-              <div class="box-text2">2 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WIT15</div>
-              <div class="box-text2">1 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WIT16</div>
-              <div class="box-text2">6 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WIT17</div>
-              <div class="box-text2">7 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WIT18</div>
-              <div class="box-text2">8 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
           `;
 
@@ -129,27 +129,27 @@
           box2HTML = `
             <div class="box">
               <div class="box-text">WCH11</div>
-              <div class="box-text2">5 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text ">WCH12</div>
-              <div class="box-text2">4 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WCH13</div>
-              <div class="box-text2">3 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WCH14</div>
-              <div class="box-text2">2 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WCH15</div>
-              <div class="box-text2">6 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WCH16</div>
-              <div class="box-text2">7 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
           `;
         } 
@@ -159,27 +159,27 @@
           box2HTML = `
             <div class="box">
               <div class="box-text">WB11</div>
-              <div class="box-text2">5 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text ">WB12</div>
-              <div class="box-text2">4 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WB13</div>
-              <div class="box-text2">3 modules</div>
+              <div class="box-text2">Coming Soon</div>
             </div>
             <div class="box">
               <div class="box-text">WBI14</div>
-              <div class="box-text2">2 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WB15</div>
-              <div class="box-text2">6 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
             <div class="box">
               <div class="box-text">WBI16</div>
-              <div class="box-text2">7 modules</div>    
+              <div class="box-text2">Coming Soon</div>    
             </div>
           `;
 
