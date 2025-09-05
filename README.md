@@ -1,4 +1,4 @@
-<h1 align="center">Hospital Management System</h1>
+<h1 align="center">FastMindJunction – Educational Web Platform</h1>
 
 A platform designed to simplify past exam papers through structured content, clear explanations, and multimedia resources. It is a personal project.
 
