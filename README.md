@@ -1,16 +1,13 @@
-# React + Vite
+<h1 align="center">FastMindJunction – Educational Web Platform</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A platform designed to simplify past exam papers through structured content, clear explanations, and multimedia resources. It is a personal project.
 
-Currently, two official plugins are available:
+• Built and published the first version of the platform, validating the concept and providing students with accessible study resources. (https://fastmindjunction.netlify.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+• Gathered feedback and identified improvements in interface design and user experience, highlighting the need for a more engaging and intuitive platform.
 
-## React Compiler
+• Currently developing an enhanced version with improved UI/UX, responsive design, and expanded features to optimize student learning.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+⚙️ How to View the Project: It published throught Netlify. You can view it on this website: "https://fastmindjunctiontest.netlify.app/"
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🛠️ Technologies Used: HTML, CSS, JavaScript, React.js, Tailwind
