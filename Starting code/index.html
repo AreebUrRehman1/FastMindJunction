@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!--Icon-->
+    <link rel="shortcut icon" type="x-icon" href="/Images/Repeated-Images/Logo.png">
+    
+    <!--CSS-->
+    <link rel="stylesheet" href="CSS/general.css">
+    <link rel="stylesheet" href="CSS/home.css">
+    <link rel="stylesheet" href="CSS/header.css">
+    <link rel="stylesheet" href="CSS/footer.css">
+
+</head>
+<body>
+
+<div class="header">
+
+  <div class="header-design">
+
+    <div class="logo">
+    <div><img data-src="/Images/Repeated-Images/Logo.png" class="logo_image lazy-image" alt="logo"></div>
+    <div class="logo_name">FASTMINDJUNCTION</div>
+    </div>
+
+    <div class="header_button">SITE LANGUAGE: ENGLISH</div>
+
+  </div>
+
+</div>
+
+<div class="first">
+  <div class="first-left-side">
+    <img data-src="/Images/Home/Start.png" alt="Start" class="start-img lazy-image">
+  </div>
+  <div class="first-right-side">
+    <h1>The smarter way to study and succeed.</h1>
+    <p>Practice. Learn. Achieve. Join thousands of students using FastMindJunction to master exam topics.</p>
+    <div class="first-buttons">
+      <a href="HTML/learn/learn.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </div>
+</div>
+
+<div class="ab-container">
+  <img data-src="/Images/Home/Idea.png" alt="Idea" class="idea-image lazy-image">
+
+  <div class="ab-text">
+    <div class="ab-title">Clear Doubts. Build Confidence. Own Your Learning.</div>
+    <div class="ab-body">At FastMindJunction, we believe true learning begins the moment your doubts disappear. We don’t just help you pass exams, we help you understand concepts so deeply that you’ll never need to rely on notes again.</div>
+  </div>
+</div>
+
+<div class="ab-container abc-changes">
+  <div class="ab-text">
+    <div class="ab-title">Learning with Purpose</div>
+    <div class="ab-body">Our mission is simple: to empower students to learn with clarity and confidence. We’re here to guide you through every tricky topic, turning confusion into mastery, and fear into excitement for your future.</div>
+  </div>
+
+  <img data-src="/Images/Home/Learning.png" alt="Idea" class="learning-image lazy-image">
+</div>
+
+<div class="ab-container">
+  <img data-src="/Images/Home/Path.png" alt="Idea" class="path-image lazy-image">
+
+  <div class="ab-text">
+    <div class="ab-title">Your Success, Our Commitment</div>
+    <div class="ab-body">We're dedicated to creating an easy, effective study experience that frees you from stress and boosts your self-belief. Because when doubts vanish, your path to success becomes clear and unstoppable.</div>
+  </div>
+</div>
+
+<div class="footer">
+
+  <div class="footer_content">
+
+  <div class="top_section">
+
+    <div class="column">
+      <div class="row_title">About Us</div>
+      <div class="row">Who we are</div>
+      <div class="row">Purpose</div>
+      <div class="row">Commitment</div>
+      <div class="row">FAQ</div>
+    </div>
+
+    <div class="column">
+    <div class="row_title">Course</div>
+    <div class="row">Physics</div>
+    <div class="row">Biology</div>
+    <div class="row">Chemistry</div>
+    <div class="row">IT</div>
+    <div class="row">Mathematics</div>
+    </div>
+
+    <div class="column">
+    <div class="row_title">Social Media</div>
+    <div class="row">Youtube</div>
+    <div class="row">Twitter</div>
+    </div>
+
+  </div>
+
+  <div class="bottom_section">
+    <div class="bs_text">© Copyright 2024-2025 FastMindJunction. All Rights Reserved.</div>
+  </div>
+
+  </div>
+
+</div>
+
+<script>
+  const firstSection = document.querySelector(".first");
+  const headerButton = document.querySelector(".header_button");
+  const header = document.querySelector(".header");
+
+  const lazyImages = document.querySelectorAll('.lazy-image');
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.classList.remove('lazy-image');
+        observer.unobserve(img);
+      }
+    });
+  });
+
+  lazyImages.forEach(img => {
+    observer.observe(img);
+  });
+
+  window.addEventListener("scroll", () => {
+    // Calculate the position to trigger the change
+    const scrollTriggerPosition = firstSection.offsetTop + firstSection.offsetHeight;
+    
+    // Check if the user has scrolled past the bottom of the first section
+    if(window.scrollY > scrollTriggerPosition) {
+      headerButton.innerHTML = `<a href="HTML/learn/learn.html"><button class = "get-started">GET STARTED</button></a>`;
+      header.classList.add('header-border');
+    } else {
+      headerButton.innerHTML = "SITE LANGUAGE: ENGLISH";
+      header.classList.remove('header-border');
+    }
+  });
+</script>
+</body>
+</html>

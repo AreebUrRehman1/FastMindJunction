@@ -1,0 +1,440 @@
+/*Header Section*/
+
+.header {
+  background-color: inherit;
+  color: black;
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  top: 0;
+}
+
+.header-design {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 20px; /* Add horizontal padding for mobile */
+}
+
+.header-border {
+  border-bottom: 0.5px solid rgba(128, 128, 128, 0.388);
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Vertically align logo items */
+}
+
+.logo_image {
+  width: 60px;
+  height: 60px;
+}
+
+.logo_name {
+  font-weight: bold;
+  margin-left: 15px;
+  font-size: 25px;
+}
+
+.progress{
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
+  align-items: center;
+}
+
+.component-details, .streak-details, .coin-details{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 8px;
+  mix-blend-mode: multiply;
+  position: relative;
+}
+
+.coin-details{
+  margin-left: -10px;
+}
+
+.component-text{
+  font-weight: bold;
+  color:grey;
+  font-size: 20px;
+}
+
+.physics-icon, .streak-icon, .coin-icon{
+  width: 35px;
+  height: 35px;
+}
+
+.coin-icon{
+  padding-top: 3px;
+}
+
+.streak-day, .coin-amount{
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.component-text{
+  padding-bottom: 3px;
+}
+
+
+/*Main Section*/
+
+.title hr{
+  border-color: transparent;
+}
+
+.title{
+  margin: 100px auto;
+  text-align: center;
+  font-weight: bold;
+  font-size: 35px;
+  background-color: lightgrey;
+}
+
+.unit{
+  margin: 40px auto;
+  text-align: center;
+  font-weight: 400;
+  font-size: 25px;
+  width: 400px;
+  border-radius: 20px;
+}
+
+.levels-list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.level-container{
+  width: 70.5px;
+  height: 70.5px;
+  position: relative;
+}
+
+.level{
+  display: flex;
+  background-color: rgb(186, 186, 186);
+  box-shadow: 0px 9px 1px rgb(149, 149, 149);
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.coin2-icon{
+  width: 50px;
+  height: 50px;
+}
+
+
+
+/*Headers Popups*/
+
+.component-popUp{
+  display: none;
+  position: absolute;
+  background-color: rgb(199, 199, 199) ;
+  border: 0.5px solid grey;
+  width: 180px;
+  height: auto;
+  border-radius: 20px;
+  margin-top: 15px;
+  z-index: 3;
+  top: 70%;
+}
+
+.my-course, .component-name, .add-more{
+  width: 91%;
+  height: auto;
+  padding: 8px;
+  font-size: 15px;
+}
+
+.my-course{
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  margin-left: 5px;
+}
+
+.component-name{
+  background-color: rgb(223, 222, 222);
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+
+.my-course span{
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.course-img{
+  width: 25px;
+  height: 25px;
+}
+
+.add-more{
+  display: flex;
+  align-items: center;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.add-more span{
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.add-more:hover{
+  background-color: rgb(223, 222, 222);
+  cursor: pointer;
+}
+
+.component-details{
+  width: 140px;
+}
+
+.component-details:hover{
+  background-color: rgba(128, 128, 128, 0.251);
+  border-radius: 20px;
+}
+
+.component-details:hover .component-popUp {
+  display: block;
+}
+
+
+
+
+/*S Shape Using Margin*/
+.margin1{
+  margin-left: 50px;
+}
+
+.margin2{
+  margin-left: 70px;
+}
+
+.margin-1{
+  margin-left: -50px;
+}
+
+.margin-2{
+  margin-left: -70px;
+}
+
+
+.unit-details hr{
+  margin-top: 50px;
+}
+
+
+
+/*Click Details Styles*/
+
+.click-details{
+  display: none;
+  position: absolute;
+  width: 180px;
+  height: auto;
+  padding: 8px;
+  border-radius: 20px;
+  margin-top: 15px;
+  z-index: 2;
+}
+
+.click-details-text{
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+  margin-top: 7px;
+}
+
+.click-details-start{
+  border-radius: 10px;
+  width: 82%;
+  height: 30px;
+  border: none;
+  background-color: white;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 10%;
+  margin-bottom: 17px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow: 0px 4px 1px rgba(128, 128, 128, 0.388);
+}
+
+.click-details-start:hover{
+  zoom: 103%;
+}
+
+.active{
+  display: block;
+}
+
+.blue-cd{
+  background-color: rgb(77, 212, 253);
+}
+
+.red-cd{
+  background-color: rgb(248, 156, 156);
+}
+
+.yellow-cd{
+  background-color: rgb(238, 230, 77);
+}
+
+.pink-cd{
+  background-color: rgb(242, 106, 240);
+}
+
+.orange-cd{
+  background-color: rgb(245, 202, 46);
+}
+
+
+/*Color Section*/
+
+.bluebg{
+  background-color: rgba(6, 193, 250, 0.624);
+}
+
+.redbg{
+  background-color: rgba(245, 82, 82, 0.8);
+}
+
+.green-bsbg{
+  background-color: rgba(33, 213, 33, 0.622);
+  box-shadow: 0px 9px 1px rgb(23, 158, 23);
+  cursor: pointer;
+}
+
+.blue-bsbg{
+  background-color: rgba(6, 193, 250, 0.721);
+  box-shadow: 0px 9px 1px rgba(4, 154, 200, 0.721);
+  cursor: pointer;
+}
+
+.blue-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(4, 154, 200, 0.721);
+}
+
+.red-bsbg{
+  background-color: rgba(248, 91, 91, 0.8);
+  box-shadow: 0px 9px 1px rgba(218, 80, 80, 0.8);
+  cursor: pointer;
+}
+
+.red-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(218, 80, 80, 0.8);
+}
+
+
+.yellowbg{
+  background-color: rgba(240, 233, 114, 0.8);
+}
+
+.yellow-bsbg{
+  background-color: rgba(240, 233, 114, 0.8);
+  box-shadow: 0px 9px 1px rgba(216, 210, 96, 0.8);
+  cursor: pointer;
+}
+
+.yellow-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(216, 210, 96, 0.8);
+}
+
+.orangebg{
+  background-color: rgba(245, 202, 46, 0.8);
+}
+
+.orange-bsbg{
+  background-color: rgba(247, 209, 70, 0.8);
+  box-shadow: 0px 9px 1px rgba(224, 187, 55, 0.8);
+  cursor: pointer;
+}
+
+.orange-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(224, 187, 55, 0.8);
+}
+
+.pinkbg{
+  background-color: rgba(242, 106, 240, 0.8);
+}
+
+.pink-bsbg{
+  background-color: rgba(242, 106, 240, 0.8);
+  box-shadow: 0px 9px 1px rgba(234, 81, 231, 0.8);
+  cursor: pointer;
+}
+
+.pink-bsbg:hover{
+  width: 70.5px;
+  height: 70.5px;
+  box-shadow: 0px 7px 1px rgba(234, 81, 231, 0.8);
+}
+
+
+
+
+
+/* Mobile-specific styles for smaller screens (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Header adjustments */
+  .header-design {
+    flex-wrap: wrap; /* Allow items to wrap to a new line */
+    justify-content: center; /* Center items for a better look */
+  }
+
+  .progress {
+    column-gap: 15px; /* Reduce gap between progress elements */
+    margin-top: 10px; /* Add some space below the logo */
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo_name {
+    font-size: 20px; /* Smaller font for logo name */
+  }
+  
+  /* Main content adjustments */
+  .title {
+    font-size: 25px; /* Smaller font for the title */
+    margin: 140px auto; /* Adjust margin to bring content up */
+    width: 100%;
+  }
+
+  .unit {
+    font-size: 20px; /* Smaller font for unit name */
+    width: auto;
+  }
+
+  /* Adjustments for pop-up positioning to prevent it from going off-screen */
+  .click-details, .component-popUp {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

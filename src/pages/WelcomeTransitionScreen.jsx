@@ -1,0 +1,52 @@
+export function WelcomeTransitionScreen({screenText}) {
+  // Use inline <style> to define keyframe animations, 
+  // which Tailwind does not provide by default for complex animations.
+  return (
+    <>
+      <style>
+        {`
+          /* Keyframe for text entering the screen */
+          @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          /* Keyframe for the entire screen overlay dissolving */
+          @keyframes zoom-fade-out {
+            0% { opacity: 1; transform: scale(1); }
+            80% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0; visibility: hidden; transform: scale(1.1); }
+          }
+          /* Keyframe for the progress bar animation */
+          @keyframes progress {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+          }
+
+          .welcome-animation-container {
+            /* Applies the dissolving animation (2.5s total duration) */
+            animation: zoom-fade-out 2.5s forwards;
+          }
+          .welcome-text {
+            /* Applies the text entrance animation (0.5s duration, 0.5s delay) */
+            animation: fade-in-up 0.5s ease-out 0.5s forwards;
+          }
+        `}
+      </style>
+      <div className="fixed inset-0 bg-[#515b69] z-50 flex flex-col items-center justify-center welcome-animation-container">
+
+        <title>Select your Learning Path</title>
+
+        {/* Animated Brand Logo/Text */}
+        <div className="text-white text-5xl font-extrabold tracking-wider opacity-0 welcome-text">
+          FastMindJunction
+        </div>
+
+        {/* Welcome Message (Delayed Entrance) */}
+        <div className="text-white text-xl mt-4 opacity-0 welcome-text" style={{ animationDelay: '0.5s' }}>
+          {screenText}
+        </div>
+
+      </div>
+    </>
+  );
+};

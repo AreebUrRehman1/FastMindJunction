@@ -1,0 +1,164 @@
+.first {
+  margin: 80px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px; /* Use max-width for flexibility */
+  padding: 0 20px; /* Add padding for smaller screens */
+}
+
+.first-right-side {
+  text-align: left;
+}
+
+.first-left-side{
+  text-align: center;
+}
+
+.start-img {
+  width: 70%; /* Use percentage for flexibility */
+  height: auto; /* Maintain aspect ratio */
+  mix-blend-mode: multiply;
+}
+
+.first h1 {
+  font-size: 2.5rem;
+  line-height: 40px;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.first p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 300px;
+}
+
+.btn {
+  text-align: center;
+  padding: 14px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #2b92ff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #2179d9;
+}
+
+.btn-secondary {
+  background-color: #f2f2f2;
+  color: #2b92ff;
+  border: 2px solid #2b92ff;
+}
+
+.btn-secondary:hover {
+  background-color: #e6e6e6;
+}
+
+.ab-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 100px auto;
+  max-width: 1400px;
+  padding: 0 20px;
+}
+
+.idea-image,
+.learning-image,
+.path-image {
+  width: 45%;
+  height: auto;
+  margin: 0 50px; /* Use smaller, consistent margin */
+  mix-blend-mode: multiply;
+}
+
+.ab-text {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  max-width: 700px;
+}
+
+.ab-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1a2938;
+  margin-top: 1.5em;
+  margin-bottom: 1rem;
+}
+
+.ab-body {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #34495e;
+  text-align: justify;
+}
+
+/* Media Query for screens up to 768px */
+@media (max-width: 768px) {
+  .first {
+    flex-direction: column; /* Stack elements, with text first for better flow */
+    text-align: center;
+    margin-top: 150px;
+  }
+
+  .first-right-side {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .start-img {
+    width: 80%; /* Make image larger on mobile */
+    height: auto;
+  }
+
+  .first h1 {
+    font-size: 1.8rem;
+    line-height: 30px;
+  }
+
+  .first p {
+    font-size: 1rem;
+  }
+
+  .ab-container {
+    flex-direction: column; /* Stack image and text */
+    text-align: center;
+  }
+
+  .abc-changes{
+    flex-direction: column-reverse;
+  }
+
+  .idea-image,
+  .learning-image,
+  .path-image {
+    width: 80%;
+    height: auto;
+    margin: 0 auto 30px; /* Center images and add bottom margin */
+  }
+
+  .ab-text {
+    font-size: 1.2rem;
+    max-width: 100%;
+    margin-top: 10px;
+  }
+}

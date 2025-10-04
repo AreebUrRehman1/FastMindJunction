@@ -1,0 +1,122 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { Header } from "../components/Header"
+import { Footer } from "../components/Footer"
+import { WelcomeTransitionScreen } from "./WelcomeTransitionScreen";
+import { staticContainer, staticContainer2 } from "../data/learnpage-container"
+import biology from '../assets/learn/Biology.png';
+import it from '../assets/learn/IT.png';
+import mathematics from '../assets/learn/Mathematics.png';
+import chemistry from '../assets/learn/Chemistry.png'
+import physics from '../assets/learn/Physics.png'
+
+export function LearningPathPage() {
+
+  let navigate = useNavigate();
+
+  // stage: 'welcome' or 'loaded'
+  const [stage, setStage] = useState('welcome');
+  const [selectedKey, setSelectedKey] = useState(null)
+  const [showStaticContainer2, setShowStaticContainer2] = useState("hidden");
+
+  const WELCOME_DURATION_MS = 2500; // 2.5 seconds (Must match the CSS animation duration)
+
+  // Manages the transition from welcome screen to loaded content
+  useEffect(() => {
+    if (stage === 'welcome') {
+      const welcomeTimer = setTimeout(() => {
+        setStage('loaded');
+      }, WELCOME_DURATION_MS);
+
+      return () => clearTimeout(welcomeTimer);
+    }
+  }, [stage]);
+
+  if (stage === 'welcome') {
+    const screenText = "Select Your Learning Path!"
+    return <WelcomeTransitionScreen screenText={screenText}/>;
+  }
+
+
+  function revealStaticContainer2(key) {
+    setSelectedKey(key);
+
+    if (key === "LP1") {
+      setShowStaticContainer2("flex flex-wrap gap-[20px] justify-center my-[50px] mx-auto max-w-[1150px]");
+    } else {
+      navigate("/coming-soon")
+    }
+  }
+
+  function pageTravel(key) {
+    if (key === "LP2-1") {
+      navigate("/learn")
+    } else {
+      navigate("/coming-soon")
+    }
+  }
+
+  const imgMap = {
+    biology,
+    it,
+    mathematics,
+    chemistry,
+    physics
+  }
+
+
+  return (
+    <>
+
+      <title>Select your Learning Path</title>
+
+      <Header />
+
+      <div className="text-center text-[35px] font-bold mt-[100px]">Select Your Learning Path...</div>
+
+      <div className="flex flex-wrap gap-[20px] justify-center my-[50px] mx-auto max-w-[1150px]">
+        {staticContainer.map((container) => {
+
+          const baseClasses = "border-solid border-[0.5px] border-[#a4a4a4] text-center rounded-[10px] p-[10px] w-50 h-40 cursor-pointer";
+          const selectedClass = container.key === selectedKey ? "bg-emerald-200" : "hover:bg-gray-200";
+          const finalClasses = `${baseClasses} ${selectedClass}`
+
+
+          let availablity = "text-[13px] text-[#ff0000]";
+          if (container.available === "Learn Now!") {
+            availablity = "text-[13px] text-[#00ff00]"
+          }
+
+          return (
+            <div className={finalClasses} onClick={() => { revealStaticContainer2(container.key) }} key={container.key}>
+              <div className="flex justify-center"><img src={imgMap[container.image]} alt={container.alt} className="w-[50px] h-[50px]" /></div>
+              <div className="text-[20px] font-bold leading-6">{container.title}</div>
+              <div className="text-[13px] text-[#808080]">{container.text}</div>
+              <div className={availablity}>{container.available}</div>
+            </div>
+          )
+        })}
+      </div>
+
+      <div className={showStaticContainer2}>
+        {staticContainer2.map((container) => {
+          let availablity = "text-[13px] text-[#ff0000]";
+          if (container.available === "Learn Now!") {
+            availablity = "text-[13px] text-[#00ff00]"
+          } else if (container.available === "Under Development!") {
+            availablity = "text-[13px] text-[#FFAE42]"
+          }
+
+          return (
+            <div className=" border-solid border-[0.5px] border-[#a4a4a4] text-center rounded-[10px] p-[10px] w-50 cursor-pointer hover:bg-gray-200" onClick={() => {pageTravel(container.key)}} key={container.key}>
+              <div className="text-[20px] font-bold leading-6">{container.component}</div>
+              <div className={availablity}>{container.available}</div>
+            </div>
+          )
+        })}
+      </div>
+
+      <Footer />
+    </>
+  )
+}

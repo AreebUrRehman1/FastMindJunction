@@ -1,0 +1,90 @@
+.header {
+  background-color: inherit;
+  color: black;
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  top: 0;
+}
+
+.header-design {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px; /* Use max-width instead of fixed width */
+  margin: 0 auto;
+  padding: 0 20px; /* Add horizontal padding for mobile */
+}
+
+.header-border {
+  border-bottom: 0.5px solid rgba(128, 128, 128, 0.388);
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Vertically align logo items */
+}
+
+.logo_image {
+  width: 60px;
+  height: 60px;
+}
+
+.logo_name {
+  font-weight: bold;
+  margin-left: 15px;
+  font-size: 25px;
+}
+
+.header_button {
+  font-weight: 900;
+  color: rgba(128, 128, 128, 0.432);
+  margin-left: 15px;
+  font-size: 15px;
+  text-align: right; /* Align text to the right side */
+}
+
+.get-started {
+  border: none;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 10px 10px;
+  color: white;
+  font-weight: 900;
+  font-size: 12px;
+  background-color: #2b92ff;
+}
+
+.get-started:hover {
+  background-color: #2179d9;
+  cursor: pointer;
+}
+
+/* Media Query for smaller screens (e.g., tablets and phones) */
+@media (max-width: 768px) {
+  .header-design {
+    flex-direction: column;
+    text-align: center;
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .logo {
+    margin-bottom: 10px; /* Add space between logo and button on mobile */
+  }
+
+  .logo_image {
+    width: 40px; /* Reduce logo size on mobile */
+    height: 40px;
+  }
+
+  .logo_name {
+    font-size: 20px; /* Reduce font size on mobile */
+    margin-left: 10px;
+  }
+  
+  .header_button {
+    display: none;
+  }
+}

@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme{
+  --color-littlefade : rgb(245,245,245);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  background-color: rgb(245, 245, 245);
+  font-family: 'Nunito', sans-serif;
+}
