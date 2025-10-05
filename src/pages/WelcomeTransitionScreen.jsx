@@ -1,4 +1,4 @@
-export function WelcomeTransitionScreen({screenText}) {
+export function WelcomeTransitionScreen({ screenText }) {
   // Use inline <style> to define keyframe animations, 
   // which Tailwind does not provide by default for complex animations.
   return (
@@ -44,6 +44,12 @@ export function WelcomeTransitionScreen({screenText}) {
         {/* Welcome Message (Delayed Entrance) */}
         <div className="text-white text-xl mt-4 opacity-0 welcome-text" style={{ animationDelay: '0.5s' }}>
           {screenText}
+        </div>
+
+        {/* Simple Loading Bar */}
+        <div className="w-64 h-1 bg-inherit border-1 border-white rounded-full mt-10 overflow-hidden">
+          {/* Progress bar animation runs for 2.5s to match the container's duration */}
+          <div className="h-full bg-white animate-[progress_2.5s_ease-out_forwards]" style={{ transform: 'translateX(-100%)' }}></div>
         </div>
 
       </div>

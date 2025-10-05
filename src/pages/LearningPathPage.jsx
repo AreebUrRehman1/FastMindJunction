@@ -3,12 +3,12 @@ import { useNavigate } from "react-router";
 import { Header } from "../components/Header"
 import { Footer } from "../components/Footer"
 import { WelcomeTransitionScreen } from "./WelcomeTransitionScreen";
-import { staticContainer, staticContainer2 } from "../data/learnpage-container"
-import biology from '../assets/learn/Biology.png';
-import it from '../assets/learn/IT.png';
-import mathematics from '../assets/learn/Mathematics.png';
-import chemistry from '../assets/learn/Chemistry.png'
-import physics from '../assets/learn/Physics.png'
+import { staticContainer, staticContainer2 } from "../data/learningpathpage-container"
+import biology from '../assets/path/Biology.png';
+import it from '../assets/path/IT.png';
+import mathematics from '../assets/path/Mathematics.png';
+import chemistry from '../assets/path/Chemistry.png'
+import physics from '../assets/path/Physics.png'
 
 export function LearningPathPage() {
 
