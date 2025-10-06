@@ -19,22 +19,9 @@ export function LearningPathPage() {
   const [selectedKey, setSelectedKey] = useState(null)
   const [showStaticContainer2, setShowStaticContainer2] = useState("hidden");
 
-  const WELCOME_DURATION_MS = 2500; // 2.5 seconds (Must match the CSS animation duration)
-
-  // Manages the transition from welcome screen to loaded content
-  useEffect(() => {
-    if (stage === 'welcome') {
-      const welcomeTimer = setTimeout(() => {
-        setStage('loaded');
-      }, WELCOME_DURATION_MS);
-
-      return () => clearTimeout(welcomeTimer);
-    }
-  }, [stage]);
-
   if (stage === 'welcome') {
     const screenText = "Select Your Learning Path!"
-    return <WelcomeTransitionScreen screenText={screenText}/>;
+    return <WelcomeTransitionScreen screenText={screenText} stage={stage} setStage={setStage} />;
   }
 
 
@@ -108,7 +95,7 @@ export function LearningPathPage() {
           }
 
           return (
-            <div className=" border-solid border-[0.5px] border-[#a4a4a4] text-center rounded-[10px] p-[10px] w-50 cursor-pointer hover:bg-gray-200" onClick={() => {pageTravel(container.key)}} key={container.key}>
+            <div className=" border-solid border-[0.5px] border-[#a4a4a4] text-center rounded-[10px] p-[10px] w-50 cursor-pointer hover:bg-gray-200" onClick={() => { pageTravel(container.key) }} key={container.key}>
               <div className="text-[20px] font-bold leading-6">{container.component}</div>
               <div className={availablity}>{container.available}</div>
             </div>

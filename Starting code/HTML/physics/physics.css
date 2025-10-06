@@ -217,7 +217,9 @@
   display: block;
 }
 
-
+.dadlw{
+  box-shadow: 0px 9px 1px#069dcbd5
+}
 
 
 /*S Shape Using Margin*/
@@ -269,14 +271,14 @@
   width: 82%;
   height: 30px;
   border: none;
-  background-color: white;
+  background-color: #FF3D00;
   font-weight: bold;
   font-size: 15px;
   margin-top: 10%;
   margin-bottom: 17px;
   cursor: pointer;
   letter-spacing: 0.5px;
-  box-shadow: 0px 4px 1px rgba(128, 128, 128, 0.388);
+  box-shadow: 0px 4px 1px #d33302;
 }
 
 .click-details-start:hover{

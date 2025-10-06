@@ -2,8 +2,7 @@ export const unitDetails = [
    {
     UnitName: "Unit 1 - Motion",
     UnitColor: "bluebg",
-  },
-   {
+  },{
     UnitName: "Unit 2 - Force & Momentum",
     UnitColor: "redbg",
   },{

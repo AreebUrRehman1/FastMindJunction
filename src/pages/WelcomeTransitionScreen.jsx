@@ -1,4 +1,20 @@
-export function WelcomeTransitionScreen({ screenText }) {
+import { useState,useEffect } from "react";
+
+export function WelcomeTransitionScreen({ screenText, stage, setStage }) {
+
+  const WELCOME_DURATION_MS = 2500; // 2.5 seconds (Must match the CSS animation duration)
+
+  // Manages the transition from welcome screen to loaded content
+  useEffect(() => {
+    if (stage === 'welcome') {
+      const welcomeTimer = setTimeout(() => {
+        setStage('loaded');
+      }, WELCOME_DURATION_MS);
+
+      return () => clearTimeout(welcomeTimer);
+    }
+  }, [stage]);
+
   // Use inline <style> to define keyframe animations, 
   // which Tailwind does not provide by default for complex animations.
   return (
