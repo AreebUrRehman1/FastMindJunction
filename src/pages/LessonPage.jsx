@@ -1,10 +1,10 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
-import { createSwapy } from 'swapy';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { useState, useMemo } from 'react';
 import { Define } from '../components/wph11/VectorVsScalar/Define.jsx';
 import { Example } from '../components/wph11/VectorVsScalar/Example.jsx';
 import { Further } from '../components/wph11/VectorVsScalar/Further.jsx';
+import { Mini1 } from '../components/wph11/VectorVsScalar/Mini1.jsx';
+import { Mini2 } from '../components/wph11/VectorVsScalar/Mini2.jsx';
+import { Mini3 } from '../components/wph11/VectorVsScalar/Mini3.jsx';
 
 export function LessonPage() {
   // State to manage the current progress through the lesson
@@ -13,11 +13,17 @@ export function LessonPage() {
     define: true,
     example: false,
     further: false,
+    mini1: false,
+    mini2: false,
+    mini3: false
   });
   const [stepCounter, setStepCounter] = useState(0);
   const [contentDisplay, setContentDisplay] = useState([]);
+  const [miniQuestionLock, setMiniQuestionLock] = useState(false);
+  const [feedBackGiven, setFeedBackGiven] = useState(false);
+  const [feedBackDisplay, setFeedBackDisplay] = useState([]);
 
-  const totalSteps = 15; // Total number of activities/steps in this lesson
+  const totalSteps = 17; // Total number of activities/steps in this lesson
 
 
   const progressPercentage = useMemo(() => {
@@ -26,6 +32,11 @@ export function LessonPage() {
 
   // Function to advance the lesson stage
   const handleContinue = () => {
+
+    if (feedBackGiven) {
+      setFeedBackGiven(false);
+      setFeedBackDisplay([]);
+    }
 
     if (pageChecker["define"] === true) {
       Define({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter })
@@ -36,17 +47,15 @@ export function LessonPage() {
     else if (pageChecker["further"] === true) {
       Further({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter })
     }
-
-
-    // if (currentStep < totalSteps) {
-    //   setCurrentStep(prev => prev + 1);
-    // } else {
-    //   // Lesson is complete, call the provided finish handler
-    //   alert('Lesson Complete! Great job!');
-    //   if (onLessonFinish) {
-    //     onLessonFinish();
-    //   }
-    // }
+    else if (pageChecker["mini1"] === true) {
+      Mini1({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay })
+    }
+    else if (pageChecker["mini2"] === true) {
+      Mini2({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay })
+    }
+    else if (pageChecker["mini3"] === true) {
+      Mini3({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay })
+    }
   };
 
   return (
@@ -82,8 +91,14 @@ export function LessonPage() {
         </main>
 
         {/* 3. BOTTOM ACTION BAR/FOOTER */}
-        <footer className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 flex items-center justify-end px-8 shadow-inner">
-          <button onClick={handleContinue} className="px-8 py-3 bg-blue-500 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-blue-600 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700">{currentStep < totalSteps ? 'Continue' : 'Finish'}</button>
+        <footer className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 px-8 shadow-inner flex items-center justify-between">
+          <button className="px-8 py-3 font-bold text-lg rounded-xl bg-blue-500 dark:focus:ring-blue-700 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-300">Back</button>
+          {feedBackGiven && feedBackDisplay.map((feedBack, index) => (
+            <div key={`feedback-${index}`} className="mx-auto">
+              {feedBack}
+            </div>
+          ))}
+          <button onClick={handleContinue} className={`px-8 py-3 font-bold text-lg rounded-xl ${miniQuestionLock ? "bg-blue-200 text-gray-400" : "bg-blue-500 dark:focus:ring-blue-700 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-300"} `}>{currentStep < totalSteps ? 'Continue' : 'Finish'}</button>
         </footer>
 
       </div>

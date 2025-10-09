@@ -63,6 +63,7 @@ export function Further({ setContentDisplay, setCurrentStep, setPageChecker, ste
       setStepCounter(0);
       setPageChecker({
         further: false,
+        mini1: true
       });
       setContentDisplay([]);
     }
