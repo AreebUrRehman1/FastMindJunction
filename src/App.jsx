@@ -1,8 +1,9 @@
+import { Route, Routes } from 'react-router'
 import { HomePage } from './pages/HomePage'
 import { LearningPathPage } from './pages/LearningPathPage'
 import { ComingSoonPage } from './pages/ComingSoonPage'
 import { LearnPage } from './pages/LearnPage'
-import { Route, Routes } from 'react-router'
+import { LessonPage } from './pages/LessonPage'
 import './App.css'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="mode" element={<LearningPathPage />} />
         <Route path="coming-soon" element={<ComingSoonPage />} />
         <Route path="learn" element={<LearnPage />} />
+        <Route path="lesson" element={<LessonPage />} />
       </Routes>
     </>
   )

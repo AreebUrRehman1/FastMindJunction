@@ -24,7 +24,7 @@ export const topicDetailsContainer = {
 
   Unit1: [
     {
-      Name: "Equation of Motion",
+      Name: "Scalar vs Vector",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5]",
       ToolTipColor: "bg-[#069dcb]",
       key: "TDC1", 
