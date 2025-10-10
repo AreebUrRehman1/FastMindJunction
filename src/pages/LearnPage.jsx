@@ -33,29 +33,21 @@ export function LearnPage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
 
-  }, [activeTopicKey]); // Dependency array: Re-run effect when 'activeTopicKey' changes
+  }, [activeTopicKey]);
 
-  // Add this new useEffect block inside your LearnPage function component.
+  //For Tab Logo
   useEffect(() => {
-    // 1. Define the favicon URL you want to use.
     const faviconUrl = "/Logo2.png";
 
-    // 2. Try to find an existing link tag with rel='icon' or rel='shortcut icon'.
     let link = document.querySelector("link[rel~='icon']") || document.querySelector("link[rel='shortcut icon']");
-
-    // 3. If no link tag exists, create one and append it to the <head>.
     if (!link) {
       link = document.createElement('link');
       link.rel = 'icon';
       link.type = 'image/png';
-      // Append it to the head element
       document.getElementsByTagName('head')[0].appendChild(link);
     }
-
-    // 4. Update the href attribute. This ensures the change is applied immediately.
     link.href = faviconUrl;
 
-    // The empty dependency array [] ensures this runs only once when the component mounts.
   }, []);
 
   if (stage === 'welcome') {

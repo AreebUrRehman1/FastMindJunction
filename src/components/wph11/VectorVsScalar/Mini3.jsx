@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
+import correct from "../../../assets/sounds/correct.mp3"
+import wrong from "../../../assets/sounds/wrong.mp3"
 
-
-function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter) {
+function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep) {
   let title, message, bgColor, icon;
+  const correctsound = new Audio(correct);
+  const wrongsound = new Audio(wrong);
+  correctsound.volume = 0.1;
+  wrongsound.volume = 0.1;
 
   if (wrongAnswerCount === 0) {
     title = "Flawless Victory!";
@@ -13,6 +18,7 @@ function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDi
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
     );
+    correctsound.play();
   } else if (wrongAnswerCount === 1) {
     title = "Keep Going!";
     message = "No worries, revisit and revise the concept again and try again! Learning takes practice.";
@@ -22,6 +28,7 @@ function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDi
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
     );
+    wrongsound.play();
   }
 
   const messageCreation = (
@@ -42,11 +49,12 @@ function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDi
 
   setFeedBackDisplay([messageCreation]);
   setFeedBackGiven(true);
+  setCurrentStep(prev => prev + 1);
   setWrongAnswerCounter(0);
 
 }
 
-const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay }) => {
+const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay, setCurrentStep }) => {
 
   // State to track which item is currently in the slot 'a'. Null means empty.
   const [slotContent, setSlotContent] = useState(null); // 'vector' or 'scalar'
@@ -123,7 +131,7 @@ const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
     // Defer the parent state update to prevent the bad setState() error
     setTimeout(() => {
       setMiniQuestionLock(false); // UNLOCK LessonPage (Continue button enabled)
-      createFeedBackMessage(finalWrongCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter);
+      createFeedBackMessage(finalWrongCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep);
     }, 0);
   };
 
@@ -152,6 +160,8 @@ const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
 
   return (
     <>
+      <div className="text-center text-xl mt-3 ">Mini Quiz Time!</div>
+      <div className="text-center text-xl mt-1  text-red-400">(Challenging)</div>
       <div className="text-center text-3xl mt-12 md:text-3xl font-extrabold text-gray-800 mb-8 p-2">
         Complete the following sentence
       </div>
@@ -197,17 +207,11 @@ const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
   );
 };
 
-export function Mini3({ setContentDisplay, setCurrentStep, setPageChecker, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay }) {
+export function Mini3({ setContentDisplay, setCurrentStep, setPageChecker, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay, navigate }) {
 
   const defineContent = {
-    step0: (
-      <>
-        <div className="text-center text-xl mt-3 animate-slide-in">Mini Quiz Time!</div>
-        <div className="text-center text-xl mt-1 animate-slide-in text-red-400">(Challenging)</div>
-      </>
-    ),
-    step1: <Step1Runner setMiniQuestionLock={setMiniQuestionLock} setFeedBackGiven={setFeedBackGiven} setFeedBackDisplay={setFeedBackDisplay} />,
-    step2: null,
+    step0: <Step0Runner setMiniQuestionLock={setMiniQuestionLock} setFeedBackGiven={setFeedBackGiven} setFeedBackDisplay={setFeedBackDisplay} setCurrentStep={setCurrentStep} />,
+    step1: null,
   }
 
   const nextStepKey = `step${stepCounter + 1}`;
@@ -216,27 +220,20 @@ export function Mini3({ setContentDisplay, setCurrentStep, setPageChecker, stepC
 
   if (miniQuestionLock !== true) {
     if (nextContentExists) {
-
-      if (currentContent) {
-        setContentDisplay((previous) => [...previous, currentContent]);
-      }
-
+      setContentDisplay((previous) => [...previous, currentContent]);
       setStepCounter(prev => prev + 1);
-      setCurrentStep(prev => prev + 1);
 
     } else {
       if (currentContent) {
         setContentDisplay((previous) => [...previous, currentContent]);
-        setCurrentStep(prev => prev + 1);
         setStepCounter(prev => prev + 1);
       } else {
+        setStepCounter(0);
         setPageChecker({
           mini3: false,
         });
-        alert('Lesson Complete! Great job!');
-        if (onLessonFinish) {
-          onLessonFinish();
-        }
+        setContentDisplay([]);
+        navigate(-1);
       }
     }
   }

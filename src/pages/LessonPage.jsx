@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router';
 import { Define } from '../components/wph11/VectorVsScalar/Define.jsx';
 import { Example } from '../components/wph11/VectorVsScalar/Example.jsx';
 import { Further } from '../components/wph11/VectorVsScalar/Further.jsx';
@@ -22,8 +23,9 @@ export function LessonPage() {
   const [miniQuestionLock, setMiniQuestionLock] = useState(false);
   const [feedBackGiven, setFeedBackGiven] = useState(false);
   const [feedBackDisplay, setFeedBackDisplay] = useState([]);
+  const navigate = useNavigate();
 
-  const totalSteps = 17; // Total number of activities/steps in this lesson
+  const totalSteps = 16; // Total number of activities/steps in this lesson
 
 
   const progressPercentage = useMemo(() => {
@@ -54,7 +56,7 @@ export function LessonPage() {
       Mini2({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay })
     }
     else if (pageChecker["mini3"] === true) {
-      Mini3({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay })
+      Mini3({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay, navigate })
     }
   };
 
@@ -91,8 +93,7 @@ export function LessonPage() {
         </main>
 
         {/* 3. BOTTOM ACTION BAR/FOOTER */}
-        <footer className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 px-8 shadow-inner flex items-center justify-between">
-          <button className="px-8 py-3 font-bold text-lg rounded-xl bg-blue-500 dark:focus:ring-blue-700 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-300">Back</button>
+        <footer className={`fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 px-8 shadow-inner flex items-center ${feedBackGiven ? "justify-between" : "justify-end"}`}>
           {feedBackGiven && feedBackDisplay.map((feedBack, index) => (
             <div key={`feedback-${index}`} className="mx-auto">
               {feedBack}

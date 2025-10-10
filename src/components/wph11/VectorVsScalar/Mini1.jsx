@@ -1,74 +1,81 @@
 import { useState, useEffect } from "react";
+import correct from "../../../assets/sounds/correct.mp3"
+import wrong from "../../../assets/sounds/wrong.mp3"
 
 
-  function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter) {
-    let title, message, bgColor, icon;
+function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep) {
+  let title, message, bgColor, icon;
 
-    if (wrongAnswerCount === 0) {
-      title = "Flawless Victory!";
-      message = "Perfect run! You have mastered this concept. Keep that momentum going!";
-      bgColor = "bg-emerald-100 border-emerald-500 text-emerald-800";
-      icon = (
-        <svg className="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-      );
-    } else if (wrongAnswerCount === 1) {
-      title = "Awesome Work, Close to Perfection!";
-      message = "Just one small step missed! You're clearly grasping the core ideas.";
-      bgColor = "bg-yellow-100 border-yellow-500 text-yellow-800";
-      icon = (
-        <svg className="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-      );
-    } else if (wrongAnswerCount === 2) {
-      title = "Phew, That Was Tough!";
-      message = "No worries, mistakes make us better! Review the few spots you missed.";
-      bgColor = "bg-blue-100 border-blue-500 text-blue-800";
-      icon = (
-        <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-        </svg>
-      );
-    } else if (wrongAnswerCount === 3) {
-      title = "Keep Going!";
-      message = "No worries, revisit and revise the concept again and try again! Learning takes practice.";
-      bgColor = "bg-red-100 border-red-500 text-red-800";
-      icon = (
-        <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-      );
-    }
-
-    const messageCreation = (
-      <div className={`p-2 w-full rounded-xl border-2 shadow-lg ${bgColor}`}>
-        <div className="flex items-center space-x-3">
-          <div className="flex-shrink-0">
-            {icon}
-          </div>
-          <div>
-            <h3 className="text-sm font-bold">{title}</h3>
-            <p className="text-xs font-medium">
-              {message}
-            </p>
-          </div>
-        </div>
-      </div>
-    )
-
-    setFeedBackDisplay([messageCreation]);
-    setFeedBackGiven(true);
-    setWrongAnswerCounter(0);
-
+  if (wrongAnswerCount === 0) {
+    title = "Flawless Victory!";
+    message = "Perfect run! You have mastered this concept. Keep that momentum going!";
+    bgColor = "bg-emerald-100 border-emerald-500 text-emerald-800";
+    icon = (
+      <svg className="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    );
+  } else if (wrongAnswerCount === 1) {
+    title = "Awesome Work, Close to Perfection!";
+    message = "Just one small step missed! You're clearly grasping the core ideas.";
+    bgColor = "bg-yellow-100 border-yellow-500 text-yellow-800";
+    icon = (
+      <svg className="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    );
+  } else if (wrongAnswerCount === 2) {
+    title = "Phew, That Was Tough!";
+    message = "No worries, mistakes make us better! Review the few spots you missed.";
+    bgColor = "bg-blue-100 border-blue-500 text-blue-800";
+    icon = (
+      <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+      </svg>
+    );
+  } else if (wrongAnswerCount === 3) {
+    title = "Keep Going!";
+    message = "No worries, revisit and revise the concept again and try again! Learning takes practice.";
+    bgColor = "bg-red-100 border-red-500 text-red-800";
+    icon = (
+      <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    );
   }
 
-const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay }) => {
+  const messageCreation = (
+    <div className={`p-2 w-full rounded-xl border-2 shadow-lg ${bgColor}`}>
+      <div className="flex items-center space-x-3">
+        <div className="flex-shrink-0">
+          {icon}
+        </div>
+        <div>
+          <h3 className="text-sm font-bold">{title}</h3>
+          <p className="text-xs font-medium">
+            {message}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+
+  setFeedBackDisplay([messageCreation]);
+  setFeedBackGiven(true);
+  setCurrentStep(prev => prev + 1);
+  setWrongAnswerCounter(0);
+
+}
+
+const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay, setCurrentStep }) => {
 
   const [answerResults, setAnswerResults] = useState({});
   const [quizLocked, setQuizLocked] = useState(false);
   const [wrongAnswerCounter, setWrongAnswerCounter] = useState(0);
+  const correctsound = new Audio(correct);
+  const wrongsound = new Audio(wrong);
+  correctsound.volume = 0.1;
+  wrongsound.volume = 0.1;
 
   useEffect(() => {
     setMiniQuestionLock(true);
@@ -87,42 +94,38 @@ const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
 
 
   function checkAnswers(option) {
-    // 1. Lock check: Stop all interaction if the quiz is locked
-    if (quizLocked) return;
+    if (quizLocked) return;     // 1. Lock check: Stop all interaction if the quiz is locked
 
-    // 2. Determine the result for the clicked option
-    const isCorrectSelection = correctAnswer.includes(option);
+    const isCorrectSelection = correctAnswer.includes(option); // 2. Determine the result for the clicked option
 
-    // 3. Calculate the final class for the clicked option
+    // 3. Styles creater for options when selected
     let styleForClickedOption;
     if (isCorrectSelection) {
       styleForClickedOption = baseClasses + ' ' + correctClasses;
+      correctsound.play();
+
     } else {
       styleForClickedOption = baseClasses + ' ' + wrongClasses;
       setWrongAnswerCounter(prevCounter => prevCounter + 1);
+      wrongsound.play()
     }
 
-    // 4. Update logic: Use functional state update to safely check the lock condition
+    // Storing the styles made for the options
     setAnswerResults(prevResults => {
-      // Create the new state object first (preserving previous results)
-      const newResults = {
+      const newResults = { // Can't directly view or use answerResult state
         ...prevResults,
         [option]: styleForClickedOption,
       };
 
-      // 5. CONDITIONAL LOCK CHECK (The core modification)
-      const isSingleAnswerQuestion = correctAnswer.length === 1;
+      const isSingleAnswerQuestion = correctAnswer.length === 1; // Checking if there is only one answer
 
       if (isSingleAnswerQuestion) {
-        // RULE 1: For single-answer questions, lock immediately on the first click (doesn't matter if it's right or wrong)
-        setQuizLocked(true);
+        setQuizLocked(true); // Lock immediately on the clicking any options (doesn't matter if it's right or wrong)
         setTimeout(() => {
-          // Because the final wrongAnswerCounter state update might not have finished yet,
-          // we calculate the final count from the current state (wrongAnswerCounter + 1 if the last click was wrong)
-          const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
+          const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1; // There is a possiblity that the wrongAnswerCounter haven't been properly counted (This is set for safety measures)
 
           setMiniQuestionLock(false);
-          createFeedBackMessage(finalWrongCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter);
+          createFeedBackMessage(finalWrongCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep);
         }, 0);
       } else {
         // RULE 2: For multiple-answer questions, lock when all correct answers have been clicked
@@ -137,7 +140,7 @@ const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
             const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
 
             setMiniQuestionLock(false);
-            createFeedBackMessage(finalWrongCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter);
+            createFeedBackMessage(finalWrongCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep);
           }, 0);
         }
       }
@@ -148,7 +151,9 @@ const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
 
   return (
     <>
-      <div className="text-center text-3xl mt-12 md:text-3xl font-extrabold text-gray-800 mb-8 animate-slide-in p-2">Which of the following is a <strong>Vector</strong> quantity?</div>
+      <div className="text-center text-xl mt-3 ">Mini Quiz Time!</div>
+      <div className="text-center text-xl mt-1  text-emerald-400">(Easy)</div>
+      <div className="text-center text-3xl mt-12 md:text-3xl font-extrabold text-gray-800 mb-8  p-2">Which of the following is a <strong>Vector</strong> quantity?</div>
 
       <div className='flex flex-wrap justify-center gap-5'>
 
@@ -178,14 +183,8 @@ const Step1Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
 export function Mini1({ setContentDisplay, setCurrentStep, setPageChecker, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay }) {
 
   const defineContent = {
-    step0: (
-      <>
-        <div className="text-center text-xl mt-3 animate-slide-in">Mini Quiz Time!</div>
-        <div className="text-center text-xl mt-1 animate-slide-in text-emerald-400">(Easy)</div>
-      </>
-    ),
-    step1: <Step1Runner setMiniQuestionLock={setMiniQuestionLock} setFeedBackGiven={setFeedBackGiven} setFeedBackDisplay={setFeedBackDisplay} />,
-    step2: null,
+    step0: <Step0Runner setMiniQuestionLock={setMiniQuestionLock} setFeedBackGiven={setFeedBackGiven} setFeedBackDisplay={setFeedBackDisplay} setCurrentStep={setCurrentStep} />,
+    step1: null,
   }
 
   const nextStepKey = `step${stepCounter + 1}`;
@@ -194,18 +193,12 @@ export function Mini1({ setContentDisplay, setCurrentStep, setPageChecker, stepC
 
   if (miniQuestionLock !== true) {
     if (nextContentExists) {
-
-      if (currentContent) {
-        setContentDisplay((previous) => [...previous, currentContent]);
-      }
-
+      setContentDisplay((previous) => [...previous, currentContent]);
       setStepCounter(prev => prev + 1);
-      setCurrentStep(prev => prev + 1);
 
     } else {
       if (currentContent) {
         setContentDisplay((previous) => [...previous, currentContent]);
-        setCurrentStep(prev => prev + 1);
         setStepCounter(prev => prev + 1);
       } else {
         setStepCounter(0);
