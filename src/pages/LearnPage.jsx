@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useParams, Link } from "react-router";
 import { WelcomeTransitionScreen } from "./WelcomeTransitionScreen";
 import { Sidebar } from "../components/Sidebar";
 import { unitDetailsContainer, topicDetailsContainer } from "../data/learnpage";
@@ -10,6 +11,7 @@ export function LearnPage() {
   const [stage, setStage] = useState('welcome');
   const [activeTopicKey, setActiveTopicKey] = useState(null);
   const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("colorScheme")) || false);
+  const { learnId } = useParams();
 
   const tooltipRef = useRef(null);
 
@@ -35,21 +37,6 @@ export function LearnPage() {
 
   }, [activeTopicKey]);
 
-  //For Tab Logo
-  useEffect(() => {
-    const faviconUrl = "/Logo2.png";
-
-    let link = document.querySelector("link[rel~='icon']") || document.querySelector("link[rel='shortcut icon']");
-    if (!link) {
-      link = document.createElement('link');
-      link.rel = 'icon';
-      link.type = 'image/png';
-      document.getElementsByTagName('head')[0].appendChild(link);
-    }
-    link.href = faviconUrl;
-
-  }, []);
-
   if (stage === 'welcome') {
     const screenText = "Awesome! Let's Begin!"
     return <WelcomeTransitionScreen screenText={screenText} stage={stage} setStage={setStage} />;
@@ -63,7 +50,7 @@ export function LearnPage() {
 
   return (
     <>
-      <title>Component Name</title>
+      <title>{learnId}</title>
 
       <div className={`flex relative ${darkMode ? "dark" : ""}`}>
 
@@ -80,13 +67,13 @@ export function LearnPage() {
               <>
                 <div className="my-[40px] mx-auto text-center font-normal text-3xl dark:text-gray-100" key={unit.key}>{unit.Name}</div>
                 {currentTopics.map((topic) => {
-                  const isVisible = activeTopicKey === topic.key;
+                  const isVisible = activeTopicKey === topic.Name;
                   return (
-                    <div className="flex flex-col items-center mt-2" key={topic.key}>
+                    <div className="flex flex-col items-center mt-2" key={topic.Name}>
 
                       <div className="w-[70.5px] h-[70.5px] relative" ref={isVisible ? tooltipRef : null}>
 
-                        <div className={`flex w-[65px] h-[65px] rounded-full items-center justify-center relative transition-colors duration-100 ease-in-out cursor-pointer ${topic.Circle}`} onClick={() => toggleTooltipVisibility(topic.key)}>
+                        <div className={`flex w-[65px] h-[65px] rounded-full items-center justify-center relative transition-colors duration-100 ease-in-out cursor-pointer ${topic.Circle}`} onClick={() => toggleTooltipVisibility(topic.Name)}>
                           <img className="w-[48px] h-[48px]" src={hat} alt="coin icon" />
                           {isVisible ? (<div className={`w-3 h-3 absolute bottom-[-27px] left-1/2 -translate-x-1/2 rotate-45 z-2 ${topic.ToolTipColor}`}></div>) : <></>}
                         </div>
@@ -94,7 +81,7 @@ export function LearnPage() {
                         {isVisible ? (
                           <div className={`flex flex-col w-[180px] h-auto absolute p-2 pl-3 rounded-[20px] mt-5 z-2 ${topic.ToolTipColor} ${topic.ToolTipMove ? topic.ToolTipMove : ""}`}>
                             <div className="text-[17px] font-extrabold text-white mt-[7px]">{topic.Name}</div>
-                            <button className="rounded-[10px] w-[65%] h-[30px] border-none bg-white font-bold text-[15px] mt-[10%] mb-[17px] cursor-pointer tracking-[0.5px] shadow-[#8080806] hover:scale-101">Learn Now!</button>
+                            <Link to={`/lesson/${topic.Name}`}><button className="rounded-[10px] w-[65%] h-[30px] border-none bg-white font-bold text-[15px] mt-[10%] mb-[17px] cursor-pointer tracking-[0.5px] shadow-[#8080806] hover:scale-101">Learn Now!</button></Link>
                           </div>
                         ) : null}
 

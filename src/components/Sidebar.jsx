@@ -4,7 +4,7 @@ import sidebarclosed from "../assets/learn/Sidebar Closed Icon.png";
 import darkmode from "../assets/learn/Dark mode Icon.png";
 import lightmode from "../assets/learn/Light mode Icon.png";
 import wph11 from "../assets/learn/WPH11.png";
-import logo from "/Logo2.png";
+import logo from "/Logo.png";
 
 export function Sidebar({darkMode, setDarkMode}) {
 

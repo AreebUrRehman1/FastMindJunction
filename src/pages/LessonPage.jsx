@@ -1,15 +1,14 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router';
-import { Define } from '../components/wph11/VectorVsScalar/Define.jsx';
-import { Example } from '../components/wph11/VectorVsScalar/Example.jsx';
-import { Further } from '../components/wph11/VectorVsScalar/Further.jsx';
-import { Mini1 } from '../components/wph11/VectorVsScalar/Mini1.jsx';
-import { Mini2 } from '../components/wph11/VectorVsScalar/Mini2.jsx';
-import { Mini3 } from '../components/wph11/VectorVsScalar/Mini3.jsx';
+import { useNavigate, useParams } from 'react-router';
+import { Define } from '../components/wph11/ScalarvsVector/Define.jsx';
+import { Example } from '../components/wph11/ScalarvsVector/Example.jsx';
+import { Further } from '../components/wph11/ScalarvsVector/Further.jsx';
+import { Mini1 } from '../components/wph11/ScalarvsVector/Mini1.jsx';
+import { Mini2 } from '../components/wph11/ScalarvsVector/Mini2.jsx';
+import { Mini3 } from '../components/wph11/ScalarvsVector/Mini3.jsx';
 
 export function LessonPage() {
-  // State to manage the current progress through the lesson
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0); // Manages the progress in the bar
   const [pageChecker, setPageChecker] = useState({
     define: true,
     example: false,
@@ -18,12 +17,13 @@ export function LessonPage() {
     mini2: false,
     mini3: false
   });
-  const [stepCounter, setStepCounter] = useState(0);
+  const [stepCounter, setStepCounter] = useState(0); // Runs the steps in a component
   const [contentDisplay, setContentDisplay] = useState([]);
-  const [miniQuestionLock, setMiniQuestionLock] = useState(false);
-  const [feedBackGiven, setFeedBackGiven] = useState(false);
+  const [miniQuestionLock, setMiniQuestionLock] = useState(false); // Block continue button when Quiz is displayed
+  const [feedBackGiven, setFeedBackGiven] = useState(false); // Manages the display for feedback
   const [feedBackDisplay, setFeedBackDisplay] = useState([]);
   const navigate = useNavigate();
+  const { lessonId } = useParams();
 
   const totalSteps = 16; // Total number of activities/steps in this lesson
 
@@ -41,7 +41,7 @@ export function LessonPage() {
     }
 
     if (pageChecker["define"] === true) {
-      Define({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter })
+      Define({ setCurrentStep, setPageChecker, pageChecker, setContentDisplay, stepCounter, setStepCounter, setMiniQuestionLock, miniQuestionLock, setFeedBackGiven, setFeedBackDisplay })
     }
     else if (pageChecker["example"] === true) {
       Example({ setCurrentStep, setPageChecker, setContentDisplay, stepCounter, setStepCounter })
@@ -81,7 +81,7 @@ export function LessonPage() {
         {/* 2. MAIN CONTENT AREA */}
         <main className="flex-1 flex justify-center pt-25 pb-24">
           <div className="w-full max-w-3xl">
-            <div className="text-center text-4xl font-bold">Scalar Vs Vector</div>
+            <div className="text-center text-4xl font-bold">{lessonId}</div>
             {contentDisplay.map((content, index) => {
               return (
                 <div key={index} className={index === contentDisplay.length - 1 ? 'animate-slide-in' : ''}>

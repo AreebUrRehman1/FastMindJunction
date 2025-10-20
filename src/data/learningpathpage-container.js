@@ -41,26 +41,20 @@ export const staticContainer2 =[
   {
     component : "WPH11",
     available : "Under Development!",
-    key : "LP2-1"
   },{
     component : "WPH12",
     available : "Coming Soon!",
-    key : "LP2-2"
   },{
     component : "WPH13",
     available : "Coming Soon!",
-    key : "LP2-3"
   },{
     component : "WPH14",
     available : "Coming Soon!",
-    key : "LP2-4"
   },{
     component : "WPH15",
     available : "Coming Soon!",
-    key : "LP2-5"
   },{
     component : "WPH16",
     available : "Coming Soon!",
-    key : "LP2-6"
   },
 ]

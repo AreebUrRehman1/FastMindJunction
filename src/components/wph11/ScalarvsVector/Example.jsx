@@ -26,7 +26,7 @@ const Step1Runner = () => {
 
 
 
-export function Example({ setContentDisplay, setCurrentStep, setPageChecker, stepCounter, setStepCounter }) {
+export function Example({ setCurrentStep, setPageChecker, pageChecker, setContentDisplay, stepCounter, setStepCounter}) {
 
   const defineContent = {
     step0: (<div className="text-center text-xl mt-3 ">For example</div>),

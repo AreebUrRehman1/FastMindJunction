@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { Header } from "../components/Header"
 import { Footer } from "../components/Footer"
 import { WelcomeTransitionScreen } from "./WelcomeTransitionScreen";
@@ -13,6 +13,7 @@ import physics from '../assets/path/Physics.png'
 export function LearningPathPage() {
 
   let navigate = useNavigate();
+  let params = useParams();
 
   // stage: 'welcome' or 'loaded'
   const [stage, setStage] = useState('welcome');
@@ -36,8 +37,8 @@ export function LearningPathPage() {
   }
 
   function pageTravel(key) {
-    if (key === "LP2-1") {
-      navigate("/learn")
+    if (key === "WPH11") {
+      navigate("/learn/WPH11")
     } else {
       navigate("/coming-soon")
     }
@@ -95,7 +96,7 @@ export function LearningPathPage() {
           }
 
           return (
-            <div className=" border-solid border-[0.5px] border-[#a4a4a4] text-center rounded-[10px] p-[10px] w-50 cursor-pointer hover:bg-gray-200" onClick={() => { pageTravel(container.key) }} key={container.key}>
+            <div className=" border-solid border-[0.5px] border-[#a4a4a4] text-center rounded-[10px] p-[10px] w-50 cursor-pointer hover:bg-gray-200" onClick={() => { pageTravel(container.component) }} key={container.component}>
               <div className="text-[20px] font-bold leading-6">{container.component}</div>
               <div className={availablity}>{container.available}</div>
             </div>
