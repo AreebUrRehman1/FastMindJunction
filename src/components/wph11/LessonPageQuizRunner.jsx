@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { correctAnswers } from "./lessonpage-quiz-correctanswer-container";
-import { MiniQuizContainerAccessor, MiniQuizDragAndDropContent } from "../components/wph11/ScalarvsVector/MiniQuizContainerAccessor";
-import { PUZZLE_CONFIG } from "./lessonpage-puzzelconfig-container";
-import correct from "../assets/sounds/correct.mp3"
-import wrong from "../assets/sounds/wrong.mp3"
+import { correctAnswers } from "../../data/wph11/quiz-correctanswer-container";
+import { MiniQuizOptionContent, MiniQuizDragAndDropContent } from "./MiniQuizContainerAccessor";
+import { PUZZLE_CONFIG } from "../../data/wph11/puzzelconfig-container";
+import correct from "../../assets/sounds/correct.mp3"
+import wrong from "../../assets/sounds/wrong.mp3"
 
 
 export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback }) {
@@ -115,7 +115,7 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
 
   // Pass the checkAnswers function down to the accessor component
   return (
-    <MiniQuizContainerAccessor
+    <MiniQuizOptionContent
       answerResults={answerResults}
       baseClasses={baseClasses}
       neutralClasses={neutralClasses}
@@ -124,7 +124,7 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
       checkAnswers={checkAnswers} // Pass the handler
     />
   );
-}
+};
 
 export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback }) {
 

@@ -1,7 +1,6 @@
-// This component contains the static quiz content and handles click events.
-export function MiniQuizContainerAccessor({ answerResults, baseClasses, neutralClasses, quizLocked, checkAnswers, stepNo }) {
+export function MiniQuizOptionContent({ answerResults, baseClasses, neutralClasses, quizLocked, checkAnswers, stepNo }) {
 
-  const miniQuizDataContainer = {
+  const miniQuizOptionDataContainer = {
     step8: (
       <>
         <div className="text-4xl font-extrabold text-gray-900 sm:text-5xl text-center lg:text-6xl mt-50">Mini Quiz Time!</div>
@@ -58,9 +57,8 @@ export function MiniQuizContainerAccessor({ answerResults, baseClasses, neutralC
     ),
   };
 
-  return miniQuizDataContainer[stepNo];
+  return miniQuizOptionDataContainer[stepNo];
 }
-
 
 export function MiniQuizDragAndDropContent({ renderSentence, PUZZLE_CONFIG, stepNo, placedItems, renderDraggableItem, checkAnswers, quizLocked }) {
 

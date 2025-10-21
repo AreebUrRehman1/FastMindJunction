@@ -1,5 +1,3 @@
-
-
 export const PUZZLE_CONFIG = {
 
   step10: {

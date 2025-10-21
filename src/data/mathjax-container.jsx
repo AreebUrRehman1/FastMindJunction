@@ -1,5 +1,20 @@
 import { useEffect } from "react";
 
+const MathJaxComponent = ({ mathExpression }) => {
+  useEffect(() => {
+    window.MathJax.typeset();
+  }, [mathExpression]);
+
+  return (
+    <>
+      {mathExpression && (
+        <span
+          dangerouslySetInnerHTML={{ __html: mathExpression }}
+        />
+      )}
+    </>
+  );
+};
 
 export const ScalarVsVectorStep2Runner = () => {
 
@@ -109,19 +124,3 @@ export const ScalarVsVectorStep2Runner = () => {
   )
 
 }
-
-const MathJaxComponent = ({ mathExpression }) => {
-  useEffect(() => {
-    window.MathJax.typeset();
-  }, [mathExpression]);
-
-  return (
-    <>
-      {mathExpression && (
-        <span
-          dangerouslySetInnerHTML={{ __html: mathExpression }}
-        />
-      )}
-    </>
-  );
-};

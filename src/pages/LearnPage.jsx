@@ -81,7 +81,7 @@ export function LearnPage() {
                         {isVisible ? (
                           <div className={`flex flex-col w-[180px] h-auto absolute p-2 pl-3 rounded-[20px] mt-5 z-2 ${topic.ToolTipColor} ${topic.ToolTipMove ? topic.ToolTipMove : ""}`}>
                             <div className="text-[17px] font-extrabold text-white mt-[7px]">{topic.Name}</div>
-                            <Link to={`/lesson/${topic.Name}`}><button className="rounded-[10px] w-[65%] h-[30px] border-none bg-white font-bold text-[15px] mt-[10%] mb-[17px] cursor-pointer tracking-[0.5px] shadow-[#8080806] hover:scale-101">Learn Now!</button></Link>
+                            <Link to={`/lesson/${topic.Lecture}`}><button className="rounded-[10px] w-[65%] h-[30px] border-none bg-white font-bold text-[15px] mt-[10%] mb-[17px] cursor-pointer tracking-[0.5px] shadow-[#8080806] hover:scale-101">Learn Now!</button></Link>
                           </div>
                         ) : null}
 

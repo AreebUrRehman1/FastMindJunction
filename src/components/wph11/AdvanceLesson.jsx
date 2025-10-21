@@ -1,14 +1,11 @@
-// Renamed and updated function to properly handle state setters
-export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, navigate, setMiniQuestionLock, scalarvsVector, setInputMargin, handleQuizFeedback, setFeedBackGiven }) {
+import { marginStep } from "../../data/wph11/extra-container";
+
+export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, navigate, setMiniQuestionLock, LessonContentData, setInputMargin, handleQuizFeedback, setFeedBackGiven }) {
 
   const nextStepNo = `step${stepCounter + 1}`;
-  const currentStep = scalarvsVector[nextStepNo];
+  const currentStep = LessonContentData[nextStepNo];
   const nextStepExists = !!currentStep;
   const step = `step${stepCounter}`;
-  const marginStep = [
-    "step1",
-    "step9"
-  ]
 
   marginStep.map((margin) => {
     if (step === margin) {

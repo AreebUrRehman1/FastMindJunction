@@ -1,76 +1,118 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
-import { LessonPage2 } from "../../pages/LessonPage2";
-import { advanceLesson, scalarvsVector } from "./ScalarvsVector/All"
+import { LessonPage } from "../../pages/LessonPage";
+import { advanceLesson } from "./AdvanceLesson";
+import { LecturesRunner } from "../../data/lessonpage-container";
+import { totalSteps } from "../../data/wph11/extra-container";
 
-export function LessonState() {
+
+function useKeyboardShortcut(callback, enabled = true) {
+  // Use useCallback to prevent unnecessary re-creation of the callback in the dependency array
+  const memoizedCallback = useCallback(callback, [callback]);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const handleKeyDown = (event) => {
+      // Check for the Enter key
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        memoizedCallback();
+      }
+    };
+
+    // Attach the listener to the whole document
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup: Remove the listener when the component unmounts or dependencies change
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [enabled, memoizedCallback]);
+}
+
+export function LessonStates() {
   // State for lesson progress
   const [currentStep, setCurrentStep] = useState(0); // Progress bar counter (0-totalSteps)
   const [stepCounter, setStepCounter] = useState(0); // Internal lesson step (e.g., 1, 2, 3...)
-  const [pageCounter, setPageCounter] = useState(0); // Internal lesson page (e.g., 0, 1, 2...)
-  
+
   // State for content and interaction
   const [contentDisplay, setContentDisplay] = useState([]);
   const [miniQuestionLock, setMiniQuestionLock] = useState(false); // Lock continue button
   const [feedBackGiven, setFeedBackGiven] = useState(false);
   const [feedBackDisplay, setFeedBackDisplay] = useState([]);
+  const [inputMargin, setInputMargin] = useState(true); // It sets the proper margin for smooth scroll effect
 
   // Hooks
   const navigate = useNavigate();
   const { lessonId } = useParams();
 
-  const totalSteps = 16; // Total number of activities/steps in this lesson
+  const LessonContentData = LecturesRunner[lessonId];
+
+  const lessonTotalSteps = totalSteps[lessonId];
+  console.log(lessonTotalSteps)
 
   const progressPercentage = useMemo(() => {
     // Calculate progress (min(100) to ensure it doesn't go over)
-    return Math.min(100, ((currentStep / totalSteps) * 100) || 0); 
-  }, [currentStep, totalSteps]);
+    return Math.min(100, ((currentStep / lessonTotalSteps) * 100) || 0);
+  }, [currentStep, lessonTotalSteps]);
+
+  const handleQuizFeedback = (message) => {
+    setFeedBackDisplay([message]);
+    setFeedBackGiven(true); // Show the feedback in the footer
+  };
 
   // Function to advance the lesson content (memoized for efficiency)
   const handleAdvanceLesson = useCallback(() => {
     // This function calls the imported logic to manage content flow
     advanceLesson({
-        stepCounter,
-        setStepCounter,
-        pageCounter,
-        setPageCounter,
-        setContentDisplay,
-        setMiniQuestionLock, 
-        navigate,
-        scalarvsVector // Pass the lesson content data
+      stepCounter,
+      setStepCounter,
+      setContentDisplay,
+      setMiniQuestionLock,
+      handleQuizFeedback,
+      setFeedBackGiven,
+      setInputMargin,
+      navigate,
+      LessonContentData // Pass the lesson content data
     });
-  }, [stepCounter, pageCounter, setContentDisplay, navigate]);
+  }, [stepCounter, navigate]);
 
   // Handler for the "Continue" button
   const handleContinue = () => {
-    if (!miniQuestionLock && currentStep < totalSteps) {
+    if (!miniQuestionLock && currentStep < lessonTotalSteps) {
       setCurrentStep(prev => prev + 1);
+      setInputMargin(true);
       // Trigger the content change logic after step has been incremented
       handleAdvanceLesson();
-    } else if (currentStep >= totalSteps) {
-        // Final step, navigate back (or show finish screen)
-        navigate(-1);
+    } else if (currentStep >= lessonTotalSteps) {
+      // Final step, navigate back (or show finish screen)
+      navigate(-1);
     }
   };
+
+  // Call the custom hook to enable the 'Enter' key shortcut when not locked.
+  useKeyboardShortcut(handleContinue, !miniQuestionLock);
 
   // 1. Initial Content Load on component mount (Page 0, Step 0)
   useEffect(() => {
     // Load the very first piece of content before the user clicks "Continue"
-    if (scalarvsVector && scalarvsVector.page0 && scalarvsVector.page0.step0) {
-        setContentDisplay([scalarvsVector.page0.step0]);
+    if (LessonContentData && LessonContentData.step0) {
+      setContentDisplay([LessonContentData.step0]);
     }
-  }, [setContentDisplay]); 
+  }, [setContentDisplay]);
 
   return (
-    <LessonPage2 
-      currentStep={currentStep} 
-      contentDisplay={contentDisplay} 
-      miniQuestionLock={miniQuestionLock} 
-      feedBackGiven={feedBackGiven} 
-      feedBackDisplay={feedBackDisplay} 
-      totalSteps={totalSteps} 
-      progressPercentage={progressPercentage} 
-      lessonId={lessonId}
+    <LessonPage
+      currentStep={currentStep}
+      contentDisplay={contentDisplay}
+      miniQuestionLock={miniQuestionLock}
+      feedBackGiven={feedBackGiven}
+      feedBackDisplay={feedBackDisplay}
+      lessonTotalSteps={lessonTotalSteps}
+      progressPercentage={progressPercentage}
+      inputMargin={inputMargin}
+      navigate={navigate}
       handleContinue={handleContinue} // PASSING THE HANDLER
     />
   );
