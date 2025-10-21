@@ -5,6 +5,31 @@ import { advanceLesson } from "./Testing2";
 import { scalarvsVector } from "../../../data/lessonpage-container";
 
 
+function useKeyboardShortcut(callback, enabled = true) {
+  // Use useCallback to prevent unnecessary re-creation of the callback in the dependency array
+  const memoizedCallback = useCallback(callback, [callback]);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const handleKeyDown = (event) => {
+      // Check for the Enter key
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        memoizedCallback();
+      }
+    };
+
+    // Attach the listener to the whole document
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup: Remove the listener when the component unmounts or dependencies change
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [enabled, memoizedCallback]);
+}
+
 export function Testing() {
   // State for lesson progress
   const [currentStep, setCurrentStep] = useState(0); // Progress bar counter (0-totalSteps)
@@ -28,6 +53,11 @@ export function Testing() {
     return Math.min(100, ((currentStep / totalSteps) * 100) || 0);
   }, [currentStep, totalSteps]);
 
+  const handleQuizFeedback = (message) => {
+    setFeedBackDisplay([message]);
+    setFeedBackGiven(true); // Show the feedback in the footer
+  };
+
   // Function to advance the lesson content (memoized for efficiency)
   const handleAdvanceLesson = useCallback(() => {
     // This function calls the imported logic to manage content flow
@@ -36,16 +66,19 @@ export function Testing() {
       setStepCounter,
       setContentDisplay,
       setMiniQuestionLock,
+      handleQuizFeedback,
+      setFeedBackGiven,
       setInputMargin,
       navigate,
       scalarvsVector // Pass the lesson content data
     });
-  }, [stepCounter, setContentDisplay, navigate]);
+  }, [stepCounter, navigate]);
 
   // Handler for the "Continue" button
   const handleContinue = () => {
     if (!miniQuestionLock && currentStep < totalSteps) {
       setCurrentStep(prev => prev + 1);
+      setInputMargin(true);
       // Trigger the content change logic after step has been incremented
       handleAdvanceLesson();
     } else if (currentStep >= totalSteps) {
@@ -53,6 +86,9 @@ export function Testing() {
       navigate(-1);
     }
   };
+
+  // Call the custom hook to enable the 'Enter' key shortcut when not locked.
+  useKeyboardShortcut(handleContinue, !miniQuestionLock);
 
   // 1. Initial Content Load on component mount (Page 0, Step 0)
   useEffect(() => {

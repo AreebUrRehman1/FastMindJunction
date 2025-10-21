@@ -1,26 +1,36 @@
 // Renamed and updated function to properly handle state setters
-export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, navigate, setMiniQuestionLock, scalarvsVector, setInputMargin }) {
+export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, navigate, setMiniQuestionLock, scalarvsVector, setInputMargin, handleQuizFeedback, setFeedBackGiven }) {
 
   const nextStepNo = `step${stepCounter + 1}`;
-
   const currentStep = scalarvsVector[nextStepNo];
-  const currentContent = currentStep ? scalarvsVector[nextStepNo] : null;
-
-  const nextStepExists = !!currentContent;
-
+  const nextStepExists = !!currentStep;
   const step = `step${stepCounter}`;
+  const marginStep = [
+    "step1",
+    "step9"
+  ]
 
-  const marginStep = "step1"
+  marginStep.map((margin) => {
+    if (step === margin) {
+      return setInputMargin(false);
+    }
+  })
 
-  if (step === marginStep) {
-    setInputMargin(false);
-  } else {
-    setInputMargin(true);
-  }
-
-  // 1. Advance to the next step on the current page
   if (nextStepExists) {
-    setContentDisplay((prev) => [...prev, currentContent]);
+    let contentToDisplay;
+    setFeedBackGiven(false);
+
+    if (typeof currentStep === 'function') {
+      // Execute the function component, passing the required props (setMiniQuestionLock, handleQuizFeedback)
+      contentToDisplay = currentStep({ setMiniQuestionLock, handleQuizFeedback });
+    } else {
+      // If it's not a function (i.e., it's already JSX), use it directly
+      contentToDisplay = currentStep;
+    }
+
+    // This variable now holds the actual JSX element React expects.
+    setContentDisplay((prev) => [...prev, contentToDisplay]);
+
     // Must return the new state value in the functional update
     setStepCounter((prev) => prev + 1);
     return;
@@ -28,8 +38,8 @@ export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, 
 
   // 2. Lesson completed (no more pages/steps)
   if (!nextStepExists) {
+    setFeedBackGiven(false);
     const finalContent = <div className="text-center text-2xl mt-12 font-bold text-emerald-500">Lesson Completed!</div>;
     setContentDisplay((prev) => [...prev, finalContent]);
-    // Navigation will be handled by the parent component's handleContinue when totalSteps 
   }
 }

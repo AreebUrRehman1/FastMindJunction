@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import running from "../assets/lesson/running.png"
 
 
-export const ScalarVsVectorStep6Runner = () => {
+export const ScalarVsVectorStep3Runner = () => {
   const personRef = useRef(null);
 
   useGSAP(() => {
@@ -27,7 +27,7 @@ export const ScalarVsVectorStep6Runner = () => {
   );
 };
 
-export const ScalarVsVectorStep9Runner = () => {
+export const ScalarVsVectorStep5Runner = () => {
   const personRef = useRef(null);
 
   useGSAP(() => {

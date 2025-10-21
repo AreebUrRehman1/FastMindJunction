@@ -18,7 +18,7 @@ function App() {
         <Route path="mode" element={<LearningPathPage />} />
         <Route path="coming-soon" element={<ComingSoonPage />} />
         <Route path="learn/:learnId" element={<LearnPage />} />
-        <Route path="lesson/:lessonId" element={<LessonState />} />
+        <Route path="lesson/:lessonId" element={<LessonPage />} />
         <Route path='testing' element={<Testing />} />
         <Route path='design' element={<Testing3 />} />
       </Routes>

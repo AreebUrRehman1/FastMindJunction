@@ -1,6 +1,30 @@
 import { useState, useEffect } from "react";
+// Assuming paths are correct for the environment
 import correct from "../../../assets/sounds/correct.mp3"
 import wrong from "../../../assets/sounds/wrong.mp3"
+
+// --- Configuration for the Flexible Puzzle ---
+// Defines all drop slots, the items available to drag, and the overall correct structure.
+const PUZZLE_CONFIG = {
+  // 1. Definition of the required slots (ID: Correct Answer(s))
+  slots: {
+    slotA: ['vector'],
+    slotB: ['direction'],
+  },
+  // 2. All available items the user can drag
+  draggableItems: ['scalar', 'vector', 'magnitude', 'direction'],
+  
+  // 3. The structure of the sentence, including text and slot IDs
+  sentenceParts: [
+    { type: 'text', content: 'Force is a ' },
+    { type: 'slot', id: 'slotA' }, // Must contain 'vector'
+    { type: 'text', content: ' quantity that has both magnitude and ' },
+    { type: 'slot', id: 'slotB' }, // Must contain 'direction'
+    { type: 'text', content: '.' },
+  ]
+};
+// ---------------------------------------------
+
 
 function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep) {
   let title, message, bgColor, icon;
@@ -19,7 +43,7 @@ function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDi
       </svg>
     );
     correctsound.play();
-  } else if (wrongAnswerCount === 1) {
+  } else if (wrongAnswerCount > 0) { // Changed condition to check for any wrong answer
     title = "Keep Going!";
     message = "No worries, revisit and revise the concept again and try again! Learning takes practice.";
     bgColor = "bg-red-100 border-red-500 text-red-800";
@@ -56,10 +80,14 @@ function createFeedBackMessage(wrongAnswerCount, setFeedBackGiven, setFeedBackDi
 
 const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay, setCurrentStep }) => {
 
-  // State to track which item is currently in the slot 'a'. Null means empty.
-  const [slotContent, setSlotContent] = useState(null); // 'vector' or 'scalar'
+  // State to track content for ALL slots. Keys are slot IDs, values are dropped items.
+  const initialAnswers = Object.keys(PUZZLE_CONFIG.slots).reduce((acc, id) => ({ ...acc, [id]: null }), {});
+  const [userAnswers, setUserAnswers] = useState(initialAnswers); 
   const [quizLocked, setQuizLocked] = useState(false);
   const [wrongAnswerCounter, setWrongAnswerCounter] = useState(0);
+  
+  // Create a list of items currently placed in any slot, so they can be hidden from the source list.
+  const placedItems = Object.values(userAnswers).filter(item => item !== null);
 
   // Safely lock the parent component on initial render
   useEffect(() => {
@@ -69,7 +97,8 @@ const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
   // Handle start of drag operation
   const handleDragStart = (e, itemValue) => {
     e.dataTransfer.setData("text/plain", itemValue);
-    // Optionally add a visual cue
+    // Add slot ID as well to track if we need to remove it from another slot before dropping
+    e.dataTransfer.setData("text/slotid", e.currentTarget.dataset.slotid || ''); 
     e.currentTarget.classList.add('opacity-50');
   };
 
@@ -90,7 +119,7 @@ const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
   };
 
   // Handle the drop operation on the slot
-  const handleDrop = (e) => {
+  const handleDrop = (e, targetSlotId) => {
     e.preventDefault();
     e.currentTarget.classList.remove('border-green-600', 'bg-green-50');
 
@@ -98,15 +127,32 @@ const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
 
     const droppedItemValue = e.dataTransfer.getData("text/plain");
 
-    // Clear the original item's slot in the source array logic if necessary, 
-    // but here we just manage the slot's content
-    setSlotContent(droppedItemValue);
+    // Check if the item is already in another slot. If so, remove it first.
+    // This makes the item immediately available in the source list again.
+    setUserAnswers(prevAnswers => {
+        let newAnswers = { ...prevAnswers };
+
+        // Find which slot (if any) currently holds the item being dragged
+        const currentSlotId = Object.keys(prevAnswers).find(id => prevAnswers[id] === droppedItemValue);
+        
+        // If the item was dragged from a different slot, clear the old slot
+        if (currentSlotId && currentSlotId !== targetSlotId) {
+            newAnswers[currentSlotId] = null;
+        }
+
+        // Set the new slot content
+        newAnswers[targetSlotId] = droppedItemValue;
+        return newAnswers;
+    });
   };
 
-  // Handle click on the slot to remove the item (making it droppable again)
-  const handleRemoveItem = () => {
+  // Handle click on the slot to remove the item
+  const handleRemoveItem = (slotId) => {
     if (!quizLocked) {
-      setSlotContent(null);
+      setUserAnswers(prevAnswers => ({
+        ...prevAnswers,
+        [slotId]: null,
+      }));
     }
   };
 
@@ -114,49 +160,90 @@ const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
   const checkAnswers = () => {
     if (quizLocked) return;
 
-    // The correct answer is 'vector'
-    const isCorrect = slotContent === 'vector';
-    let finalWrongCount = 0;
+    let incorrectSlotsCount = 0;
+    
+    // Check every required slot against the user's answer
+    Object.keys(PUZZLE_CONFIG.slots).forEach(slotId => {
+      const userAnswer = userAnswers[slotId];
+      const correctAnswers = PUZZLE_CONFIG.slots[slotId];
+      
+      // Check if the slot is empty OR if the dropped value is not in the list of correct answers
+      if (!userAnswer || !correctAnswers.includes(userAnswer)) {
+        incorrectSlotsCount += 1;
+      }
+    });
 
-    if (isCorrect) {
-      finalWrongCount = 0;
-    } else {
-      // If the slot is empty or contains the wrong item ('scalar')
-      finalWrongCount = 1;
-    }
-
-    setWrongAnswerCounter(finalWrongCount);
+    setWrongAnswerCounter(incorrectSlotsCount);
     setQuizLocked(true);
 
     // Defer the parent state update to prevent the bad setState() error
     setTimeout(() => {
       setMiniQuestionLock(false); // UNLOCK LessonPage (Continue button enabled)
-      createFeedBackMessage(finalWrongCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep);
+      createFeedBackMessage(incorrectSlotsCount, setFeedBackGiven, setFeedBackDisplay, setWrongAnswerCounter, setCurrentStep);
     }, 0);
   };
 
   // Function to render the draggable item based on its value
   const renderDraggableItem = (value) => {
-    const isVector = value === 'vector';
-    const colorClass = isVector ? 'text-emerald-700 border-emerald-300' : 'text-red-700 border-red-300';
+    const colorClass = 'text-red-700 border-red-300';
+    
+    const displayValue = value.charAt(0).toUpperCase() + value.slice(1);
 
     return (
       <div
         draggable={!quizLocked}
         onDragStart={(e) => handleDragStart(e, value)}
         onDragEnd={handleDragEnd}
-        onClick={handleRemoveItem} // Allows quick removal if clicked inside the slot
+        // Note: We don't use onClick here for removal, the slot handles it.
         className={`px-5 py-2 rounded-full text-xl font-bold cursor-grab inline-block bg-white shadow-lg transition-shadow duration-150 border ${colorClass} 
         ${quizLocked ? 'opacity-80 cursor-default' : 'hover:shadow-xl'}`}
       >
-        <div>{value.charAt(0).toUpperCase() + value.slice(1)}</div>
+        <div>{displayValue}</div>
       </div>
     );
   };
 
-  const slotPlaceholder = (
-    <span className="text-gray-500 text-base italic">Drop Here</span>
-  );
+  // Renders a single drop slot (used in the sentence structure)
+  const renderDropSlot = (slotId) => {
+      const slotPlaceholder = (
+        <span className="text-gray-500 text-base italic">Drop Here</span>
+      );
+
+      const content = userAnswers[slotId];
+      
+      // Determine if the slot is correctly filled after checking answers
+      let borderColor = 'border-sky-400';
+      if (quizLocked) {
+        const isCorrect = PUZZLE_CONFIG.slots[slotId]?.includes(content);
+        borderColor = isCorrect ? 'border-emerald-500 border-solid' : 'border-red-500 border-solid';
+      }
+
+      return (
+          <div
+            key={slotId}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleDrop(e, slotId)}
+            onClick={content ? () => handleRemoveItem(slotId) : undefined} 
+            className={`h-12 min-w-36 mx-2 border-2 border-dashed rounded-lg inline-flex items-center justify-center transition-colors duration-200 shadow-inner 
+            ${borderColor} ${content ? 'p-1' : ''}`}
+          >
+            {content ? renderDraggableItem(content) : slotPlaceholder}
+          </div>
+      );
+  }
+
+  // Renders the entire sentence structure from the PUZZLE_CONFIG
+  const renderSentence = () => {
+    return PUZZLE_CONFIG.sentenceParts.map((part, index) => {
+      if (part.type === 'text') {
+        return <span key={index}>{part.content}</span>;
+      } else if (part.type === 'slot') {
+        return renderDropSlot(part.id);
+      }
+      return null;
+    });
+  };
 
   return (
     <>
@@ -169,26 +256,17 @@ const Step0Runner = ({ setMiniQuestionLock, setFeedBackGiven, setFeedBackDisplay
       <div className="flex flex-col items-center p-4">
 
         {/* Sentence Structure with Drop Slot */}
-        <div className='flex text-center text-2xl mt-5 font-semibold text-gray-700 items-center'>
-          Force is
-          <div
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={slotContent ? handleRemoveItem : undefined} // Allow removing item by clicking
-            className='h-12 w-36 mx-4 border-2 border-dashed border-sky-400 rounded-lg inline-flex items-center justify-center transition-colors duration-200 shadow-inner'
-          >
-            {slotContent ? renderDraggableItem(slotContent) : slotPlaceholder}
-          </div>
-          Quantity
+        <div className='flex flex-wrap justify-center text-center text-2xl mt-5 font-semibold text-gray-700 items-center max-w-4xl'>
+          {renderSentence()}
         </div>
 
         {/* Draggable Items Source */}
-        <div className='flex gap-x-5 justify-center mt-16 p-4 rounded-xl bg-gray-100 shadow-xl border border-gray-200'>
+        <div className='flex gap-x-5 flex-wrap justify-center mt-16 p-4 rounded-xl bg-gray-100 shadow-xl border border-gray-200 max-w-full'>
 
-          {/* Only display item if it is NOT currently in the slot */}
-          {slotContent !== 'scalar' && renderDraggableItem('scalar')}
-          {slotContent !== 'vector' && renderDraggableItem('vector')}
+          {/* Only display item if it is NOT currently placed in a slot */}
+          {PUZZLE_CONFIG.draggableItems.map(item => (
+            !placedItems.includes(item) && <div key={item} className="mb-2">{renderDraggableItem(item)}</div>
+          ))}
 
         </div>
 
@@ -237,6 +315,4 @@ export function Mini3({ setContentDisplay, setCurrentStep, setPageChecker, stepC
       }
     }
   }
-
-
 }

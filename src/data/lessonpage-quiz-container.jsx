@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
+import { correctAnswers } from "./lessonpage-quiz-correctanswer-container";
+import { MiniQuizContainerAccessor, MiniQuizDragAndDropContent } from "../components/wph11/ScalarvsVector/MiniQuizContainerAccessor";
+import { PUZZLE_CONFIG } from "./lessonpage-puzzelconfig-container";
 import correct from "../assets/sounds/correct.mp3"
 import wrong from "../assets/sounds/wrong.mp3"
+
 
 export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback }) {
 
   const [answerResults, setAnswerResults] = useState({});
   const [quizLocked, setQuizLocked] = useState(false);
   const [wrongAnswerCounter, setWrongAnswerCounter] = useState(0);
-
 
   const correctsound = new Audio(correct);
   const wrongsound = new Audio(wrong);
@@ -25,112 +28,303 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
   const wrongClasses = 'bg-red-500 text-white border-red-600 shadow-red-500/50';
   const neutralClasses = 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50';
 
-  // Define the correct answers for the specific step
-  // NOTE: You should ideally move this data outside the component, but defining it here for simplicity
-  const correctAnswers = {
-      step8: ['Force', 'Displacement', 'Weight'], // Assuming these are the vector quantities
-  };
-  
   // Get the correct answers for the current step
   const currentCorrectAnswers = correctAnswers[stepNo] || [];
 
   // --- Feedback Logic (Uses the handleQuizFeedback prop) ---
-  const createFeedBackMessage = (isCorrect) => {
-    if (isCorrect) {
+  const createFeedBackMessage = (wrongScorePercentage) => {
+    if (wrongScorePercentage === 0) {
       // 4. Completion: Unlock Parent's "Continue" button and set success feedback
       setMiniQuestionLock(false);
       handleQuizFeedback(
-          <span className='font-bold text-lg text-emerald-500'>Correct! You're ready to continue.</span>
+        <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
+      );
+    } else if (wrongScorePercentage === 50) {
+      // 3. External Feedback: Send incorrect message to the lesson footer
+      setMiniQuestionLock(false);
+      handleQuizFeedback(
+        <span className='font-bold text-lg text-red-500'>No worries, revisit and revise the concept again and try again! Learning takes practice.</span>
       );
     } else {
       // 3. External Feedback: Send incorrect message to the lesson footer
+      setMiniQuestionLock(false);
       handleQuizFeedback(
-          <span className='font-bold text-lg text-red-500'>Incorrect. Pay attention to magnitude and direction. Try again!</span>
+        <span className='font-bold text-lg text-amber-500'>No worries, mistakes make us better! Review the few spots you missed.</span>
       );
     }
   };
 
   // --- Core Quiz Logic ---
-  const checkAnswers = (selectedOption) => {
-    // If the quiz is locked (after a correct answer), do nothing
-    if (quizLocked) return;
+  const checkAnswers = (option) => {
+    if (quizLocked) return;     // 1. Lock check: Stop all interaction if the quiz is locked
 
-    const isCorrectSelection = currentCorrectAnswers.includes(selectedOption);
+    const isCorrectSelection = currentCorrectAnswers.includes(option); // 2. Determine the result for the clicked option
 
+    // 3. Styles creater for options when selected
+    let styleForClickedOption;
     if (isCorrectSelection) {
+      styleForClickedOption = baseClasses + ' ' + correctClasses;
       correctsound.play();
 
-      setAnswerResults((prev) => ({
-        ...prev,
-        [selectedOption]: `${baseClasses} ${correctClasses}`,
-      }));
-
-      // Lock the quiz locally so they can't click more options
-      setQuizLocked(true);
-      
-      // Send correct feedback and UNLOCK the parent's "Continue" button
-      createFeedBackMessage(true);
-
     } else {
-      wrongsound.play();
-      setWrongAnswerCounter((prev) => prev + 1);
-
-      setAnswerResults((prev) => ({
-        ...prev,
-        [selectedOption]: `${baseClasses} ${wrongClasses}`,
-      }));
-      
-      // Send incorrect feedback (parent's "Continue" button remains locked)
-      createFeedBackMessage(false);
+      styleForClickedOption = baseClasses + ' ' + wrongClasses;
+      setWrongAnswerCounter(prevCounter => prevCounter + 1);
+      wrongsound.play()
     }
+
+    // Storing the styles made for the options
+    setAnswerResults(prevResults => {
+      const newResults = { // Can't directly view or use answerResult state
+        ...prevResults,
+        [option]: styleForClickedOption,
+      };
+
+      const isSingleAnswerQuestion = currentCorrectAnswers.length === 1; // Checking if there is only one answer
+
+      if (isSingleAnswerQuestion) {
+        setQuizLocked(true); // Lock immediately on the clicking any options (doesn't matter if it's right or wrong)
+        setTimeout(() => {
+          const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
+          const wrongScorePercentage = (finalWrongCount / (finalWrongCount + currentCorrectAnswers.length)) * 100;
+
+          setMiniQuestionLock(false);
+          createFeedBackMessage(wrongScorePercentage);
+        }, 0);
+      } else {
+        // RULE 2: For multiple-answer questions, lock when all correct answers have been clicked
+        const correctlyFoundCount = currentCorrectAnswers.filter(
+          // Check if the correct item has been clicked (is a key in newResults)
+          item => newResults.hasOwnProperty(item)
+        ).length;
+
+        if (correctlyFoundCount === currentCorrectAnswers.length) {
+          setQuizLocked(true);
+          setTimeout(() => {
+            const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
+            const wrongScorePercentage = (finalWrongCount / (finalWrongCount + currentCorrectAnswers.length)) * 100;
+
+            setMiniQuestionLock(false);
+            createFeedBackMessage(wrongScorePercentage);
+          }, 0);
+        }
+      }
+
+      return newResults;
+    });
   };
 
   // Pass the checkAnswers function down to the accessor component
   return (
-    <MiniQuizContainerAccessor 
-      answerResults={answerResults} 
-      baseClasses={baseClasses} 
-      neutralClasses={neutralClasses} 
+    <MiniQuizContainerAccessor
+      answerResults={answerResults}
+      baseClasses={baseClasses}
+      neutralClasses={neutralClasses}
       quizLocked={quizLocked}
-      stepNo = {stepNo}
+      stepNo={stepNo}
       checkAnswers={checkAnswers} // Pass the handler
     />
   );
 }
 
-// --- Display/Data Accessor Component ---
-// This component contains the static quiz content and handles click events.
-function MiniQuizContainerAccessor({ answerResults, baseClasses, neutralClasses, quizLocked, checkAnswers, stepNo }) {
+export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback }) {
 
-  const miniQuizDataContainer = {
-    step8: (
-      <>
-        <div className="text-center text-xl mt-3 ">Mini Quiz Time!</div>
-        <div className="text-center text-xl mt-1  text-emerald-400">(Easy)</div>
-        <div className="text-center text-3xl mt-12 md:text-3xl font-extrabold text-gray-800 mb-8  p-2">Which of the following are **Vector** quantities? (Select all that apply)</div>
+  // State to track content for ALL slots. Keys are slot IDs, values are dropped items.
+  const initialAnswers = Object.keys(PUZZLE_CONFIG[stepNo].slots).reduce((acc, id) => ({ ...acc, [id]: null }), {});
+  const [userAnswers, setUserAnswers] = useState(initialAnswers);
+  const [quizLocked, setQuizLocked] = useState(false);
+  const [wrongAnswerCounter, setWrongAnswerCounter] = useState(0);
 
-        <div className='flex flex-wrap justify-center gap-5'>
+  const correctsound = new Audio(correct);
+  const wrongsound = new Audio(wrong);
+  correctsound.volume = 0.1;
+  wrongsound.volume = 0.1;
 
-          {['Force', 'Distance', 'Displacement', 'Weight', 'Mass', 'Time'].map((option) => {
-            // Get the dynamic class. If not clicked, use neutral class.
-            const classes = answerResults[option] || `${baseClasses} ${neutralClasses}`;
+  // Create a list of items currently placed in any slot, so they can be hidden from the source list.
+  const placedItems = Object.values(userAnswers).filter(item => item !== null);
 
-            return (
-              <div
-                key={option}
-                className={`${classes} ${quizLocked ? 'opacity-70 !cursor-default' : 'hover:scale-[1.03] transition-transform'}`} // Add visual lock style
-                // Click handler: only runs if the quiz is NOT locked
-                onClick={quizLocked ? undefined : () => { checkAnswers(option) }}
-              >
-                {option}
-              </div>
-            );
-          })}
+  // Safely lock the parent component on initial render
+  useEffect(() => {
+    setMiniQuestionLock(true);
+  }, [setMiniQuestionLock]);
 
-        </div>
-      </>
-    ),
+  // Handle start of drag operation
+  const handleDragStart = (e, itemValue) => {
+    e.dataTransfer.setData("text/plain", itemValue);
+    // Add slot ID as well to track if we need to remove it from another slot before dropping
+    e.dataTransfer.setData("text/slotid", e.currentTarget.dataset.slotid || '');
+    e.currentTarget.classList.add('opacity-50');
   };
 
-  return miniQuizDataContainer[stepNo];
-}
+  // Handle end of drag operation
+  const handleDragEnd = (e) => {
+    e.currentTarget.classList.remove('opacity-50');
+  };
+
+  // Allow drop over the target slot
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('border-green-600', 'bg-green-50');
+  };
+
+  // Remove hover style when drag leaves
+  const handleDragLeave = (e) => {
+    e.currentTarget.classList.remove('border-green-600', 'bg-green-50');
+  };
+
+  // Handle the drop operation on the slot
+  const handleDrop = (e, targetSlotId) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-green-600', 'bg-green-50');
+
+    if (quizLocked) return;
+
+    const droppedItemValue = e.dataTransfer.getData("text/plain");
+
+    // Check if the item is already in another slot. If so, remove it first.
+    // This makes the item immediately available in the source list again.
+    setUserAnswers(prevAnswers => {
+      let newAnswers = { ...prevAnswers };
+
+      // Find which slot (if any) currently holds the item being dragged
+      const currentSlotId = Object.keys(prevAnswers).find(id => prevAnswers[id] === droppedItemValue);
+
+      // If the item was dragged from a different slot, clear the old slot
+      if (currentSlotId && currentSlotId !== targetSlotId) {
+        newAnswers[currentSlotId] = null;
+      }
+
+      // Set the new slot content
+      newAnswers[targetSlotId] = droppedItemValue;
+      return newAnswers;
+    });
+  };
+
+  // Handle click on the slot to remove the item
+  const handleRemoveItem = (slotId) => {
+    if (!quizLocked) {
+      setUserAnswers(prevAnswers => ({
+        ...prevAnswers,
+        [slotId]: null,
+      }));
+    }
+  };
+
+  // --- Feedback Logic (Uses the handleQuizFeedback prop) ---
+  const createFeedBackMessage = (incorrectSlotsCount) => {
+    if (incorrectSlotsCount === 0) {
+      // 4. Completion: Unlock Parent's "Continue" button and set success feedback
+      setMiniQuestionLock(false);
+      handleQuizFeedback(
+        <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
+      );
+      correctsound.play();
+    } else if (incorrectSlotsCount >= 1) {
+      // 3. External Feedback: Send incorrect message to the lesson footer
+      setMiniQuestionLock(false);
+      handleQuizFeedback(
+        <span className='font-bold text-lg text-red-500'>No worries, revisit and revise the concept again and try again! Learning takes practice.</span>
+      );
+      wrongsound.play();
+    }
+  };
+
+  const checkAnswers = () => {
+    if (quizLocked) return;
+
+    let incorrectSlotsCount = 0;
+
+    // Check every required slot against the user's answer
+    Object.keys(PUZZLE_CONFIG[stepNo].slots).forEach(slotId => {
+      const userAnswer = userAnswers[slotId];
+      const correctAnswers = PUZZLE_CONFIG[stepNo].slots[slotId];
+
+      // Check if the slot is empty OR if the dropped value is not in the list of correct answers
+      if (!userAnswer || !correctAnswers.includes(userAnswer)) {
+        incorrectSlotsCount += 1;
+      }
+    });
+
+    setWrongAnswerCounter(incorrectSlotsCount);
+    setQuizLocked(true);
+
+    // Defer the parent state update to prevent the bad setState() error
+    setTimeout(() => {
+      setMiniQuestionLock(false); // UNLOCK LessonPage (Continue button enabled)
+      createFeedBackMessage(incorrectSlotsCount);
+    }, 0);
+  };
+
+  // Function to render the draggable item based on its value
+  const renderDraggableItem = (value) => {
+    const colorClass = 'text-red-700 border-red-300';
+
+    const displayValue = value.charAt(0).toUpperCase() + value.slice(1);
+
+    return (
+      <div
+        draggable={!quizLocked}
+        onDragStart={(e) => handleDragStart(e, value)}
+        onDragEnd={handleDragEnd}
+        // Note: We don't use onClick here for removal, the slot handles it.
+        className={`px-5 py-2 rounded-full text-xl font-bold cursor-grab inline-block bg-white shadow-lg transition-shadow duration-150 border ${colorClass} 
+        ${quizLocked ? 'opacity-80 cursor-default' : 'hover:shadow-xl'}`}
+      >
+        <div>{displayValue}</div>
+      </div>
+    );
+  };
+
+  // Renders a single drop slot (used in the sentence structure)
+  const renderDropSlot = (slotId) => {
+    const slotPlaceholder = (
+      <span className="text-gray-500 text-base italic">Drop Here</span>
+    );
+
+    const content = userAnswers[slotId];
+
+    // Determine if the slot is correctly filled after checking answers
+    let borderColor = 'border-sky-400';
+    if (quizLocked) {
+      const isCorrect = PUZZLE_CONFIG[stepNo].slots[slotId]?.includes(content);
+      borderColor = isCorrect ? 'border-emerald-500 border-solid' : 'border-red-500 border-solid';
+    }
+
+    return (
+      <div
+        key={slotId}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={(e) => handleDrop(e, slotId)}
+        onClick={content ? () => handleRemoveItem(slotId) : undefined}
+        className={`h-12 min-w-36 mx-2 border-2 border-dashed rounded-lg inline-flex items-center justify-center transition-colors duration-200 shadow-inner 
+            ${borderColor} ${content ? 'p-1' : ''}`}
+      >
+        {content ? renderDraggableItem(content) : slotPlaceholder}
+      </div>
+    );
+  }
+
+  // Renders the entire sentence structure from the PUZZLE_CONFIG
+  const renderSentence = () => {
+    return PUZZLE_CONFIG[stepNo].sentenceParts.map((part, index) => {
+      if (part.type === 'text') {
+        return <span key={index}>{part.content}</span>;
+      } else if (part.type === 'slot') {
+        return renderDropSlot(part.id);
+      }
+      return null;
+    });
+  };
+
+  return (
+    <MiniQuizDragAndDropContent
+      renderSentence={renderSentence}
+      PUZZLE_CONFIG={PUZZLE_CONFIG}
+      stepNo={stepNo}
+      placedItems={placedItems}
+      renderDraggableItem={renderDraggableItem}
+      checkAnswers={checkAnswers}
+      quizLocked={quizLocked}
+    />
+  );
+};
