@@ -8,6 +8,6 @@ A platform designed to simplify past exam papers through structured content, cle
 
 • Currently developing an enhanced version with improved UI/UX, responsive design, and expanded features to optimize student learning.
 
-⚙️ How to View the Project: It published throught Netlify. You can view it on this website: "https://fastmindjunctiontest.netlify.app/"
+⚙️ How to View the Project: It published throught Netlify. You can view it on this website: "https://fastmindjunction.netlify.app/"
 
 🛠️ Technologies Used: HTML, CSS, JavaScript, React.js, Tailwind
