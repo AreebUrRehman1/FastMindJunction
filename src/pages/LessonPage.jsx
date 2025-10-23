@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-export function LessonPage({ currentStep, contentDisplay, miniQuestionLock, feedBackGiven, feedBackDisplay, lessonTotalSteps, progressPercentage, handleContinue, inputMargin, navigate }) {
+export function LessonPage({ currentStep, contentDisplay, miniQuestionLock, feedBackGiven, feedBackDisplay, lessonTotalSteps, progressPercentage, handleContinue, inputMargin, onExitAttempt }) {
 
   const bottomRef = useRef(null);
 
@@ -20,7 +20,7 @@ export function LessonPage({ currentStep, contentDisplay, miniQuestionLock, feed
         <header className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-50 flex items-center shadow-md px-6">
 
           {/* Back Button (Placeholder) */}
-          <button onClick={() => navigate(-1)} className="text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors mr-6 text-2xl font-semibold">&times;</button>
+          <button onClick={onExitAttempt} className="text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors mr-6 text-2xl font-semibold">&times;</button>
 
           {/* Progress Bar Container */}
           <div className="flex-1 h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">

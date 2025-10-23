@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { correctAnswers } from "../../data/wph11/quiz-correctanswer-container";
-import { MiniQuizOptionContent, MiniQuizDragAndDropContent } from "./MiniQuizContainerAccessor";
+import { MiniQuizOptionContent, MiniQuizDragAndDropContent } from "./MiniQuizDataContainer";
+import { displayOptions } from "../../data/wph11/display-options-container";
 import { PUZZLE_CONFIG } from "../../data/wph11/puzzelconfig-container";
 import correct from "../../assets/sounds/correct.mp3"
 import wrong from "../../assets/sounds/wrong.mp3"
 
 
-export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback }) {
+export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId }) {
 
   const [answerResults, setAnswerResults] = useState({});
   const [quizLocked, setQuizLocked] = useState(false);
@@ -29,17 +30,18 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
   const neutralClasses = 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50';
 
   // Get the correct answers for the current step
-  const currentCorrectAnswers = correctAnswers[stepNo] || [];
+  const lectureCorrectAnswer = correctAnswers[lessonId]
+  const currentCorrectAnswers = lectureCorrectAnswer[stepNo];
 
   // --- Feedback Logic (Uses the handleQuizFeedback prop) ---
-  const createFeedBackMessage = (wrongScorePercentage) => {
+  const createFeedBackMessage = (wrongScorePercentage, allWrong) => {
     if (wrongScorePercentage === 0) {
       // 4. Completion: Unlock Parent's "Continue" button and set success feedback
       setMiniQuestionLock(false);
       handleQuizFeedback(
         <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
       );
-    } else if (wrongScorePercentage === 50) {
+    } else if (allWrong) {
       // 3. External Feedback: Send incorrect message to the lesson footer
       setMiniQuestionLock(false);
       handleQuizFeedback(
@@ -56,9 +58,15 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
 
   // --- Core Quiz Logic ---
   const checkAnswers = (option) => {
-    if (quizLocked) return;     // 1. Lock check: Stop all interaction if the quiz is locked
+    if (quizLocked) return; // 1. Lock check: Stop all interaction if the quiz is locked
 
     const isCorrectSelection = currentCorrectAnswers.includes(option); // 2. Determine the result for the clicked option
+
+    // This is for identifying wrong options for feedbacks
+    const LessonOptions = displayOptions[lessonId];
+    const totalOptionsLength = LessonOptions[stepNo].length;
+    let allWrong = false;
+
 
     // 3. Styles creater for options when selected
     let styleForClickedOption;
@@ -85,10 +93,15 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
         setQuizLocked(true); // Lock immediately on the clicking any options (doesn't matter if it's right or wrong)
         setTimeout(() => {
           const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
-          const wrongScorePercentage = (finalWrongCount / (finalWrongCount + currentCorrectAnswers.length)) * 100;
+          const wrongScorePercentage = (finalWrongCount / totalOptionsLength) * 100;
+          const allWrongIdentifierFormula = (finalWrongCount / totalOptionsLength) * 100;
+          console.log(wrongScorePercentage, allWrongIdentifierFormula)
 
+          if (allWrongIdentifierFormula === wrongScorePercentage) {
+            allWrong = true;
+          }
           setMiniQuestionLock(false);
-          createFeedBackMessage(wrongScorePercentage);
+          createFeedBackMessage(wrongScorePercentage, allWrong);
         }, 0);
       } else {
         // RULE 2: For multiple-answer questions, lock when all correct answers have been clicked
@@ -101,10 +114,17 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
           setQuizLocked(true);
           setTimeout(() => {
             const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
-            const wrongScorePercentage = (finalWrongCount / (finalWrongCount + currentCorrectAnswers.length)) * 100;
+            const wrongScorePercentage = (finalWrongCount / totalOptionsLength) * 100;
+            const allWrongIdentifierFormula = ((totalOptionsLength - currentCorrectAnswers.length) / totalOptionsLength) * 100;
+
+            console.log(wrongScorePercentage, allWrongIdentifierFormula)
+
+            if (allWrongIdentifierFormula === wrongScorePercentage) {
+              allWrong = true;
+            }
 
             setMiniQuestionLock(false);
-            createFeedBackMessage(wrongScorePercentage);
+            createFeedBackMessage(wrongScorePercentage, allWrong);
           }, 0);
         }
       }
@@ -121,15 +141,160 @@ export function OptionsSelectQuizRunner({ stepNo, setMiniQuestionLock, handleQui
       neutralClasses={neutralClasses}
       quizLocked={quizLocked}
       stepNo={stepNo}
+      lessonId={lessonId}
+      displayOptions={displayOptions}
       checkAnswers={checkAnswers} // Pass the handler
     />
   );
 };
 
-export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback }) {
+export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId }) {
+
+  const [answerResults, setAnswerResults] = useState({});
+  const [quizLocked, setQuizLocked] = useState(false);
+  const [wrongAnswerCounter, setWrongAnswerCounter] = useState(0);
+
+  const correctsound = new Audio(correct);
+  const wrongsound = new Audio(wrong);
+  correctsound.volume = 0.1;
+  wrongsound.volume = 0.1;
+
+  // Initial Setup: Lock the parent's "Continue" button when the quiz mounts
+  useEffect(() => {
+    setMiniQuestionLock(true);
+  }, [setMiniQuestionLock]); // Runs once when component mounts
+
+  // CSS classes for styling options
+  const baseClasses = 'px-6 py-3 rounded-xl font-semibold transition-all duration-200 cursor-pointer text-sm shadow-md hover:shadow-lg border-2 w-[500px]';
+  const correctClasses = 'bg-emerald-500 text-white border-emerald-600 transform shadow-emerald-500/50 scale-105';
+  const wrongClasses = 'bg-red-500 text-white border-red-600 shadow-red-500/50';
+  const neutralClasses = 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50';
+
+  // Get the correct answers for the current step
+  const lectureCorrectAnswer = correctAnswers[lessonId]
+  const currentCorrectAnswers = lectureCorrectAnswer[stepNo];
+
+  // --- Feedback Logic (Uses the handleQuizFeedback prop) ---
+  const createFeedBackMessage = (wrongScorePercentage, allWrong) => {
+    if (wrongScorePercentage === 0) {
+      // 4. Completion: Unlock Parent's "Continue" button and set success feedback
+      setMiniQuestionLock(false);
+      handleQuizFeedback(
+        <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
+      );
+    } else if (allWrong) {
+      // 3. External Feedback: Send incorrect message to the lesson footer
+      setMiniQuestionLock(false);
+      handleQuizFeedback(
+        <span className='font-bold text-lg text-red-500'>No worries, revisit and revise the concept again and try again! Learning takes practice.</span>
+      );
+    } else {
+      // 3. External Feedback: Send incorrect message to the lesson footer
+      setMiniQuestionLock(false);
+      handleQuizFeedback(
+        <span className='font-bold text-lg text-amber-500'>No worries, mistakes make us better! Review the few spots you missed.</span>
+      );
+    }
+  };
+
+  // --- Core Quiz Logic ---
+  const checkAnswers = (option) => {
+    if (quizLocked) return; // 1. Lock check: Stop all interaction if the quiz is locked
+
+    const isCorrectSelection = currentCorrectAnswers.includes(option); // 2. Determine the result for the clicked option
+
+    // This is for identifying wrong options for feedbacks
+    const LessonOptions = displayOptions[lessonId];
+    const totalOptionsLength = LessonOptions[stepNo].length;
+    let allWrong = false;
+
+
+    // 3. Styles creater for options when selected
+    let styleForClickedOption;
+    if (isCorrectSelection) {
+      styleForClickedOption = baseClasses + ' ' + correctClasses;
+      correctsound.play();
+
+    } else {
+      styleForClickedOption = baseClasses + ' ' + wrongClasses;
+      setWrongAnswerCounter(prevCounter => prevCounter + 1);
+      wrongsound.play()
+    }
+
+    // Storing the styles made for the options
+    setAnswerResults(prevResults => {
+      const newResults = { // Can't directly view or use answerResult state
+        ...prevResults,
+        [option]: styleForClickedOption,
+      };
+
+      const isSingleAnswerQuestion = currentCorrectAnswers.length === 1; // Checking if there is only one answer
+
+      if (isSingleAnswerQuestion) {
+        setQuizLocked(true); // Lock immediately on the clicking any options (doesn't matter if it's right or wrong)
+        setTimeout(() => {
+          const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
+          const wrongScorePercentage = (finalWrongCount / totalOptionsLength) * 100;
+          const allWrongIdentifierFormula = (finalWrongCount / totalOptionsLength) * 100;
+          console.log(wrongScorePercentage, allWrongIdentifierFormula)
+
+          if (allWrongIdentifierFormula === wrongScorePercentage) {
+            allWrong = true;
+          }
+          setMiniQuestionLock(false);
+          createFeedBackMessage(wrongScorePercentage, allWrong);
+        }, 0);
+      } else {
+        // RULE 2: For multiple-answer questions, lock when all correct answers have been clicked
+        const correctlyFoundCount = currentCorrectAnswers.filter(
+          // Check if the correct item has been clicked (is a key in newResults)
+          item => newResults.hasOwnProperty(item)
+        ).length;
+
+        if (correctlyFoundCount === currentCorrectAnswers.length) {
+          setQuizLocked(true);
+          setTimeout(() => {
+            const finalWrongCount = isCorrectSelection ? wrongAnswerCounter : wrongAnswerCounter + 1;
+            const wrongScorePercentage = (finalWrongCount / totalOptionsLength) * 100;
+            const allWrongIdentifierFormula = ((totalOptionsLength - currentCorrectAnswers.length) / totalOptionsLength) * 100;
+
+            console.log(wrongScorePercentage, allWrongIdentifierFormula)
+
+            if (allWrongIdentifierFormula === wrongScorePercentage) {
+              allWrong = true;
+            }
+
+            setMiniQuestionLock(false);
+            createFeedBackMessage(wrongScorePercentage, allWrong);
+          }, 0);
+        }
+      }
+
+      return newResults;
+    });
+  };
+
+  // Pass the checkAnswers function down to the accessor component
+  return (
+    <MiniQuizOptionContent
+      answerResults={answerResults}
+      baseClasses={baseClasses}
+      neutralClasses={neutralClasses}
+      quizLocked={quizLocked}
+      stepNo={stepNo}
+      lessonId={lessonId}
+      displayOptions={displayOptions}
+      checkAnswers={checkAnswers} // Pass the handler
+    />
+  );
+};
+
+export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId }) {
+
+  const puzzleConfigLecture = PUZZLE_CONFIG[lessonId]
 
   // State to track content for ALL slots. Keys are slot IDs, values are dropped items.
-  const initialAnswers = Object.keys(PUZZLE_CONFIG[stepNo].slots).reduce((acc, id) => ({ ...acc, [id]: null }), {});
+  const initialAnswers = Object.keys(puzzleConfigLecture[stepNo].slots).reduce((acc, id) => ({ ...acc, [id]: null }), {});
   const [userAnswers, setUserAnswers] = useState(initialAnswers);
   const [quizLocked, setQuizLocked] = useState(false);
   const [wrongAnswerCounter, setWrongAnswerCounter] = useState(0);
@@ -234,9 +399,9 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
     let incorrectSlotsCount = 0;
 
     // Check every required slot against the user's answer
-    Object.keys(PUZZLE_CONFIG[stepNo].slots).forEach(slotId => {
+    Object.keys(puzzleConfigLecture[stepNo].slots).forEach(slotId => {
       const userAnswer = userAnswers[slotId];
-      const correctAnswers = PUZZLE_CONFIG[stepNo].slots[slotId];
+      const correctAnswers = puzzleConfigLecture[stepNo].slots[slotId];
 
       // Check if the slot is empty OR if the dropped value is not in the list of correct answers
       if (!userAnswer || !correctAnswers.includes(userAnswer)) {
@@ -285,7 +450,7 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
     // Determine if the slot is correctly filled after checking answers
     let borderColor = 'border-sky-400';
     if (quizLocked) {
-      const isCorrect = PUZZLE_CONFIG[stepNo].slots[slotId]?.includes(content);
+      const isCorrect = puzzleConfigLecture[stepNo].slots[slotId]?.includes(content);
       borderColor = isCorrect ? 'border-emerald-500 border-solid' : 'border-red-500 border-solid';
     }
 
@@ -304,9 +469,9 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
     );
   }
 
-  // Renders the entire sentence structure from the PUZZLE_CONFIG
+  // Renders the entire sentence structure from the puzzleConfigLecture
   const renderSentence = () => {
-    return PUZZLE_CONFIG[stepNo].sentenceParts.map((part, index) => {
+    return puzzleConfigLecture[stepNo].sentenceParts.map((part, index) => {
       if (part.type === 'text') {
         return <span key={index}>{part.content}</span>;
       } else if (part.type === 'slot') {
@@ -319,11 +484,12 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
   return (
     <MiniQuizDragAndDropContent
       renderSentence={renderSentence}
-      PUZZLE_CONFIG={PUZZLE_CONFIG}
+      puzzleConfigLecture={puzzleConfigLecture}
       stepNo={stepNo}
       placedItems={placedItems}
       renderDraggableItem={renderDraggableItem}
       checkAnswers={checkAnswers}
+      lessonId={lessonId}
       quizLocked={quizLocked}
     />
   );

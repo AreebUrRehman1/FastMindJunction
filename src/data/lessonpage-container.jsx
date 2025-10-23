@@ -1,6 +1,6 @@
 import { ScalarVsVectorStep3Runner, ScalarVsVectorStep5Runner } from "./wph11/animation-container.jsx"
 import { ScalarVsVectorStep2Runner } from "./mathjax-container.jsx"
-import { OptionsSelectQuizRunner, DragAndDropQuizRunner } from "../components/wph11/LessonPageQuizRunner.jsx"
+import { OptionsSelectHorizontalQuizRunner, OptionsSelectVerticalQuizRunner , DragAndDropQuizRunner } from "../components/wph11/LessonPageQuizRunner.jsx"
 
 export const LecturesRunner = {
   scalarVsVector : {
@@ -22,9 +22,10 @@ export const LecturesRunner = {
         <div className='text-center text-[14px]  text-blue-600'>300m (to the right) - 400m (to the left)</div>
       </>
     ),
-    step8: ({ setMiniQuestionLock, handleQuizFeedback }) => (<OptionsSelectQuizRunner stepNo="step8" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} />),
-    step9: ({ setMiniQuestionLock, handleQuizFeedback }) => (<OptionsSelectQuizRunner stepNo="step9" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} />),
-    step10: ({ setMiniQuestionLock, handleQuizFeedback }) => (<DragAndDropQuizRunner stepNo="step10" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} />),
+    step8: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<OptionsSelectHorizontalQuizRunner stepNo="step8" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
+    step9: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<OptionsSelectHorizontalQuizRunner stepNo="step9" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
+    step10: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<DragAndDropQuizRunner stepNo="step10" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
+    step11: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<OptionsSelectVerticalQuizRunner stepNo="step11" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
   }
 
 }

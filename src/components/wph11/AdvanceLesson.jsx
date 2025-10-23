@@ -1,6 +1,6 @@
 import { marginStep } from "../../data/wph11/extra-container";
 
-export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, navigate, setMiniQuestionLock, LessonContentData, setInputMargin, handleQuizFeedback, setFeedBackGiven }) {
+export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, setMiniQuestionLock, LessonContentData, setInputMargin, handleQuizFeedback, setFeedBackGiven, lessonId }) {
 
   const nextStepNo = `step${stepCounter + 1}`;
   const currentStep = LessonContentData[nextStepNo];
@@ -19,7 +19,7 @@ export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, 
 
     if (typeof currentStep === 'function') {
       // Execute the function component, passing the required props (setMiniQuestionLock, handleQuizFeedback)
-      contentToDisplay = currentStep({ setMiniQuestionLock, handleQuizFeedback });
+      contentToDisplay = currentStep({ setMiniQuestionLock, handleQuizFeedback, lessonId });
     } else {
       // If it's not a function (i.e., it's already JSX), use it directly
       contentToDisplay = currentStep;

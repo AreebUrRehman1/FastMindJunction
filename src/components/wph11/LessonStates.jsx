@@ -4,6 +4,7 @@ import { LessonPage } from "../../pages/LessonPage";
 import { advanceLesson } from "./AdvanceLesson";
 import { LecturesRunner } from "../../data/lessonpage-container";
 import { totalSteps } from "../../data/wph11/extra-container";
+import { ExitConfirmationModal } from "./ExitConfirmationModel";
 
 
 function useKeyboardShortcut(callback, enabled = true) {
@@ -42,6 +43,7 @@ export function LessonStates() {
   const [feedBackGiven, setFeedBackGiven] = useState(false);
   const [feedBackDisplay, setFeedBackDisplay] = useState([]);
   const [inputMargin, setInputMargin] = useState(true); // It sets the proper margin for smooth scroll effect
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
   // Hooks
   const navigate = useNavigate();
@@ -50,7 +52,6 @@ export function LessonStates() {
   const LessonContentData = LecturesRunner[lessonId];
 
   const lessonTotalSteps = totalSteps[lessonId];
-  console.log(lessonTotalSteps)
 
   const progressPercentage = useMemo(() => {
     // Calculate progress (min(100) to ensure it doesn't go over)
@@ -73,7 +74,7 @@ export function LessonStates() {
       handleQuizFeedback,
       setFeedBackGiven,
       setInputMargin,
-      navigate,
+      lessonId,
       LessonContentData // Pass the lesson content data
     });
   }, [stepCounter, navigate]);
@@ -91,6 +92,24 @@ export function LessonStates() {
     }
   };
 
+  const handleExitLessonAttempt = () => {
+    // We only show the modal if the user has made some progress (currentStep > 0)
+    if (currentStep > 0) {
+      setIsExitModalOpen(true);
+    } else {
+      navigate(-1);
+    }
+  };
+
+  const handleConfirmExit = () => {
+    setIsExitModalOpen(false);
+    navigate(-1);
+  };
+
+  const handleCancelExit = () => {
+    setIsExitModalOpen(false);
+  };
+
   // Call the custom hook to enable the 'Enter' key shortcut when not locked.
   useKeyboardShortcut(handleContinue, !miniQuestionLock);
 
@@ -103,17 +122,26 @@ export function LessonStates() {
   }, [setContentDisplay]);
 
   return (
-    <LessonPage
-      currentStep={currentStep}
-      contentDisplay={contentDisplay}
-      miniQuestionLock={miniQuestionLock}
-      feedBackGiven={feedBackGiven}
-      feedBackDisplay={feedBackDisplay}
-      lessonTotalSteps={lessonTotalSteps}
-      progressPercentage={progressPercentage}
-      inputMargin={inputMargin}
-      navigate={navigate}
-      handleContinue={handleContinue} // PASSING THE HANDLER
-    />
+    <>
+      <LessonPage
+        currentStep={currentStep}
+        contentDisplay={contentDisplay}
+        miniQuestionLock={miniQuestionLock}
+        feedBackGiven={feedBackGiven}
+        feedBackDisplay={feedBackDisplay}
+        lessonTotalSteps={lessonTotalSteps}
+        progressPercentage={progressPercentage}
+        inputMargin={inputMargin}
+        handleContinue={handleContinue}
+        onExitAttempt={handleExitLessonAttempt}
+        ExitConfirmationModal={ExitConfirmationModal}
+      />
+
+      <ExitConfirmationModal
+        isOpen={isExitModalOpen} 
+        onCancel={handleCancelExit} 
+        onConfirm={handleConfirmExit} 
+      />
+    </>
   );
 }

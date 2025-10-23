@@ -1,8 +1,9 @@
 export const marginStep = [
   "step1",
-  "step9"
+  "step9",
+  "step10"
 ]
 
 export const totalSteps = {
-  scalarVsVector : 10
+  scalarVsVector : 12
 }

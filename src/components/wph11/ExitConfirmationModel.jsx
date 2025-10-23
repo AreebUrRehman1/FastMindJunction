@@ -1,6 +1,9 @@
 import { AlertTriangle, X } from 'lucide-react';
 
-export const ExitConfirmationModal = () => {
+export const ExitConfirmationModal = ({ isOpen, onCancel, onConfirm }) => {
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     // Backdrop for the modal (full screen, darkened)
@@ -20,7 +23,7 @@ export const ExitConfirmationModal = () => {
             Wait! Are You Sure?
           </h3>
           <button 
-            onClick={() => navigate(-1)} 
+            onClick={onCancel} 
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             aria-label="Close"
           >
@@ -31,7 +34,7 @@ export const ExitConfirmationModal = () => {
         {/* Body Message */}
         <div className="p-5 text-gray-700 dark:text-gray-300">
           <p className="text-lg mb-4">
-            If you leave now, you will lose **all unsaved progress** on this lesson.
+            If you leave now, you will lose <strong>all unsaved progress</strong> on this lesson.
           </p>
           <p className="text-sm italic text-gray-500 dark:text-gray-400">
             It looks like you haven't completed this lesson yet.
@@ -42,15 +45,15 @@ export const ExitConfirmationModal = () => {
         <div className="p-5 bg-gray-50 dark:bg-gray-700 rounded-b-2xl flex justify-end space-x-3">
           
           <button 
-            onClick={() => navigate(-1)}
-            className="px-6 py-3 text-lg font-semibold rounded-xl text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors shadow-md"
+            onClick={onCancel}
+            className="px-6 py-3 text-lg font-semibold rounded-xl text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors shadow-md cursor-pointer"
           >
             Stay in Lesson
           </button>
           
           <button 
-            onClick={() => navigate(-1)}
-            className="px-6 py-3 text-lg font-semibold rounded-xl text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md focus:ring-4 focus:ring-red-300 focus:outline-none"
+            onClick={onConfirm}
+            className="px-6 py-3 text-lg font-semibold rounded-xl text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md focus:ring-4 focus:ring-red-300 focus:outline-none cursor-pointer"
           >
             Leave Anyway
           </button>
