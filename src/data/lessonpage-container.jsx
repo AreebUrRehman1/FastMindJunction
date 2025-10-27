@@ -1,9 +1,9 @@
 import { ScalarVsVectorStep3Runner, ScalarVsVectorStep5Runner } from "./wph11/animation-container.jsx"
 import { ScalarVsVectorStep2Runner } from "./mathjax-container.jsx"
-import { OptionsSelectHorizontalQuizRunner, OptionsSelectVerticalQuizRunner , DragAndDropQuizRunner } from "../components/wph11/LessonPageQuizRunner.jsx"
+import { OptionsSelectHorizontalQuizRunner, OptionsSelectVerticalQuizRunner, DragAndDropQuizRunner, LessonCompletePage } from "../components/wph11/LessonPageQuizRunner.jsx"
 
 export const LecturesRunner = {
-  scalarVsVector : {
+  scalarVsVector: {
     step0: <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl text-center lg:text-6xl">Understanding Scalar vs. Vector Quantities</h1>,
     step1: <p className="mt-4 text-xl text-gray-600 text-center mb-12">The fundamental difference in physics: Magnitude vs. Magnitude & Direction.</p>,
     step2: <ScalarVsVectorStep2Runner />,
@@ -22,10 +22,11 @@ export const LecturesRunner = {
         <div className='text-center text-[14px]  text-blue-600'>300m (to the right) - 400m (to the left)</div>
       </>
     ),
-    step8: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<OptionsSelectHorizontalQuizRunner stepNo="step8" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
-    step9: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<OptionsSelectHorizontalQuizRunner stepNo="step9" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
-    step10: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<DragAndDropQuizRunner stepNo="step10" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
-    step11: ({ setMiniQuestionLock, handleQuizFeedback, lessonId }) => (<OptionsSelectVerticalQuizRunner stepNo="step11" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} />),
+    step8: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<OptionsSelectHorizontalQuizRunner stepNo="step8" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} setTotalCorrectAnswers={setTotalCorrectAnswers} totalCorrectAnswers={totalCorrectAnswers} />),
+    step9: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<OptionsSelectHorizontalQuizRunner stepNo="step9" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} setTotalCorrectAnswers={setTotalCorrectAnswers} totalCorrectAnswers={totalCorrectAnswers} />),
+    step10: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<DragAndDropQuizRunner stepNo="step10" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} setTotalCorrectAnswers={setTotalCorrectAnswers} totalCorrectAnswers={totalCorrectAnswers}  />),
+    step11: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<OptionsSelectVerticalQuizRunner stepNo="step11" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} setTotalCorrectAnswers={setTotalCorrectAnswers} totalCorrectAnswers={totalCorrectAnswers}  />),
+    step12: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<LessonCompletePage lessonId={lessonId} totalCorrectAnswers={totalCorrectAnswers} />)
   }
 
 }

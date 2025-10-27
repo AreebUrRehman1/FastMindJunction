@@ -44,10 +44,12 @@ export function LessonStates() {
   const [feedBackDisplay, setFeedBackDisplay] = useState([]);
   const [inputMargin, setInputMargin] = useState(true); // It sets the proper margin for smooth scroll effect
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+  const [totalCorrectAnswers , setTotalCorrectAnswers] = useState(0);
 
   // Hooks
   const navigate = useNavigate();
   const { lessonId } = useParams();
+  console.log(totalCorrectAnswers);
 
   const LessonContentData = LecturesRunner[lessonId];
 
@@ -74,6 +76,8 @@ export function LessonStates() {
       handleQuizFeedback,
       setFeedBackGiven,
       setInputMargin,
+      totalCorrectAnswers,
+      setTotalCorrectAnswers,
       lessonId,
       LessonContentData // Pass the lesson content data
     });
@@ -118,6 +122,7 @@ export function LessonStates() {
     // Load the very first piece of content before the user clicks "Continue"
     if (LessonContentData && LessonContentData.step0) {
       setContentDisplay([LessonContentData.step0]);
+      setTotalCorrectAnswers(0);
     }
   }, [setContentDisplay]);
 
