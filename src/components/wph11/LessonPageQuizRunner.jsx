@@ -8,7 +8,7 @@ import correct from "../../assets/sounds/correct.mp3"
 import wrong from "../../assets/sounds/wrong.mp3"
 
 
-export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId, setTotalCorrectAnswers, totalCorrectAnswers }) {
+export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId, setTotalCorrectAnswers }) {
 
   const [answerResults, setAnswerResults] = useState({});
   const [quizLocked, setQuizLocked] = useState(false);
@@ -99,8 +99,10 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
             wrongScorePercentage = null;
             allWrong = true;
           }
-          setMiniQuestionLock(false);
           createFeedBackMessage(wrongScorePercentage, allWrong);
+          setTimeout(() => {
+            setMiniQuestionLock(false);
+          }, 50)
         }, 0);
       } else {
         // For multiple-answer questions, lock when all correct answers have been clicked
@@ -112,9 +114,11 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
         if (nextWrongCount >= maxFailedAttemps) { // Max Attempt Reached
           setQuizLocked(true);
           setTimeout(() => {
-            setMiniQuestionLock(false);
             wrongScorePercentage = null;
             createFeedBackMessage(wrongScorePercentage, allWrong = true);
+            setTimeout(() => {
+              setMiniQuestionLock(false);
+            }, 50)
           }, 0);
         }
 
@@ -123,8 +127,10 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
           setTimeout(() => {
             const wrongScoreChecker = wrongAnswerCounter ? true : false;
             if (wrongScoreChecker) wrongScorePercentage = 1
-            setMiniQuestionLock(false);
             createFeedBackMessage(wrongScorePercentage, allWrong);
+            setTimeout(() => {
+              setMiniQuestionLock(false);
+            }, 50)
           }, 0);
         }
       }
@@ -148,7 +154,7 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
   );
 };
 
-export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId, setTotalCorrectAnswers, totalCorrectAnswers }) {
+export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId, setTotalCorrectAnswers }) {
 
   const [answerResults, setAnswerResults] = useState({});
   const [quizLocked, setQuizLocked] = useState(false);
@@ -239,8 +245,10 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
             wrongScorePercentage = null;
             allWrong = true;
           }
-          setMiniQuestionLock(false);
           createFeedBackMessage(wrongScorePercentage, allWrong);
+          setTimeout(() => {
+            setMiniQuestionLock(false);
+          }, 50)
         }, 0);
       } else {
         // For multiple-answer questions, lock when all correct answers have been clicked
@@ -252,9 +260,11 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
         if (nextWrongCount >= maxFailedAttemps) { // Max Attempt Reached
           setQuizLocked(true);
           setTimeout(() => {
-            setMiniQuestionLock(false);
             wrongScorePercentage = null;
             createFeedBackMessage(wrongScorePercentage, allWrong = true);
+            setTimeout(() => {
+              setMiniQuestionLock(false);
+            }, 50)
           }, 0);
         }
 
@@ -263,8 +273,10 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
           setTimeout(() => {
             const wrongScoreChecker = wrongAnswerCounter ? true : false;
             if (wrongScoreChecker) wrongScorePercentage = 1
-            setMiniQuestionLock(false);
             createFeedBackMessage(wrongScorePercentage, allWrong);
+            setTimeout(() => {
+              setMiniQuestionLock(false);
+            }, 50)
           }, 0);
         }
       }
@@ -288,7 +300,7 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
   );
 };
 
-export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId, setTotalCorrectAnswers, totalCorrectAnswers }) {
+export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId, setTotalCorrectAnswers }) {
 
   const puzzleConfigLecture = PUZZLE_CONFIG[lessonId]
 
@@ -377,16 +389,12 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
   // --- Feedback Logic (Uses the handleQuizFeedback prop) ---
   const createFeedBackMessage = (incorrectSlotsCount) => {
     if (incorrectSlotsCount === 0) {
-      // 4. Completion: Unlock Parent's "Continue" button and set success feedback
-      setMiniQuestionLock(false);
       handleQuizFeedback(
         <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
       );
       setTotalCorrectAnswers(prev => prev + 1);
       correctsound.play();
     } else if (incorrectSlotsCount >= 1) {
-      // 3. External Feedback: Send incorrect message to the lesson footer
-      setMiniQuestionLock(false);
       handleQuizFeedback(
         <span className='font-bold text-lg text-red-500'>No worries, revisit and revise the concept again and try again! Learning takes practice. The answer is <span className="font-extrabold">{lectureFeedBackAnswer[stepNo]}.</span></span>
       );
@@ -418,8 +426,10 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
 
     // Defer the parent state update to prevent the bad setState() error
     setTimeout(() => {
-      setMiniQuestionLock(false); // UNLOCK LessonPage (Continue button enabled)
       createFeedBackMessage(incorrectSlotsCount);
+      setTimeout(() => {
+        setMiniQuestionLock(false);
+      }, 50)
     }, 0);
   };
 
