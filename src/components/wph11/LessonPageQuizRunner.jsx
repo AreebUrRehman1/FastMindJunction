@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { flushSync } from "react-dom";
 import { correctAnswers } from "../../data/wph11/quiz-correctanswer-container";
 import { MiniQuizOptionContent, MiniQuizDragAndDropContent } from "./MiniQuizDataContainer";
 import { displayOptions, displayOptionsAnswer } from "../../data/wph11/display-options-container";
@@ -43,7 +44,9 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
       handleQuizFeedback(
         <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
       );
-      setTotalCorrectAnswers(prev => prev + 1);
+      flushSync(() => {
+        setTotalCorrectAnswers(prev => prev + 1);
+      })
     } else if (allWrong) {
       handleQuizFeedback(
         <span className='font-bold text-lg text-red-500'>No worries, revisit and revise the concept again and try again! Learning takes practice. The answer is <span className="font-extrabold">{lectureFeedBackAnswer[stepNo]}.</span></span>
@@ -52,7 +55,9 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
       handleQuizFeedback(
         <span className='font-bold text-lg text-amber-500'>No worries, mistakes make us better! Review the few spots you missed.</span>
       );
-      setTotalCorrectAnswers(prev => prev + 0.5);
+      flushSync(() => {
+        setTotalCorrectAnswers(prev => prev + 0.5);
+      })
     }
   };
 
@@ -99,10 +104,8 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
             wrongScorePercentage = null;
             allWrong = true;
           }
+          setMiniQuestionLock(false);
           createFeedBackMessage(wrongScorePercentage, allWrong);
-          setTimeout(() => {
-            setMiniQuestionLock(false);
-          }, 50)
         }, 0);
       } else {
         // For multiple-answer questions, lock when all correct answers have been clicked
@@ -114,11 +117,9 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
         if (nextWrongCount >= maxFailedAttemps) { // Max Attempt Reached
           setQuizLocked(true);
           setTimeout(() => {
+            setMiniQuestionLock(false);
             wrongScorePercentage = null;
             createFeedBackMessage(wrongScorePercentage, allWrong = true);
-            setTimeout(() => {
-              setMiniQuestionLock(false);
-            }, 50)
           }, 0);
         }
 
@@ -127,10 +128,8 @@ export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock,
           setTimeout(() => {
             const wrongScoreChecker = wrongAnswerCounter ? true : false;
             if (wrongScoreChecker) wrongScorePercentage = 1
+            setMiniQuestionLock(false);
             createFeedBackMessage(wrongScorePercentage, allWrong);
-            setTimeout(() => {
-              setMiniQuestionLock(false);
-            }, 50)
           }, 0);
         }
       }
@@ -189,7 +188,9 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
       handleQuizFeedback(
         <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
       );
-      setTotalCorrectAnswers(prev => prev + 1);
+      flushSync(() => {
+        setTotalCorrectAnswers(prev => prev + 1);
+      })
     } else if (allWrong) {
       handleQuizFeedback(
         <span className='font-bold text-lg text-red-500'>No worries, revisit and revise the concept again and try again! Learning takes practice. The answer is <span className="font-extrabold">{lectureFeedBackAnswer[stepNo]}.</span></span>
@@ -198,7 +199,9 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
       handleQuizFeedback(
         <span className='font-bold text-lg text-amber-500'>No worries, mistakes make us better! Review the few spots you missed.</span>
       );
-      setTotalCorrectAnswers(prev => prev + 0.5);
+      flushSync(() => {
+        setTotalCorrectAnswers(prev => prev + 0.5);
+      })
     }
   };
 
@@ -245,10 +248,8 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
             wrongScorePercentage = null;
             allWrong = true;
           }
+          setMiniQuestionLock(false);
           createFeedBackMessage(wrongScorePercentage, allWrong);
-          setTimeout(() => {
-            setMiniQuestionLock(false);
-          }, 50)
         }, 0);
       } else {
         // For multiple-answer questions, lock when all correct answers have been clicked
@@ -260,11 +261,9 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
         if (nextWrongCount >= maxFailedAttemps) { // Max Attempt Reached
           setQuizLocked(true);
           setTimeout(() => {
+            setMiniQuestionLock(false);
             wrongScorePercentage = null;
             createFeedBackMessage(wrongScorePercentage, allWrong = true);
-            setTimeout(() => {
-              setMiniQuestionLock(false);
-            }, 50)
           }, 0);
         }
 
@@ -273,10 +272,8 @@ export function OptionsSelectVerticalQuizRunner({ stepNo, setMiniQuestionLock, h
           setTimeout(() => {
             const wrongScoreChecker = wrongAnswerCounter ? true : false;
             if (wrongScoreChecker) wrongScorePercentage = 1
+            setMiniQuestionLock(false);
             createFeedBackMessage(wrongScorePercentage, allWrong);
-            setTimeout(() => {
-              setMiniQuestionLock(false);
-            }, 50)
           }, 0);
         }
       }
@@ -392,7 +389,9 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
       handleQuizFeedback(
         <span className='font-bold text-lg text-emerald-500'>Perfect run! You have mastered this concept. Keep that momentum going!</span>
       );
-      setTotalCorrectAnswers(prev => prev + 1);
+      flushSync(() => {
+        setTotalCorrectAnswers(prev => prev + 1);
+      })
       correctsound.play();
     } else if (incorrectSlotsCount >= 1) {
       handleQuizFeedback(
@@ -426,10 +425,8 @@ export function DragAndDropQuizRunner({ stepNo, setMiniQuestionLock, handleQuizF
 
     // Defer the parent state update to prevent the bad setState() error
     setTimeout(() => {
+      setMiniQuestionLock(false);
       createFeedBackMessage(incorrectSlotsCount);
-      setTimeout(() => {
-        setMiniQuestionLock(false);
-      }, 50)
     }, 0);
   };
 
