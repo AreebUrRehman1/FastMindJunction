@@ -49,7 +49,6 @@ export function LessonStates() {
   // Hooks
   const navigate = useNavigate();
   const { lessonId } = useParams();
-  console.log(totalCorrectAnswers);
 
   const LessonContentData = LecturesRunner[lessonId];
 
@@ -81,7 +80,7 @@ export function LessonStates() {
       lessonId,
       LessonContentData // Pass the lesson content data
     });
-  }, [stepCounter, navigate]);
+  }, [stepCounter, navigate, totalCorrectAnswers]);
 
   // Handler for the "Continue" button
   const handleContinue = () => {

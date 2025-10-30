@@ -26,7 +26,7 @@ export const LecturesRunner = {
     step9: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<OptionsSelectHorizontalQuizRunner stepNo="step9" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} setTotalCorrectAnswers={setTotalCorrectAnswers}/>),
     step10: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<DragAndDropQuizRunner stepNo="step10" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} setTotalCorrectAnswers={setTotalCorrectAnswers}/>),
     step11: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<OptionsSelectVerticalQuizRunner stepNo="step11" setMiniQuestionLock={setMiniQuestionLock} handleQuizFeedback={handleQuizFeedback} lessonId={lessonId} setTotalCorrectAnswers={setTotalCorrectAnswers}/>),
-    step12: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<LessonCompletePage lessonId={lessonId} totalCorrectAnswers={totalCorrectAnswers} />)
+    step12: ({ setMiniQuestionLock, handleQuizFeedback, lessonId, totalCorrectAnswers, setTotalCorrectAnswers }) => (<LessonCompletePage lessonId={lessonId} totalCorrectAnswers={totalCorrectAnswers} setMiniQuestionLock={setMiniQuestionLock} />)
   }
 
 }
