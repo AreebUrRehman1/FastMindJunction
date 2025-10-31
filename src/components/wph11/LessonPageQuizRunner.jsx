@@ -7,6 +7,7 @@ import { stats } from "../../data/wph11/lesson-complete-container";
 import { PUZZLE_CONFIG } from "../../data/wph11/puzzelconfig-container";
 import correct from "../../assets/sounds/correct.mp3"
 import wrong from "../../assets/sounds/wrong.mp3"
+import levelComplete from "../../assets/sounds/level-complete.mp3"
 
 
 export function OptionsSelectHorizontalQuizRunner({ stepNo, setMiniQuestionLock, handleQuizFeedback, lessonId, setTotalCorrectAnswers }) {
@@ -515,12 +516,15 @@ export function LessonCompletePage({ totalCorrectAnswers, lessonId, setMiniQuest
 
   const [isLoading, setIsLoading] = useState(true);
   const lessonStats = stats[lessonId];
+  const levelCompleteSound = new Audio(levelComplete);
+  levelCompleteSound.volume = 0.1;
 
   useEffect(() => {
     setMiniQuestionLock(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
       setMiniQuestionLock(false);
+      levelCompleteSound.play();
     }, 500);
 
     // Cleanup function
@@ -587,7 +591,7 @@ export function LessonCompletePage({ totalCorrectAnswers, lessonId, setMiniQuest
         Lesson Complete!
       </h1>
       <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-2 font-semibold">
-        You've successfully mastered the concepts in:
+        You've successfully completed the lesson of:
       </p>
       <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-10">
         {lessonStats.lessonTitle}

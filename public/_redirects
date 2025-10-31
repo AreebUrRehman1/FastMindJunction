@@ -1,5 +1,10 @@
-# Redirects from what the browser requests to what we serve
+# Primary Redirects (your existing rules)
 /home                /
 /mode                /mode
 /learn               /learn
+
+# Lesson Base Redirect
 /lesson              /lesson
+
+# SPA Fallback Rule
+/* /index.html    200
