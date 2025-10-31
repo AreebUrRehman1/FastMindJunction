@@ -1,148 +1,120 @@
 export function DesignTesting() {
-  return (
-    <>
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-
-        {/* Header Section */}
-        <div className="max-w-4xl mx-auto text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl lg:text-6xl">
-            Understanding Scalar vs. Vector Quantities
-          </h1>
-          <p className="mt-4 text-xl text-gray-600">
-            The fundamental difference in physics: Magnitude vs. Magnitude & Direction.
-          </p>
-        </div>
-
-        {/* Main Comparison Section */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 gap-10 md:grid-cols-2">
-
-          {/* === SCALAR CARD === */}
-          <div className="bg-white rounded-xl shadow-2xl overflow-hidden p-8 border-t-8 border-indigo-600 transform transition duration-500 hover:scale-[1.02]">
-            <div className="flex items-center space-x-4 mb-6">
-              <span className="text-5xl text-indigo-600" role="img" aria-label="Scale">📏</span>
-              <h2 className="text-3xl font-bold text-gray-900">Scalar Quantities</h2>
-            </div>
-
-            <div className="mb-6">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                A **Scalar Quantity** is completely defined by its **magnitude** (size or amount) alone. No direction is necessary to describe it fully.
-              </p>
-            </div>
-
-            {/* Key Feature */}
-            <div className="bg-indigo-50 p-4 rounded-lg mb-6">
-              <p className="text-xl font-semibold text-indigo-700">
-                Key Feature: Magnitude ONLY
-              </p>
-            </div>
-
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-              Common Examples
-            </h3>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Mass** (e.g., 5 kg)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Distance** (e.g., 10 meters)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Time** (e.g., 60 seconds)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Speed** (e.g., 50 km/h)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Temperature** (e.g., 20°C)
-              </li>
-            </ul>
-
-          </div>
-
-          {/* === VECTOR CARD === */}
-          <div className="bg-white rounded-xl shadow-2xl overflow-hidden p-8 border-t-8 border-pink-600 transform transition duration-500 hover:scale-[1.02]">
-            <div className="flex items-center space-x-4 mb-6">
-              <span className="text-5xl text-pink-600" role="img" aria-label="Arrow">➡️</span>
-              <h2 className="text-3xl font-bold text-gray-900">Vector Quantities</h2>
-            </div>
-
-            <div className="mb-6">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                A **Vector Quantity** requires both its **magnitude** and its **direction** to be fully defined. They are often represented by arrows.
-              </p>
-            </div>
-
-            {/* Key Feature */}
-            <div className="bg-pink-50 p-4 rounded-lg mb-6">
-              <p className="text-xl font-semibold text-pink-700">
-                Key Feature: Magnitude AND Direction
-              </p>
-            </div>
-
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-              Common Examples
-            </h3>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Displacement** (e.g., 10 meters North)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Velocity** (e.g., 50 km/h East)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Force** (e.g., 10 N Downwards)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Acceleration** (e.g., 9.8 m/s² Down)
-              </li>
-              <li className="flex items-center">
-                <span className="text-green-500 text-lg mr-2">✅</span>
-                **Momentum** (Mass x Velocity)
-              </li>
-            </ul>
-
-          </div>
-        </div>
-
-        {/* Visual Analogy Section (Placeholder for simple animation/visual) */}
-        <div className="max-w-4xl mx-auto mt-16 p-8 bg-white rounded-xl shadow-xl">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
-            Visual Analogy: Distance vs. Displacement
-          </h2>
-          <div className="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0 text-center">
-
-            {/* Distance Analogy */}
-            <div className="w-full md:w-1/2 p-4">
-              <p className="text-2xl font-semibold text-indigo-700 mb-2">SCALAR: Distance</p>
-              <div className="text-4xl mb-3" role="img" aria-label="Wavy path">〰️</div>
-              <p className="text-gray-600">Total path covered: **500 meters** (No direction needed)</p>
-            </div>
-
-            {/* Separator */}
-            <div className="hidden md:block h-32 w-px bg-gray-300"></div>
-
-            {/* Displacement Analogy */}
-            <div className="w-full md:w-1/2 p-4">
-              <p className="text-2xl font-semibold text-pink-700 mb-2">VECTOR: Displacement</p>
-              <div className="text-4xl mb-3" role="img" aria-label="Straight arrow">⬇️</div>
-              <p className="text-gray-600">Straight-line change: **100 meters South** (Direction IS needed)</p>
-            </div>
-          </div>
-          <p className="mt-6 text-center text-sm text-gray-500">
-            (You can replace the emojis with simple SVGs or embed your planned animation here.)
-          </p>
-        </div>
-
+return (
+    // Outer Container: Physics Theme Background
+    <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+      
+      {/* Header Section */}
+      <div className="max-w-4xl mx-auto text-center mb-12">
+        <h1 className="text-5xl font-extrabold text-gray-900 sm:text-6xl">
+          Speed vs. Velocity: The Physics Distinction
+        </h1>
+        <p className="mt-4 text-xl text-gray-600">
+          Essential concepts for Edexcel IAL Physics (WPH11/01) — Rate of motion matters!
+        </p>
       </div>
-    </>
-  )
+
+      {/* Main Comparison Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
+        {/* === SPEED CARD (Scalar) === */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 border-l-8 border-blue-500 hover:shadow-3xl transition duration-300">
+          <div className="flex items-center space-x-4 mb-6">
+            <span className="text-5xl text-blue-600" role="img" aria-label="Speedometer">⏱️</span>
+            <h2 className="text-3xl font-bold text-gray-900">1. Speed (The Scalar)</h2>
+          </div>
+          
+          <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            **Speed** is a **scalar quantity**. It only measures **how fast** an object is moving. Its measurement is always positive (or zero).
+          </p>
+
+          <div className="bg-blue-50 p-6 rounded-lg mb-6">
+            <h3 className="text-xl font-semibold text-blue-700 mb-3">Formula & Calculation</h3>
+            <p className="font-mono text-2xl text-gray-800">
+              $$\textSpeed = \frac\textDistance\textTime$$
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              *Uses **Distance** (the total path covered)
+            </p>
+            <p className="mt-1 text-sm text-gray-600">
+              *SI Unit: $m/s$
+            </p>
+          </div>
+          
+          <h3 className="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">
+            Key Examples (Magnitude Only)
+          </h3>
+          <ul className="space-y-2 text-gray-700 list-disc list-inside">
+            <li>The reading on your car's **speedometer**.</li>
+            <li>A runner covers $400 \text meters$ in $50 \text seconds$. ($8 \text m/s$)</li>
+            <li>It only cares about the **path length** traveled.</li>
+          </ul>
+
+        </div>
+
+        {/* === VELOCITY CARD (Vector) === */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 border-l-8 border-teal-500 hover:shadow-3xl transition duration-300">
+          <div className="flex items-center space-x-4 mb-6">
+            <span className="text-5xl text-teal-600" role="img" aria-label="Arrow pointing North">⬆️</span>
+            <h2 className="text-3xl font-bold text-gray-900">2. Velocity (The Vector)</h2>
+          </div>
+          
+          <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            **Velocity** is a **vector quantity**. It measures **how fast** an object is moving **and** in **what direction**.
+          </p>
+
+          <div className="bg-teal-50 p-6 rounded-lg mb-6">
+            <h3 className="text-xl font-semibold text-teal-700 mb-3">Formula & Calculation</h3>
+            <p className="font-mono text-2xl text-gray-800">
+              $$\textVelocity = \frac\textDisplacement\textTime$$
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              *Uses **Displacement** (the net change in position)
+            </p>
+            <p className="mt-1 text-sm text-gray-600">
+              *SI Unit: $m/s$ (plus direction)
+            </p>
+          </div>
+
+          <h3 className="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">
+            Key Concepts (Magnitude & Direction)
+          </h3>
+          <ul className="space-y-2 text-gray-700 list-disc list-inside">
+            <li>A plane flying at $500 \text km/h$ **North**.</li>
+            <li>Velocity is **zero** if an object returns to its start point.</li>
+            <li>**Changing velocity** (even if speed is constant) means **Acceleration**.</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Visual Example Section */}
+      <div className="max-w-4xl mx-auto mt-16 p-8 bg-white rounded-xl shadow-xl border-t-4 border-gray-300">
+        <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
+          The WPH11/01 Example: The Full Lap
+        </h2>
+        
+        <div className="text-center text-lg text-gray-700 mb-6">
+          A runner completes a $400 \text m$ lap in $50 \text s$, starting and ending at the same point.
+          
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 text-center">
+            <div className="p-3 border-r">
+                <p className="text-xl font-bold text-blue-600">Average Speed</p>
+                <p className="text-3xl font-mono mt-1">$$ \frac400 \text m50 \text s = 8 \text m/s $$</p>
+                <p className="text-sm text-gray-500">(Uses Distance)</p>
+            </div>
+            
+            <div className="p-3">
+                <p className="text-xl font-bold text-teal-600">Average Velocity</p>
+                <p className="text-3xl font-mono mt-1">$$ \frac0 \text m50 \text s = 0 \text m/s $$</p>
+                <p className="text-sm text-gray-500">(Uses Displacement)</p>
+            </div>
+        </div>
+        <p className="mt-6 text-center text-base text-red-700 font-medium">
+            **Crucial Exam Point:** Speed and Velocity are only equal if the object travels in a straight line without changing direction.
+        </p>
+      </div>
+
+    </div>
+  );
 }

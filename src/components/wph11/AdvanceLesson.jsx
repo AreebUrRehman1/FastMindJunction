@@ -7,7 +7,7 @@ export function advanceLesson({ stepCounter, setStepCounter, setContentDisplay, 
   const nextStepExists = !!currentStep;
   const step = `step${stepCounter}`;
 
-  marginStep.map((margin) => {
+  marginStep[lessonId].map((margin) => {
     if (step === margin) {
       return setInputMargin(false);
     }

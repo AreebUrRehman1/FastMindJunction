@@ -124,3 +124,84 @@ export const ScalarVsVectorStep2Runner = () => {
   )
 
 }
+
+export const SpeedVsVelocityStep2Runner = () => {
+  const vector = `\\( Speed = \\frac{Distance}{Time} \\)`;
+  const vector2 = `\\( Velocity = \\frac{Displacement}{Time} \\)`;
+
+  return (
+    <>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+        {/* === SPEED CARD (Scalar) === */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 border-l-8 border-blue-500 hover:shadow-3xl transition duration-300">
+          <div className="flex items-center space-x-4 mb-6">
+            <span className="text-5xl text-blue-600" role="img" aria-label="Speedometer">⏱️</span>
+            <h2 className="text-3xl font-bold text-gray-900">1. Speed (The Scalar)</h2>
+          </div>
+
+          <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            <strong>Speed</strong> is a <strong>scalar quantity</strong>. It only measures <strong>how fast</strong> an object is moving. Its measurement is always positive (or zero).
+          </p>
+
+          <div className="bg-blue-50 p-6 rounded-lg mb-6">
+            <h3 className="text-xl font-semibold text-blue-700 mb-3">Formula & Calculation</h3>
+            <p className="font-mono text-2xl text-gray-800">
+              {<MathJaxComponent mathExpression={vector} />}
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              *Uses <strong>Distance</strong> (the total path covered)
+            </p>
+            <p className="mt-1 text-sm text-gray-600">
+              *SI Unit: m/s²
+            </p>
+          </div>
+
+          <h3 className="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">
+            Key Examples (Magnitude Only)
+          </h3>
+          <ul className="space-y-2 text-gray-700 list-disc list-inside">
+            <li>The reading on your car's <strong>speedometer</strong>.</li>
+            <li>A runner covers 400 meters in 50 seconds. (8m/s²)</li>
+            <li>It only cares about the <strong>path length</strong> traveled.</li>
+          </ul>
+
+        </div>
+
+        {/* === VELOCITY CARD (Vector) === */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 border-l-8 border-teal-500 hover:shadow-3xl transition duration-300">
+          <div className="flex items-center space-x-4 mb-6">
+            <span className="text-5xl text-teal-600" role="img" aria-label="Arrow pointing North">⬆️</span>
+            <h2 className="text-3xl font-bold text-gray-900">2. Velocity (The Vector)</h2>
+          </div>
+
+          <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            <strong>Velocity</strong> is a <strong>vector quantity</strong>. It measures <strong>how fast</strong> an object is moving <strong>and</strong> in <strong>what direction</strong>.
+          </p>
+
+          <div className="bg-teal-50 p-6 rounded-lg mb-6">
+            <h3 className="text-xl font-semibold text-teal-700 mb-3">Formula & Calculation</h3>
+            <p className="font-mono text-2xl text-gray-800">
+              {<MathJaxComponent mathExpression={vector2} />}
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              *Uses <strong>Displacement</strong> (the net change in position)
+            </p>
+            <p className="mt-1 text-sm text-gray-600">
+              *SI Unit: m/s² (plus direction)
+            </p>
+          </div>
+
+          <h3 className="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">
+            Key Concepts (Magnitude & Direction)
+          </h3>
+          <ul className="space-y-2 text-gray-700 list-disc list-inside">
+            <li>A plane flying at 500km/h <strong>North</strong>.</li>
+            <li>Velocity is <strong>zero</strong> if an object returns to its start point.</li>
+            <li><strong>Changing velocity</strong> (even if speed is constant) means <strong>Acceleration</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </>
+  )
+}
