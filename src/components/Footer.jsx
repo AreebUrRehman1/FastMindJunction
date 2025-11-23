@@ -1,45 +1,45 @@
 export function Footer() {
   return (
-    <> 
-    {/* Make a Static Function*/}
-      <div className=" bg-[#515b69]">
+    <footer className="bg-gray-600 dark:bg-gray-800">
+      <div className="max-w-7xl mx-auto flex flex-col justify-between py-12 px-4 sm:px-6 lg:px-8">
 
-        <div className="flex flex-col justify-between py-[48px] px-[12px]">
+        {/* Links Section: Stacks on mobile, center-aligned start on desktop */}
+        <div className="flex flex-wrap justify-center sm:justify-center gap-x-16 gap-y-10 sm:gap-x-20 md:gap-x-28">
 
-          <div className="flex justify-center gap-[70px] flex-wrap">
-
-            <div className="flex flex-col mb-[20px]">
-              <div className="text-white text-[26px] font-bold">About Us</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Who we are</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Purpose</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Commitment</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">FAQ</div>
-            </div>
-
-            <div className="flex flex-col mb-[20px]">
-              <div className="text-white text-[26px] font-bold">Course</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Physics</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Biology</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Chemistry</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">IT</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Mathematics</div>
-            </div>
-
-            <div className="flex flex-col mb-[20px]">
-              <div className="text-white text-[26px] font-bold">Social Media</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Youtube</div>
-              <div className="text-[#c5c5c5] text-[16px] mt-[20px] hover:text-[#f5f5f5] cursor-pointer">Twitter</div>
-            </div>
-
+          {/* Column 1: About Us */}
+          <div className="flex flex-col min-w-[150px]">
+            <div className="text-white text-2xl font-bold mb-5">About Us</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Who we are</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Purpose</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Commitment</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">FAQ</div>
           </div>
 
-          <div className="mt-[50px] pt-[20px] border-t-[1px] border-t-[#ffffff1a]">
-            <div className="text-center text-white text-[0.9rem]">© Copyright 2024-2025 FastMindJunction. All Rights Reserved.</div>
+          {/* Column 2: Course */}
+          <div className="flex flex-col min-w-[150px]">
+            <div className="text-white text-2xl font-bold mb-5">Course</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Physics</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Biology</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Chemistry</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">IT</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Mathematics</div>
+          </div>
+
+          {/* Column 3: Social Media */}
+          <div className="flex flex-col min-w-[150px]">
+            <div className="text-white text-2xl font-bold mb-5">Social Media</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Youtube</div>
+            <div className="text-gray-300 text-base mt-3 hover:text-white cursor-pointer transition-colors duration-150">Twitter</div>
           </div>
 
         </div>
 
+        {/* Copyright Section */}
+        <div className="mt-12 pt-5 border-t border-gray-700/80">
+          <div className="text-center text-gray-300 text-sm">© Copyright 2024-2025 FastMindJunction. All Rights Reserved.</div>
+        </div>
+
       </div>
-    </>
+    </footer>
   )
 }

@@ -38,21 +38,21 @@ export function LessonStates() {
   const [stepCounter, setStepCounter] = useState(0); // Internal lesson step (e.g., 1, 2, 3...)
 
   // State for content and interaction
-  const [contentDisplay, setContentDisplay] = useState([]);
-  const [miniQuestionLock, setMiniQuestionLock] = useState(false); // Lock continue button
-  const [feedBackGiven, setFeedBackGiven] = useState(false);
-  const [feedBackDisplay, setFeedBackDisplay] = useState([]);
-  const [inputMargin, setInputMargin] = useState(true); // It sets the proper margin for smooth scroll effect
-  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
-  const [totalCorrectAnswers , setTotalCorrectAnswers] = useState(0);
+  const [contentDisplay, setContentDisplay] = useState([]); // Used to display the content.
+  const [miniQuestionLock, setMiniQuestionLock] = useState(false); // Lock continue button.
+  const [feedBackGiven, setFeedBackGiven] = useState(false); // Allows the feedback to be given and removed from the page.
+  const [feedBackDisplay, setFeedBackDisplay] = useState([]);  // Used for displaying the feedback, once the quiz is solved.
+  const [inputMargin, setInputMargin] = useState(true); // It sets the proper margin for smooth scroll effect.
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);  // It is for exiting the lesson.
+  const [totalCorrectAnswers , setTotalCorrectAnswers] = useState(0); // Total correct answer after solving all of the quizes in the lesson.
 
   // Hooks
   const navigate = useNavigate();
   const { lessonId } = useParams();
 
-  const LessonContentData = LecturesRunner[lessonId];
+  const LessonContentData = LecturesRunner[lessonId]; // Getting the steps content using lesson ID.
 
-  const lessonTotalSteps = totalSteps[lessonId];
+  const lessonTotalSteps = totalSteps[lessonId]; // Getting the total steps for the lesson using lesson ID.
 
   const progressPercentage = useMemo(() => {
     // Calculate progress (min(100) to ensure it doesn't go over)
