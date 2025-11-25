@@ -71,7 +71,7 @@ export const SpeedVsVelocityStep3Runner = () => {
         gsap.set(this.targets()[0], { scaleX: -1 });
       },
 
-      // Reset the flip when the reverse completes (ready for the next forward run)
+      // Reset the flip when the reverse completes (ready for the next forward run).
       onReverseComplete: function () {
         // Reset scaleX to 1 so the next forward animation starts normally.
         gsap.set(this.targets()[0], { scaleX: 1 });

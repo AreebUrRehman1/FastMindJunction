@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useEffect } from "react";
 
 export function WelcomeTransitionScreen({ screenText, stage, setStage }) {
 
@@ -19,6 +19,7 @@ export function WelcomeTransitionScreen({ screenText, stage, setStage }) {
   // which Tailwind does not provide by default for complex animations.
   return (
     <>
+      <title>Loading...</title>
       <style>
         {`
           /* Keyframe for text entering the screen */
@@ -50,15 +51,13 @@ export function WelcomeTransitionScreen({ screenText, stage, setStage }) {
       </style>
       <div className="fixed inset-0 bg-[#515b69] z-50 flex flex-col items-center justify-center welcome-animation-container">
 
-        <title>Select your Learning Path</title>
-
         {/* Animated Brand Logo/Text */}
-        <div className="text-white text-5xl font-extrabold tracking-wider opacity-0 welcome-text">
+        <div className="text-white text-3xl md:text-5xl font-extrabold tracking-wider opacity-0 welcome-text">
           FastMindJunction
         </div>
 
         {/* Welcome Message (Delayed Entrance) */}
-        <div className="text-white text-xl mt-4 opacity-0 welcome-text" style={{ animationDelay: '0.5s' }}>
+        <div className="text-white text-[15px] md:text-xl mt-4 opacity-0 welcome-text" style={{ animationDelay: '0.5s' }}>
           {screenText}
         </div>
 
