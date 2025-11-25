@@ -2,7 +2,7 @@ import { Header } from "../components/Header"
 import { Footer } from "../components/Footer";
 import { Link } from "react-router";
 
-export function HomePage() {
+export function HomePage({darkMode, darkModeControl}) {
 
   const getIconPath = (name) => {
     switch (name) {
@@ -84,9 +84,9 @@ export function HomePage() {
   return (
     <>
       <title>Home</title>
-      <Header />
+      <Header darkMode={darkMode} darkModeControl={darkModeControl} />
 
-      <div className="min-h-screen font-sans dark:bg-[#0d0d12] text-gray-200">
+      <div className={`${darkMode ? "dark" : ""} min-h-screen font-sans dark:bg-[#0d0d12] text-gray-200`}>
         <div className="flex flex-col items-center px-4 sm:px-6 lg:px-8 py-8">
 
 
@@ -202,7 +202,7 @@ export function HomePage() {
       </div>
 
 
-      <Footer />
+      <Footer darkMode={darkMode} />
     </>
   )
 }

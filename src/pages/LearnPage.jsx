@@ -6,11 +6,10 @@ import { unitDetailsContainer, topicDetailsContainer } from "../data/learnpage";
 import hat from "../assets/learn/Graduation Hat.png"
 
 
-export function LearnPage() {
+export function LearnPage({ darkModeControl, darkMode }) {
 
   const [stage, setStage] = useState('welcome');
   const [activeTopicKey, setActiveTopicKey] = useState(null);
-  const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("colorScheme")) || false);
   const { learnId } = useParams();
 
   const tooltipRef = useRef(null);
@@ -54,7 +53,7 @@ export function LearnPage() {
 
       <div className={`flex relative ${darkMode ? "dark" : ""}`}>
 
-        <Sidebar darkMode={darkMode} setDarkMode={setDarkMode}/>
+        <Sidebar darkMode={darkMode} darkModeControl={darkModeControl} />
 
         <div className="flex-1 pb-20 pl-[333.25px] pr-[333.25px] dark:bg-gray-950">
 

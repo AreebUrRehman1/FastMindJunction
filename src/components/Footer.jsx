@@ -1,6 +1,6 @@
-export function Footer() {
+export function Footer({darkMode}) {
   return (
-    <footer className="bg-gray-600 dark:bg-gray-800">
+    <footer className={`${darkMode ? "dark" : ""} bg-gray-600 dark:bg-gray-800`}>
       <div className="max-w-7xl mx-auto flex flex-col justify-between py-12 px-4 sm:px-6 lg:px-8">
 
         {/* Links Section: Stacks on mobile, center-aligned start on desktop */}

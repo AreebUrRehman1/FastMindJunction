@@ -6,17 +6,12 @@ import lightmode from "../assets/learn/Light mode Icon.png";
 import wph11 from "../assets/learn/WPH11.png";
 import logo from "/Logo.png";
 
-export function Sidebar({darkMode, setDarkMode}) {
+export function Sidebar({darkMode, darkModeControl}) {
 
   const [showSidebar, setShowSideBar] = useState(false);
 
   function fullSidebar() {
     setShowSideBar(prev => !prev);
-  }
-
-  function darkModeControl() {
-    setDarkMode(!darkMode);
-    localStorage.setItem("colorScheme", !darkMode)
   }
 
   return (
