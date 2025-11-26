@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import car from "../../assets/lesson/car.png"
+import car from "../../assets/lesson/car copy.png"
 import running from "../../assets/lesson/running.png"
 
 
