@@ -11,7 +11,7 @@ export function Sidebar({ darkMode, darkModeControl }) {
 
   const [showSidebar, setShowSideBar] = useState(false);
 
-  const small = useMediaQuery('(max-width: 768px)');
+  const small = useMediaQuery('(max-width: 900px)');
 
   function fullSidebar() {
     setShowSideBar(prev => !prev);

@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import running from "../../assets/lesson/running.png"
 import car from "../../assets/lesson/car.png"
+import running from "../../assets/lesson/running.png"
 
 
 export const ScalarVsVectorStep3Runner = () => {

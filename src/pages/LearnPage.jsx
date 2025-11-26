@@ -13,7 +13,7 @@ export function LearnPage({ darkModeControl, darkMode }) {
   const [activeTopicKey, setActiveTopicKey] = useState(null);
   const { learnId } = useParams();
 
-  const small = useMediaQuery('(max-width: 768px)');
+  const small = useMediaQuery('(max-width: 900px)');
   const tooltipRef = useRef(null);
 
 
@@ -53,7 +53,7 @@ export function LearnPage({ darkModeControl, darkMode }) {
     return (
       <div className={`${darkMode ? "dark" : ""}`}>
         <title>{learnId}</title>
-          <div className="dark:bg-gray-950 pb-[100px]">
+        <div className="dark:bg-gray-950 pb-[100px]">
           {unitDetailsContainer.map((unit, index) => {
             const unitKey = "Unit" + (index + 1);
             const currentTopics = topicDetailsContainer[unitKey];
@@ -89,7 +89,7 @@ export function LearnPage({ darkModeControl, darkMode }) {
             )
 
           })}
-          </div>
+        </div>
 
         <Sidebar darkMode={darkMode} darkModeControl={darkModeControl} />
       </div>
