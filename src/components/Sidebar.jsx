@@ -19,7 +19,7 @@ export function Sidebar({ darkMode, darkModeControl }) {
 
   if (small) {
     return (
-      <div className="flex justify-center fixed bottom-0 left-0 right-0 h-15 bg-white border-r dark:border-gray-900 border-gray-200 shadow-md dark:bg-gray-900">
+      <div className={`${darkMode ? "dark" : ""} flex justify-center fixed bottom-0 left-0 right-0 h-15 bg-white border-r dark:border-gray-900 border-gray-200 shadow-md dark:bg-gray-900`}>
         <div className="flex flex-row w-full justify-around items-center">
 
           <div className="flex flex-row gap-x-3 items-center bg-gray-100 dark:bg-gray-800 p-[7px] rounded-lg ">
@@ -33,7 +33,7 @@ export function Sidebar({ darkMode, darkModeControl }) {
     )
   } else {
     return (
-      <div className="fixed top-0 bottom-0 bg-white border-r dark:border-gray-900 border-gray-200 flex-shrink-0 shadow-md dark:bg-gray-900">
+      <div className={`${darkMode ? "dark" : ""} fixed top-0 bottom-0 bg-white border-r dark:border-gray-900 border-gray-200 flex-shrink-0 shadow-md dark:bg-gray-900`}>
         <div className="flex flex-col h-full overflow-y-auto">
 
           <div className="p-4 flex items-center justify-between border-b border-gray-100 sticky top-0 bg-white z-10 dark:bg-gray-900 dark:border-gray-700">

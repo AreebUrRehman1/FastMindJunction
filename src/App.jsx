@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route index element={<HomePage darkModeControl={darkModeControl} darkMode={darkMode}/>} />
         <Route path="mode" element={<LearningPathPage darkModeControl={darkModeControl} darkMode={darkMode} />} />
-        <Route path="coming-soon" element={<ComingSoonPage />} />
+        <Route path="coming-soon" element={<ComingSoonPage darkModeControl={darkModeControl} darkMode={darkMode} />} />
         <Route path="learn/:learnId" element={<LearnPage darkModeControl={darkModeControl} darkMode={darkMode} />} />
         <Route path="lesson/:lessonId" element={<LessonStates />} />
         <Route path='design' element={<DesignTesting />} />

@@ -13,7 +13,8 @@ export function LearnPage({ darkModeControl, darkMode }) {
   const [activeTopicKey, setActiveTopicKey] = useState(null);
   const { learnId } = useParams();
 
-  const small = useMediaQuery('(max-width: 900px)');
+  const small = useMediaQuery('(max-width: 600px)');
+  const medium = useMediaQuery('(min-width: 601px) and (max-width: 900px)');
   const tooltipRef = useRef(null);
 
 
@@ -51,9 +52,54 @@ export function LearnPage({ darkModeControl, darkMode }) {
 
   if (small) {
     return (
-      <div className={`${darkMode ? "dark" : ""}`}>
+      <>
         <title>{learnId}</title>
-        <div className="dark:bg-gray-950 pb-[100px]">
+        <div className={`${darkMode ? "dark" : ""} dark:bg-gray-950 pb-[100px] px-5`}>
+          {unitDetailsContainer.map((unit, index) => {
+            const unitKey = "Unit" + (index + 1);
+            const currentTopics = topicDetailsContainer[unitKey];
+
+            return (
+              <div key={unit.key}>
+                <div className="py-[40px] text-center font-normal text-2xl dark:text-gray-100" key={unit.key}>{unit.Name}</div>
+                {currentTopics.map((topic) => {
+                  const isVisible = activeTopicKey === topic.Name;
+                  return (
+                    <div className="flex flex-col items-center mt-2" key={topic.Name}>
+
+                      <div className="w-[70.5px] h-[70.5px] relative" ref={isVisible ? tooltipRef : null}>
+
+                        <div className={`flex w-[55px] h-[55px] rounded-full items-center justify-center relative transition-colors duration-100 ease-in-out cursor-pointer ${topic.Circle}`} onClick={() => toggleTooltipVisibility(topic.Name)}>
+                          <img className="w-[38px] h-[38px]" src={hat} alt="coin icon" />
+                          {isVisible ? (<div className={`w-3 h-3 absolute bottom-[-27px] left-1/2 -translate-x-1/2 rotate-45 z-2 ${topic.ToolTipColor}`}></div>) : <></>}
+                        </div>
+
+                        {isVisible ? (
+                          <div className={`flex flex-col w-[180px] h-auto absolute p-2 pl-3 rounded-[20px] mt-5 z-2 ${topic.ToolTipColor} ${topic.ToolTipMove ? topic.ToolTipMove : ""}`}>
+                            <div className="text-[17px] font-extrabold text-white mt-[7px]">{topic.Name}</div>
+                            <Link to={`/lesson/${topic.Lecture}`}><button className="rounded-[10px] w-[65%] h-[30px] border-none bg-white font-bold text-[15px] mt-[10%] mb-[17px] cursor-pointer tracking-[0.5px] shadow-[#8080806] hover:scale-101">Learn Now!</button></Link>
+                          </div>
+                        ) : null}
+
+                      </div>
+
+                    </div>
+                  )
+                })}
+              </div>
+            )
+
+          })}
+        </div>
+
+        <Sidebar darkMode={darkMode} darkModeControl={darkModeControl} />
+      </>
+    )
+  } else if (medium) {
+    return (
+      <>
+        <title>{learnId}</title>
+        <div className={`${darkMode ? "dark" : ""} dark:bg-gray-950 pb-[100px]`}>
           {unitDetailsContainer.map((unit, index) => {
             const unitKey = "Unit" + (index + 1);
             const currentTopics = topicDetailsContainer[unitKey];
@@ -92,7 +138,7 @@ export function LearnPage({ darkModeControl, darkMode }) {
         </div>
 
         <Sidebar darkMode={darkMode} darkModeControl={darkModeControl} />
-      </div>
+      </>
     )
   } else {
     return (
