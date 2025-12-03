@@ -5,6 +5,7 @@ import { LearningPathPage } from './pages/LearningPathPage'
 import { ComingSoonPage } from './pages/ComingSoonPage'
 import { LearnPage } from './pages/LearnPage'
 import { LessonStates } from './components/wph11/LessonStates'
+import { LessonPageTest } from './components/wph11/Testing/LessonPageTest'
 import { DesignTesting } from './components/wph11/DesignTesting'
 import './App.css'
 
@@ -25,7 +26,7 @@ function App() {
         <Route path="mode" element={<LearningPathPage darkModeControl={darkModeControl} darkMode={darkMode} />} />
         <Route path="coming-soon" element={<ComingSoonPage darkModeControl={darkModeControl} darkMode={darkMode} />} />
         <Route path="learn/:learnId" element={<LearnPage darkModeControl={darkModeControl} darkMode={darkMode} />} />
-        <Route path="lesson/:lessonId" element={<LessonStates />} />
+        <Route path="lesson/:lessonId" element={<LessonPageTest darkModeControl={darkModeControl} darkMode={darkMode} />} />
         <Route path='design' element={<DesignTesting />} />
       </Routes>
     </>

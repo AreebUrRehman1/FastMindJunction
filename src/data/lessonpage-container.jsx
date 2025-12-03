@@ -40,5 +40,16 @@ export const LecturesRunner = {
         <div className='text-center text-[14px]  text-blue-600'>The displacement of the car is <strong>Zero</strong>, which is why the velocity is also <strong>Zero</strong></div>
       </>
     ),
+  },
+  'displacementVelocity&Acceleration': {
+    step0: (
+      <>
+        <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl text-center lg:text-6xl">Displacement, Velocity & Acceleration</h1>
+        <p className="mt-4 text-xl text-gray-600 text-center mb-12">Speaking the Language of Motion</p>
+      </>
+    ),
+    step1: (
+      <div className='text-center mt-8 text-[17px] '>Before we can predict where a rocket lands or how fast a car crashes, we need to agree on the language we use to describe moving things. In Physics, "how far" and "how fast" can mean two very different things depending on whether you care about the direction.</div>
+    )
   }
 }

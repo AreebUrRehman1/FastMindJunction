@@ -38,11 +38,11 @@ export const topicDetailsContainer = {
       key: "TDC2"
     },
     {
-      Name: "Slope & Area of Motion Graphs",
+      Name: "Displacement, Velocity & Acceleration",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[85px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
-      key: "TDC3"
+      Lecture : "displacementVelocity&Acceleration",
+      key: "TDC3" 
     },
     {
       Name: "Scalars & Vectors",
