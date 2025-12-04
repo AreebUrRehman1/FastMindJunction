@@ -24,10 +24,10 @@ export const topicDetailsContainer = {
 
   Unit1: [
     {
-      Name: "Scalar vs Vector",
+      Name: "Displacement, Velocity & Acceleration",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "scalarVsVector",
+      Lecture : "displacementVelocity&Acceleration",
       key: "TDC1", 
     },
     {
@@ -38,10 +38,10 @@ export const topicDetailsContainer = {
       key: "TDC2"
     },
     {
-      Name: "Displacement, Velocity & Acceleration",
+      Name: "Displacement, Velocity & Acceleration1",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[85px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "displacementVelocity&Acceleration",
+      Lecture : "displacementVelocity&Acceleratio2",
       key: "TDC3" 
     },
     {

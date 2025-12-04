@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Checkpoint } from './Checkpoint';
-import { content } from '../../data/wph11/content-container';
+import { contentContainer } from '../../data/wph11/ContentContainer';
 import back from '../../assets/lesson/Back Icon2.png';
 import { LessonHeader } from '../LessonHeader';
 
@@ -10,6 +10,10 @@ export function LessonPage({ darkMode, darkModeControl }) {
   const [unlockedIndex, setUnlockedIndex] = useState(0); // Tracks how far the user has progressed (0 = only first section)
   const sectionRefs = useRef([]); // To handle auto-scrolling
   const navigate = useNavigate();
+  const {lessonId} = useParams();
+
+  // Accessing the content
+  const content = contentContainer(darkMode, lessonId);
 
 
   // Scroll to new section when unlocked
