@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Checkpoint } from './Checkpoint';
 import { contentContainer } from '../../data/wph11/ContentContainer';
+import { Templates } from './Templates';
+import { lectureLayout } from '../../data/wph11/lecture-layout';
 import back from '../../assets/lesson/Back Icon2.png';
 import { LessonHeader } from '../LessonHeader';
 
@@ -10,10 +12,11 @@ export function LessonPage({ darkMode, darkModeControl }) {
   const [unlockedIndex, setUnlockedIndex] = useState(0); // Tracks how far the user has progressed (0 = only first section)
   const sectionRefs = useRef([]); // To handle auto-scrolling
   const navigate = useNavigate();
-  const {lessonId} = useParams();
+  const { lessonId } = useParams();
 
   // Accessing the content
   const content = contentContainer(darkMode, lessonId);
+  const lectureContentLayout = lectureLayout(lessonId);
 
 
   // Scroll to new section when unlocked
@@ -22,7 +25,7 @@ export function LessonPage({ darkMode, darkModeControl }) {
       setTimeout(() => {
         sectionRefs.current[unlockedIndex].scrollIntoView({
           behavior: 'smooth',
-          block: 'start'
+          block: 'center'
         });
       }, 100);
     }
@@ -35,12 +38,12 @@ export function LessonPage({ darkMode, darkModeControl }) {
       <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
         {/* --- Main Content --- */}
         <main className="pt-24 pb-20 px-4 sm:px-6">
-          <div className={`text-blue-600 font-bold rounded-2xl p-2 not-md:mb-6 ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"} inline-block`} onClick={() => {navigate(-1)}}>
+          <div className={`text-blue-600 font-bold rounded-2xl p-2 not-md:mb-6 ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"} inline-block`} onClick={() => { navigate(-1) }}>
             <div className='flex items-center gap-x-3'>
               <img src={back} alt="Back Icon" className='w-7 h-7' />
               <div>Back</div>
             </div>
-            </div>
+          </div>
           <div className="max-w-3xl mx-auto space-y-12">
 
             {/* Header Section */}
@@ -70,6 +73,7 @@ export function LessonPage({ darkMode, darkModeControl }) {
               const isUnlocked = idx <= unlockedIndex;
               const isCurrent = idx === unlockedIndex;
               const isLast = idx === content.sections.length - 1;
+              const shouldRenderTemplate = lectureContentLayout?.sectionIds.includes(section.id);
 
               if (!isUnlocked) return null; // Don't render locked future sections yet
 
@@ -93,80 +97,8 @@ export function LessonPage({ darkMode, darkModeControl }) {
                     {section.text}
                   </p>
 
-                  {/* PART 1 Specific Layout */}
-                  {section.id === "part1" && (
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {section.points.map((pt) => (
-                        <div key={pt.type} className={`p-5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-                          <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{pt.type}</h3>
-                          <p className="mb-3 text-sm opacity-90">{pt.def}</p>
-                          <div className="text-xs font-mono uppercase tracking-wide opacity-60">Examples:</div>
-                          <div className="font-medium text-sm">{pt.examples}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* PART 2 Specific Layout */}
-                  {section.id === "part2" && (
-                    <div className="space-y-4">
-                      <div className={`rounded-xl overflow-hidden divide-y ${darkMode ? 'divide-slate-700 border border-slate-700' : 'divide-slate-200 border border-slate-200'}`}>
-                        {section.comparison.map((item) => (
-                          <div key={item.label} className={`p-4 flex flex-col sm:flex-row gap-4 ${darkMode ? 'bg-slate-800/30' : 'bg-white'}`}>
-                            <span className="font-bold sm:w-1/3 shrink-0">{item.label}</span>
-                            <span className={`sm:w-2/3 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>{item.desc}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div className={`p-4 rounded-l-md border-l-4 ${darkMode ? 'bg-amber-900/20 border-amber-500 text-amber-200' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
-                        <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
-                        {section.goldenRule}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* PART 3 Specific Layout */}
-                  {section.id === "part3" && (
-                    <div className="space-y-4">
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        {section.equations.map((eq) => (
-                          <div key={eq.name} className={`p-5 rounded-xl border text-center ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-                            <div className="text-sm uppercase tracking-widest opacity-60 mb-2">{eq.type}</div>
-                            <div className="text-xl font-serif italic mb-2">
-                              {eq.name === "Speed" ? (
-                                <span>Speed = <span className="opacity-70">dist</span> / <span className="opacity-70">time</span></span>
-                              ) : (
-                                <span>Velocity = <span className="opacity-70">disp</span> / <span className="opacity-70">time</span></span>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className={`p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
-                        {section.insight}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* PART 4 Specific Layout */}
-                  {section.id === "part4" && (
-                    <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
-                      <div className="text-center mb-6">
-                        <div className="text-3xl font-serif italic font-bold">
-                          a = <span className="inline-block relative top-[-10px] mx-1 border-b border-current">v - u</span>
-                          <span className="relative top-[25px] -ml-[45px]">t</span>
-                        </div>
-                        <p className="mt-6 text-sm opacity-60">(v = final velocity, u = initial velocity, t = time)</p>
-                      </div>
-                      <ul className="space-y-2">
-                        {section.conditions.map((cond, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${darkMode ? 'bg-indigo-400' : 'bg-indigo-600'}`} />
-                            <span>{cond}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  {shouldRenderTemplate && (
+                    <Templates section={section} darkMode={darkMode} />
                   )}
 
                   {/* Animation Area */}

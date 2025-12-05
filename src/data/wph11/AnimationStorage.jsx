@@ -123,7 +123,7 @@ export const DisplacementVelocityAndAcceleration = ({ darkMode }) => {
 
 
         {/* --- RIGHT SIDE: VECTOR --- */}
-        <section className={`w-full md:w-1/2 flex flex-col items-center justify-center p-4 md:p-6 relative overflow-hidden transition-colors duration-300 ${theme.bg} border-t md:border-l ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
+        <section className={`w-full md:w-1/2 flex flex-col items-center justify-center p-4 md:p-6 relative overflow-hidden transition-colors duration-300 ${theme.bg}  md:border-l ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
           <div className={`${darkMode ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800'} absolute top-4 left-4 px-3 py-1 not-md:mt-10 rounded-full text-xs font-bold uppercase tracking-wider transition-colors`}>
             Vector Quantity
           </div>
@@ -226,8 +226,8 @@ export const DisplacementVelocityAndAcceleration = ({ darkMode }) => {
             <button
               onClick={() => setIsDrawn(!isDrawn)}
               className={`w-full py-2 font-bold rounded shadow transition-colors ${isDrawn
-                  ? 'bg-slate-600 hover:bg-slate-700 text-white'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+                ? 'bg-slate-600 hover:bg-slate-700 text-white'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
                 }`}
             >
               {isDrawn ? 'Release' : 'Pull Bow (Show Vector)'}
@@ -452,8 +452,8 @@ export const DisplacementVelocityAndAcceleration2 = ({ darkMode }) => {
         <button
           onClick={handleStartStop}
           className={`px-8 py-3 rounded-full font-bold shadow-lg transition-transform active:scale-95 ${isRunning
-              ? 'bg-red-500 hover:bg-red-600 text-white'
-              : 'bg-blue-500 hover:bg-blue-600 text-white'
+            ? 'bg-red-500 hover:bg-red-600 text-white'
+            : 'bg-blue-500 hover:bg-blue-600 text-white'
             }`}
         >
           {progress >= 400 ? 'Restart Run' : isRunning ? 'Pause' : 'Start Run'}
@@ -646,7 +646,7 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
               Observe arrow directions during braking.
             </p>
           </div>
-          
+
           <div className="flex items-center gap-3 w-full sm:w-auto bg-slate-900/50 p-2 rounded-lg sm:bg-transparent sm:p-0 sm:block">
             <div className="text-xs uppercase tracking-wider text-slate-400 sm:mb-1">Status</div>
             <div className={`font-mono font-bold text-sm sm:text-base ${phase === 'BRAKING' ? 'text-red-400' : 'text-green-400'}`}>
@@ -657,14 +657,9 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
 
         {/* Animation Stage - Responsive Wrapper */}
         <div className={`relative w-full border-b transition-colors ${theme.roadBg} ${theme.cardBorder}`}>
-          
-          {/* SVG Changes for Mobile:
-             1. Removed min-w-[800px].
-             2. Added w-full h-auto to scale with container.
-             3. Preserved viewBox 0 0 800 300 to maintain coordinate logic.
-          */}
+
           <svg viewBox={`0 0 ${ROAD_LENGTH} 300`} className="w-full h-auto block" preserveAspectRatio="xMidYMid meet">
-            
+
             {/* 1. SCENERY */}
             {/* Road */}
             <rect x="0" y="200" width={ROAD_LENGTH} height="100" fill={theme.roadRect} className="transition-all" />
@@ -707,7 +702,7 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
               {velocity > 0.1 && (
                 <g transform="translate(0, -60)">
                   <text x={velArrowLength / 2} y="-15" textAnchor="middle" fill="#3b82f6" fontSize="16" fontWeight="bold">Velocity (+)</text>
-                  <line x1="0" y1="0" x2={velArrowLength} y2="0" stroke="#3b82f6" strokeWidth="3" markerEnd="url(#arrow-blue)" />
+                  <line x1="0" y1="0" x2={velArrowLength} y2="0" stroke="#3b82f6" strokeWidth="2" markerEnd="url(#arrow-blue)" />
                 </g>
               )}
 
@@ -717,11 +712,11 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
                   <text x={acceleration > 0 ? accelArrowLength / 2 : -accelArrowLength / 2} y="25" textAnchor="middle" fill="#f97316" fontSize="16" fontWeight="bold">
                     {acceleration > 0 ? "Accel (+)" : "Accel (-)"}
                   </text>
-                  <line 
-                    x1="0" y1="0" 
-                    x2={acceleration > 0 ? accelArrowLength : -accelArrowLength} 
-                    y2="0" 
-                    stroke="#f97316" strokeWidth="3" markerEnd="url(#arrow-orange)" 
+                  <line
+                    x1="0" y1="0"
+                    x2={acceleration > 0 ? accelArrowLength : -accelArrowLength}
+                    y2="0"
+                    stroke="#f97316" strokeWidth="2" markerEnd="url(#arrow-orange)"
                   />
                 </g>
               )}
@@ -748,20 +743,20 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
             <div className='block'></div>
             {phase === 'ACCELERATING' && (
               <div className={`inline-block backdrop-blur px-3 py-1 text-sm rounded shadow ${darkMode ? "text-green-400" : "text-green-700"} font-medium border-l-4 border-green-500 bg-white/10`}>
-                 Velocity and Acceleration point in the <strong>SAME</strong> direction. Speed increases.
+                Velocity and Acceleration point in the <strong>SAME</strong> direction. Speed increases.
               </div>
             )}
             {phase === 'COASTING' && (
-               <div className={`inline-block backdrop-blur px-3 py-1 text-sm rounded shadow ${darkMode ? "text-blue-400" : "text-blue-700"} font-medium border-l-4 border-blue-500 bg-white/10`}>
-                 Constant Velocity. Acceleration is <strong>ZERO</strong>.
+              <div className={`inline-block backdrop-blur px-3 py-1 text-sm rounded shadow ${darkMode ? "text-blue-400" : "text-blue-700"} font-medium border-l-4 border-blue-500 bg-white/10`}>
+                Constant Velocity. Acceleration is <strong>ZERO</strong>.
               </div>
             )}
             {phase === 'BRAKING' && (
               <div className={`inline-block backdrop-blur px-3 py-1 text-sm rounded shadow ${darkMode ? "text-red-500" : "text-red-700"} font-medium border-l-4 border-red-500 bg-white/10`}>
-                Velocity is (+), Acceleration is (-). They <strong>OPPOSE</strong> each other.
+                Velocity is (+), Acceleration is (-) (deceleration) . They <strong>OPPOSE</strong> each other.
               </div>
             )}
-             {phase === 'FINISHED' && (
+            {phase === 'FINISHED' && (
               <div className={`inline-block backdrop-blur px-3 py-1 text-sm rounded shadow font-medium border-l-4 border-slate-500 bg-white/10`}>
                 Car Stopped. Velocity = 0. Acceleration = 0.
               </div>
@@ -772,36 +767,36 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
         {/* Mobile/Tablet Info Card: Shown below animation (hidden on desktop) */}
         {/* This ensures text doesn't cover the small car on mobile screens */}
         <div className={`md:hidden p-4 border-b ${theme.cardBorder} ${theme.overlayBg}`}>
-           {isPaused && (
-              <div className="mb-2 text-yellow-500 font-bold text-sm text-center">⏸️ SIMULATION PAUSED</div>
-            )}
-           
-           {phase === 'IDLE' && <p className="text-center text-sm text-slate-500">Press Start to begin.</p>}
+          {isPaused && (
+            <div className="mb-2 text-yellow-500 font-bold text-sm text-center">⏸️ SIMULATION PAUSED</div>
+          )}
 
-           {phase === 'ACCELERATING' && (
-              <div className={`p-3 text-sm rounded border-l-4 border-green-500 ${theme.cardBg} shadow-sm`}>
-                <p className="font-bold text-green-500 mb-1">Accelerating</p>
-                Velocity and Acceleration point in the <strong>SAME</strong> direction. Speed increases.
-              </div>
-            )}
-            {phase === 'COASTING' && (
-               <div className={`p-3 text-sm rounded border-l-4 border-blue-500 ${theme.cardBg} shadow-sm`}>
-                 <p className="font-bold text-blue-500 mb-1">Coasting</p>
-                 Constant Velocity. Acceleration is <strong>ZERO</strong> (No Orange Arrow).
-              </div>
-            )}
-            {phase === 'BRAKING' && (
-              <div className={`p-3 text-sm rounded border-l-4 border-red-500 ${theme.cardBg} shadow-sm`}>
-                <p className="font-bold text-red-500 mb-1">Braking</p>
-                Velocity is forward (+), but Acceleration is backward (-). They <strong>OPPOSE</strong> each other.
-              </div>
-            )}
-            {phase === 'FINISHED' && (
-              <div className={`p-3 text-sm rounded border-l-4 border-slate-500 ${theme.cardBg} shadow-sm`}>
-                <p className="font-bold text-slate-500 mb-1">Stopped</p>
-                Car Stopped. Velocity = 0. Acceleration = 0.
-              </div>
-            )}
+          {phase === 'IDLE' && <p className="text-center text-sm text-slate-500">Press Start to begin.</p>}
+
+          {phase === 'ACCELERATING' && (
+            <div className={`p-3 text-sm rounded border-l-4 border-green-500 ${theme.cardBg} shadow-sm`}>
+              <p className="font-bold text-green-500 mb-1">Accelerating</p>
+              Velocity and Acceleration point in the <strong>SAME</strong> direction. Speed increases.
+            </div>
+          )}
+          {phase === 'COASTING' && (
+            <div className={`p-3 text-sm rounded border-l-4 border-blue-500 ${theme.cardBg} shadow-sm`}>
+              <p className="font-bold text-blue-500 mb-1">Coasting</p>
+              Constant Velocity. Acceleration is <strong>ZERO</strong> (No Orange Arrow).
+            </div>
+          )}
+          {phase === 'BRAKING' && (
+            <div className={`p-3 text-sm rounded border-l-4 border-red-500 ${theme.cardBg} shadow-sm`}>
+              <p className="font-bold text-red-500 mb-1">Braking</p>
+              Velocity is forward (+), but Acceleration is backward (deceleration) (-). They <strong>OPPOSE</strong> each other.
+            </div>
+          )}
+          {phase === 'FINISHED' && (
+            <div className={`p-3 text-sm rounded border-l-4 border-slate-500 ${theme.cardBg} shadow-sm`}>
+              <p className="font-bold text-slate-500 mb-1">Stopped</p>
+              Car Stopped. Velocity = 0. Acceleration = 0.
+            </div>
+          )}
         </div>
 
         {/* Controls */}
@@ -839,7 +834,7 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
         </div>
 
         {/* Legend */}
-        <div className={`px-4 pb-4 pt-2 flex flex-wrap justify-center gap-4 sm:gap-8 text-xs sm:text-sm ${theme.textSub}`}>
+        <div className={`px-4 pb-4 pt-2 flex flex-wrap justify-center gap-4 sm:gap-8 text-xs sm:text-sm ${theme.textSub} ${theme.bg}`}>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-blue-500 rounded-sm"></div>
             <span>Velocity (Motion)</span>
@@ -848,6 +843,335 @@ export const DisplacementVelocityAndAcceleration3 = ({ darkMode }) => {
             <div className="w-3 h-3 bg-orange-500 rounded-sm"></div>
             <span>Acceleration (Force)</span>
           </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export const TheSUVATEquations = ({ darkMode }) => {
+  // --- STATE ---
+  const [started, setStarted] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [finishedA, setFinishedA] = useState(false);
+  const [finishedB, setFinishedB] = useState(false);
+
+  // We use state for rendering positions/arrows to the UI
+  const [stateA, setStateA] = useState({ x: 0, v: 0, a: 0 });
+  const [stateB, setStateB] = useState({ x: 0, v: 0, a: 0 });
+
+  // --- PHYSICS CONFIG ---
+  const TRACK_WIDTH = 800;
+  const FINISH_LINE = 700;
+
+  // Total Frames for simulation (approx 6-7 seconds at 60fps)
+  const TOTAL_FRAMES = 380;
+
+  // Track A: Uniform Acceleration to reach 700px in 380 frames
+  // d = 0.5 * a * t^2  => 700 = 0.5 * a * 380^2 
+  // 1400 = a * 144400 => a ≈ 0.0097
+  const ACCEL_A = 0.0097;
+
+  // Track B: Scripted "Events" to result in roughly same finish time
+  const physicsRef = useRef({
+    frame: 0,
+    a: { x: 0, v: 0 },
+    b: { x: 0, v: 0 }
+  });
+
+  const requestRef = useRef();
+
+  // --- ANIMATION LOOP ---
+  const animate = () => {
+    const phys = physicsRef.current;
+
+    // 1. UPDATE TRACK A (Uniform)
+    // v = u + at
+    if (phys.a.x < FINISH_LINE) {
+      phys.a.v += ACCEL_A;
+      phys.a.x += phys.a.v;
+    }
+
+    // 2. UPDATE TRACK B (Non-Uniform / Erratic)
+    let accelB = 0;
+
+    if (phys.b.x < FINISH_LINE) {
+      const t = phys.frame;
+
+      // Phase 1: Slow Start (0 - 100 frames)
+      if (t < 100) {
+        accelB = 0.005;
+      }
+      // Phase 2: HUGE BOOST (100 - 140 frames)
+      else if (t >= 100 && t < 140) {
+        accelB = 0.08; // High Jerk
+      }
+      // Phase 3: Coasting (140 - 280 frames)
+      else if (t >= 140 && t < 280) {
+        accelB = 0; // Constant Velocity
+      }
+      // Phase 4: Final Sprint (280+ frames)
+      else {
+        accelB = 0.025;
+      }
+
+      phys.b.v += accelB;
+      phys.b.x += phys.b.v;
+    }
+
+    // 3. Increment Frame
+    phys.frame++;
+
+    // 4. Update React State for Render
+    setStateA({
+      x: Math.min(phys.a.x, FINISH_LINE),
+      v: phys.a.v,
+      a: phys.a.x >= FINISH_LINE ? 0 : ACCEL_A
+    });
+
+    setStateB({
+      x: Math.min(phys.b.x, FINISH_LINE),
+      v: phys.b.v,
+      a: phys.b.x >= FINISH_LINE ? 0 : accelB
+    });
+
+    // 5. Check Finish Conditions
+    if (phys.a.x >= FINISH_LINE) setFinishedA(true);
+    if (phys.b.x >= FINISH_LINE) setFinishedB(true);
+
+    // 6. Continue Loop
+    if (phys.a.x < FINISH_LINE || phys.b.x < FINISH_LINE) {
+      requestRef.current = requestAnimationFrame(animate);
+    }
+  };
+
+  // --- CONTROLS ---
+  const handleStart = () => {
+    setStarted(true);
+    setPaused(false);
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
+  const togglePause = () => {
+    if (paused) {
+      setPaused(false);
+      requestRef.current = requestAnimationFrame(animate);
+    } else {
+      setPaused(true);
+      cancelAnimationFrame(requestRef.current);
+    }
+  };
+
+  const handleReset = () => {
+    cancelAnimationFrame(requestRef.current);
+    setStarted(false);
+    setPaused(false);
+    setFinishedA(false);
+    setFinishedB(false);
+    setStateA({ x: 0, v: 0, a: 0 });
+    setStateB({ x: 0, v: 0, a: 0 });
+    physicsRef.current = { frame: 0, a: { x: 0, v: 0 }, b: { x: 0, v: 0 } };
+  };
+
+  useEffect(() => {
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
+
+  // --- RENDER HELPERS ---
+  const arrowScaleA = stateA.v * 15;
+  const arrowScaleB = stateB.v * 15;
+
+  const getLabelB = (accel) => {
+    if (accel === 0) return "Coasting (a=0)";
+    if (accel > 0.05) return "BOOST (High a)";
+    if (accel > 0.02) return "Sprint (Catch Up)";
+    return "Slow Start";
+  };
+
+  // --- DARK MODE THEME ---
+  const theme = {
+    bg: darkMode ? 'bg-slate-900' : 'bg-slate-50',
+    textMain: darkMode ? 'text-slate-100' : 'text-slate-800',
+    textSub: darkMode ? 'text-slate-400' : 'text-slate-500',
+    cardBg: darkMode ? 'bg-slate-800' : 'bg-white',
+    cardBorder: darkMode ? 'border-slate-700' : 'border-slate-200',
+    simulationBg: darkMode ? 'bg-slate-900' : 'bg-slate-100',
+    svgBg: darkMode ? 'bg-slate-800' : 'bg-white',
+    svgBorder: darkMode ? '#475569' : '#cbd5e1',
+    lineStroke: darkMode ? '#334155' : '#e2e8f0',
+    textLabel: darkMode ? '#94a3b8' : '#334155',
+    finishText: darkMode ? '#64748b' : '#94a3b8',
+    panelA: darkMode ? 'bg-blue-900/30 border-blue-800 text-blue-300' : 'bg-blue-50 border-blue-200 text-blue-800',
+    panelB: darkMode ? 'bg-red-900/30 border-red-800 text-red-300' : 'bg-red-50 border-red-200 text-red-800',
+    panelSub: darkMode ? 'text-blue-200' : 'text-blue-700',
+    panelSubRed: darkMode ? 'text-red-200' : 'text-red-700'
+  };
+
+  return (
+    <div className={`min-h-screen font-sans p-2 sm:p-4 flex flex-col items-center transition-colors duration-300 ${theme.bg} ${theme.textMain}`}>
+
+      <div className={`w-full max-w-5xl rounded-xl shadow-xl overflow-hidden border transition-colors ${theme.cardBg} ${theme.cardBorder}`}>
+
+        {/* Header */}
+        <div className={`p-4 sm:p-6 border-b transition-colors ${darkMode ? 'bg-slate-950 border-slate-700' : 'bg-slate-900 border-slate-700'} text-white`}>
+          <h1 className="text-xl sm:text-2xl font-bold">When can we use SUVAT?</h1>
+          <p className="text-slate-400 text-xs sm:text-sm mt-1">
+            Comparing <strong>Uniform Acceleration</strong> (Formulas work) vs. <strong>Non-Uniform Acceleration</strong> (Formulas fail).
+          </p>
+        </div>
+
+        {/* SIMULATION AREA */}
+        <div className={`relative p-2 sm:p-6 overflow-hidden transition-colors ${theme.simulationBg}`}>
+
+          <svg 
+            viewBox={`0 0 ${TRACK_WIDTH} 400`} 
+            className={`w-full h-auto rounded-lg border shadow-inner transition-colors ${theme.svgBg}`}
+            style={{ borderColor: theme.svgBorder }}
+            preserveAspectRatio="xMidYMid meet"
+          >
+
+            {/* GLOBAL: Finish Line */}
+            <line x1={FINISH_LINE} y1="20" x2={FINISH_LINE} y2="380" stroke={theme.svgBorder} strokeWidth="4" strokeDasharray="10,5" />
+            <text x={FINISH_LINE + 10} y="40" fill={theme.finishText} fontSize="14" fontWeight="bold">FINISH</text>
+
+            {/* --- TRACK A (TOP) --- */}
+            <g transform="translate(0, 100)">
+              {/* Track Labels */}
+              <text x="20" y="-60" fill={theme.textLabel} fontSize="20" fontWeight="bold">Track A: Uniform</text>
+              <text x="20" y="-35" fill="#16a34a" fontSize="16" fontWeight="bold">✅ SUVAT OK</text>
+
+              {/* Lane */}
+              <line x1="0" y1="0" x2={TRACK_WIDTH} y2="0" stroke={theme.lineStroke} strokeWidth="2" />
+
+              {/* PARTICLE A */}
+              <g transform={`translate(${stateA.x}, 0)`}>
+                <circle r="15" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="2" />
+                <text x="-5" y="5" fill="white" fontSize="10" fontWeight="bold">A</text>
+
+                {/* Velocity Vector A */}
+                <line
+                  x1="0" y1="0"
+                  x2={arrowScaleA} y2="0"
+                  stroke="#2757a8"
+                  strokeWidth="3"
+                  markerEnd="url(#arrow-blue)"
+                  opacity={stateA.v > 0.1 ? 1 : 0}
+                />
+                {stateA.v > 0.1 && (
+                  <text x={arrowScaleA / 2} y="-25" textAnchor="middle" fill="#3b82f6" fontSize="12" fontWeight="bold">
+                    Smooth V
+                  </text>
+                )}
+              </g>
+
+              {/* Checkmark (Only on finish) */}
+              {finishedA && (
+                <g transform={`translate(${FINISH_LINE + 50}, 0)`}>
+                  <circle r="20" fill="#22c55e" />
+                  <path d="M-8 0 L-2 6 L8 -6" stroke="white" strokeWidth="4" fill="none" />
+                </g>
+              )}
+            </g>
+
+
+            {/* --- TRACK B (BOTTOM) --- */}
+            <g transform="translate(0, 300)">
+              {/* Track Labels */}
+              <text x="20" y="-60" fill={theme.textLabel} fontSize="20" fontWeight="bold">Track B: Non-Uniform</text>
+              <text x="20" y="-35" fill="#dc2626" fontSize="16" fontWeight="bold">❌ SUVAT FAILS</text>
+
+              {/* Lane */}
+              <line x1="0" y1="0" x2={TRACK_WIDTH} y2="0" stroke={theme.lineStroke} strokeWidth="2" />
+
+              {/* PARTICLE B */}
+              <g transform={`translate(${stateB.x}, 0)`}>
+                <circle r="15" fill="#ef4444" stroke="#b91c1c" strokeWidth="2" />
+                <text x="-5" y="5" fill="white" fontSize="10" fontWeight="bold">B</text>
+
+                {/* Velocity Vector B */}
+                <line
+                  x1="0" y1="0"
+                  x2={arrowScaleB} y2="0"
+                  stroke="#c93838"
+                  strokeWidth="3"
+                  markerEnd="url(#arrow-red)"
+                  opacity={stateB.v > 0.1 ? 1 : 0}
+                />
+                {stateB.v > 0.1 && (
+                  <text x={arrowScaleB / 2} y="-25" textAnchor="middle" fill="#ef4444" fontSize="12" fontWeight="bold">
+                    {getLabelB(stateB.a)}
+                  </text>
+                )}
+              </g>
+
+              {/* Cross (Only on finish) */}
+              {finishedB && (
+                <g transform={`translate(${FINISH_LINE + 50}, 0)`}>
+                  <circle r="20" fill="#ef4444" />
+                  <path d="M-6 -6 L6 6 M6 -6 L-6 6" stroke="white" strokeWidth="4" fill="none" />
+                </g>
+              )}
+            </g>
+
+            {/* DEFS for markers */}
+            <defs>
+              <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#2757a8" />
+              </marker>
+              <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#c93838" />
+              </marker>
+            </defs>
+
+          </svg>
+
+          {/* Teaching Context (Stacked on mobile, Grid on desktop) */}
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={`p-3 sm:p-4 rounded-lg border transition-colors ${theme.panelA}`}>
+              <h3 className="font-bold mb-1 text-sm sm:text-base">Track A (Uniform)</h3>
+              <p className={`text-xs sm:text-sm ${theme.panelSub}`}>
+                Acceleration is <strong>constant</strong>. The velocity vector grows steadily.
+                Calculable using: <br />
+                <span className={`font-mono px-2 py-1 rounded inline-block mt-1 ${darkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}>s = ut + ½at²</span>
+              </p>
+            </div>
+            <div className={`p-3 sm:p-4 rounded-lg border transition-colors ${theme.panelB}`}>
+              <h3 className="font-bold mb-1 text-sm sm:text-base">Track B (Non-Uniform)</h3>
+              <p className={`text-xs sm:text-sm ${theme.panelSubRed}`}>
+                Acceleration <strong>changes</strong> (Boosts, Coasting). The velocity vector jumps erratically.
+                SUVAT equations give the <strong>wrong answer</strong> here.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Controls */}
+        <div className={`p-4 sm:p-6 border-t flex flex-wrap sm:flex-nowrap justify-center gap-3 sm:gap-4 transition-colors ${theme.bg} ${theme.cardBorder}`}>
+          {!started || (finishedA && finishedB) ? (
+            <button
+              onClick={finishedA ? handleReset : handleStart}
+              className={`w-full sm:w-auto font-bold py-3 px-8 rounded-lg sm:rounded-full shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 ${darkMode ? 'bg-slate-700 hover:bg-slate-600 text-white' : 'bg-slate-800 hover:bg-slate-700 text-white'}`}
+            >
+              {finishedA ? "↺ Reset Simulation" : "▶ Start Comparison"}
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={togglePause}
+                className={`w-full sm:w-auto font-bold py-3 px-8 rounded-lg sm:rounded-full shadow transition-colors flex items-center justify-center gap-2 ${paused ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-yellow-500 hover:bg-yellow-600 text-white'}`}
+              >
+                {paused ? "▶ Resume" : "⏸ Pause"}
+              </button>
+              <button
+                onClick={handleReset}
+                className={`w-full sm:w-auto font-bold py-3 px-6 rounded-lg sm:rounded-full transition-colors ${darkMode ? 'bg-slate-700 hover:bg-slate-600 text-white' : 'bg-slate-300 hover:bg-slate-400 text-slate-800'}`}
+              >
+                Reset
+              </button>
+            </>
+          )}
         </div>
 
       </div>
