@@ -1344,13 +1344,31 @@ export const GraphsOfMotion = ({ darkMode, mobile }) => {
   // LOGIC FIX: Reset tilt if finished, otherwise use braking tilt
   const carRotation = (isBraking && !isFinished) ? 3 : isAccelerating ? -1 : 0;
 
-  return (
-    <div className="bg-slate-50 font-sans text-slate-800 flex flex-col items-center py-6">
+  // --- DARK MODE THEME ---
+  const theme = {
+    textMain: darkMode ? 'text-slate-100' : 'text-slate-800',
+    cardBg: darkMode ? 'bg-slate-800' : 'bg-white',
+    cardBorder: darkMode ? 'border-slate-700' : 'border-slate-200',
+    headerBg: darkMode ? 'bg-slate-950' : 'bg-slate-900',
+    // Sky/World section
+    skyBg: darkMode ? 'bg-slate-900 border-slate-700' : 'bg-sky-100 border-slate-300',
+    cloudOpacity: darkMode ? '0.1' : '0.3', // Dim clouds at night
+    roadFill: darkMode ? '#1e293b' : '#475569',
+    roadLine: darkMode ? '#94a3b8' : '#facc15',
+    // Graph Section
+    graphBg: darkMode ? 'bg-slate-950' : 'bg-slate-900',
+    // Controls
+    controlsBg: darkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-100 border-slate-200',
+    resetBtn: darkMode ? 'bg-slate-700 hover:bg-slate-600' : 'bg-slate-700 hover:bg-slate-800',
+  };
 
-      <div className="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-200">
+  return (
+    <div className={`font-sans ${theme.textMain} flex flex-col items-center py-6 transition-colors duration-300`}>
+
+      <div className={`max-w-4xl w-full ${theme.cardBg} rounded-xl shadow-2xl overflow-hidden border ${theme.cardBorder} transition-colors`}>
 
         {/* HEADER */}
-        <div className="bg-slate-900 text-white p-4 flex justify-between items-center">
+        <div className={`${theme.headerBg} text-white p-4 flex justify-between items-center transition-colors`}>
           <h1 className="text-xl font-bold">Velocity-Time Graph</h1>
           <div className="flex gap-4 text-sm font-mono">
             <span>Time: {currentTime.toFixed(2)}s</span>
@@ -1359,83 +1377,153 @@ export const GraphsOfMotion = ({ darkMode, mobile }) => {
         </div>
 
         {/* --- PART 1: REAL WORLD (TOP) --- */}
-        <div className="relative h-48 bg-sky-100 overflow-hidden border-b-4 border-slate-300">
+        {mobile ? (
+          <div className={`relative ${theme.skyBg} border-b-4 transition-colors`}>
 
-          {/* Scenery: Clouds */}
-          <div className="absolute top-4 left-10 text-6xl opacity-20">☁️</div>
-          <div className="absolute top-8 left-60 text-5xl opacity-30">☁️</div>
-          <div className="absolute top-2 right-20 text-6xl opacity-20">☁️</div>
+            {/* preserveAspectRatio="xMidYMid slice" ensures it covers the area nicely */}
+            <svg viewBox={`0 0 ${TRACK_LENGTH} 200`} className="w-full h-auto block">
 
-          {/* The Road */}
-          <div className="absolute bottom-0 w-full h-16 bg-slate-600">
-            <div className="w-full h-full border-t-2 border-b-2 border-white/20 flex items-center">
-              <div className="w-full border-t-2 border-dashed border-yellow-400/50"></div>
-            </div>
-          </div>
+              {/* 1. SCENERY */}
+              <text x="50" y="50" fontSize="60" opacity={theme.cloudOpacity} fill="currentColor">☁️</text>
+              <text x="250" y="80" fontSize="50" opacity={theme.cloudOpacity} fill="currentColor">☁️</text>
+              <text x="700" y="40" fontSize="60" opacity={theme.cloudOpacity} fill="currentColor">☁️</text>
 
-          {/* The Car */}
-          <div
-            className="absolute bottom-4 transition-transform duration-200 ease-out"
-            style={mobile ? ({
-              left: `${Math.min(carLeftPercent, 90)}%`,
-              transform: `rotate(${carRotation}deg)`,
-              transformOrigin: 'bottom center'
-            }) : ({
-              // Updated Transform: Uses carRotation variable calculated above
-              transform: `translateX(${carVisualX}px) rotate(${carRotation}deg)`,
-              transformOrigin: 'bottom center'
-            })}
-          >
-            {/* Brake Light Glow Effect (Only visible when braking AND NOT FINISHED) */}
-            {(isBraking && !isFinished) && (
-              <div className="absolute top-[22px] -left-1 w-6 h-3 bg-red-500 rounded-full blur-[4px] opacity-80 animate-pulse"></div>
-            )}
+              {/* 2. THE ROAD */}
+              <rect x="0" y="136" width={TRACK_LENGTH} height="64" fill={theme.roadFill} className="transition-colors" />
+              {/* Road Line */}
+              <line x1="0" y1="168" x2={TRACK_LENGTH} y2="168" stroke={theme.roadLine} strokeWidth="2" strokeDasharray="20,20" opacity="0.5" />
 
-            {/* STOPPED LABEL - Appears when finished */}
-            {isFinished && (
-              <div className="absolute -top-20 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white/90 px-2 py-1 rounded border-2 border-slate-800 text-slate-800 font-bold text-xs shadow-md animate-pulse">
-                STOPPED
-              </div>
-            )}
+              {/* 3. THE CAR GROUP */}
+              {/* We move the whole group using your calculated carVisualX */}
+              <g transform={`translate(${carVisualX}, 130) rotate(${carRotation}, 50, 40)`}>
 
-            {/* Simple SVG Car */}
-            <svg width="80" height="40" viewBox="0 0 100 50">
-              {/* Brake Light (Physical part) */}
-              <rect x="8" y="20" width="4" height="12" fill={(isBraking && !isFinished) ? "#ff2222" : "#7f1d1d"} rx="1" />
+                {/* Brake Light Glow (Your Pulse Effect) */}
+                {(isBraking && !isFinished) && (
+                  <circle cx="10" cy="30" r="10" fill="#ef4444" opacity="0.6">
+                    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="0.5s" repeatCount="indefinite" />
+                  </circle>
+                )}
 
-              {/* Car Body */}
-              <path d="M10 40 L10 20 L25 10 L75 10 L90 20 L90 40 Z" fill="#ef4444" stroke="#991b1b" strokeWidth="2" />
+                {/* STOPPED Label (Your Badge) */}
+                {isFinished && (
+                  <g transform="translate(50, -30)" className='animate-pulse'>
+                    <rect x="-43" y="-40" width="70" height="20" rx="4" fill="white" stroke="#1e293b" strokeWidth="2" />
+                    <text x="-8" y="-25" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#1e293b">STOPPED</text>
+                  </g>
+                )}
 
-              {/* Wheels */}
-              <circle cx="25" cy="40" r="8" fill="#1e293b" />
-              <circle cx="75" cy="40" r="8" fill="#1e293b" />
-              <circle cx="25" cy="40" r="3" fill="#94a3b8" />
-              <circle cx="75" cy="40" r="3" fill="#94a3b8" />
+                {/* Your Car Shape */}
+                <g transform="scale(0.8)"> {/* Scaled slightly to fit 800px world better */}
+                  <rect x="8" y="20" width="4" height="12" fill={(isBraking && !isFinished) ? "#ff2222" : "#7f1d1d"} rx="1" />
+                  <path d="M10 40 L10 20 L25 10 L75 10 L90 20 L90 40 Z" fill="#ef4444" stroke="#991b1b" strokeWidth="2" />
+                  <circle cx="25" cy="40" r="8" fill="#1e293b" />
+                  <circle cx="75" cy="40" r="8" fill="#1e293b" />
+                  <circle cx="25" cy="40" r="3" fill="#94a3b8" />
+                  <circle cx="75" cy="40" r="3" fill="#94a3b8" />
+                </g>
+
+                {/* Speedometer (Floating above car) */}
+                <g transform="translate(10, -35)">
+                  <rect x="0" y="0" width="60" height="25" rx="4" fill="rgba(0,0,0,0.8)" stroke="rgba(255,255,255,0.2)" />
+                  <text x="30" y="10" textAnchor="middle" fill="#94a3b8" fontSize="8" style={{ textTransform: 'uppercase' }}>Speed</text>
+                  <text x="30" y="22" textAnchor="middle" fill={isBraking ? "#ef4444" : "#38bdf8"} fontSize="12" fontWeight="bold" fontFamily="monospace">
+                    {Math.round(velocity)}
+                  </text>
+                </g>
+              </g>
+
+              {/* Phase Label Overlay (Centered in World) */}
+              <g transform="translate(400, 20)">
+                <rect x="-100" y="0" width="200" height="24" rx="12" fill={
+                  phase === 'stopped' ? '#e2e8f0' :
+                    phase === 'accel' ? '#dcfce7' :
+                      phase === 'cruise' ? '#dbeafe' : '#fee2e2'
+                } stroke="none" />
+                <text x="0" y="17" textAnchor="middle" fontSize="12" fontWeight="bold" fill={
+                  phase === 'stopped' ? '#475569' :
+                    phase === 'accel' ? '#15803d' :
+                      phase === 'cruise' ? '#1d4ed8' : '#b91c1c'
+                } style={{ textTransform: 'uppercase' }}>
+                  PHASE: {phase}
+                </text>
+              </g>
             </svg>
+          </div>
+        ) : (
+          <div className={`relative h-48 overflow-hidden border-b-4 transition-colors ${theme.skyBg}`}>
 
-            {/* Speedometer Floating Above Car */}
-            <div className="absolute -top-12 left-0 w-20 bg-black/80 text-white text-xs p-1 rounded text-center border border-white/20 backdrop-blur-sm">
-              <div className="text-[10px] text-slate-400 uppercase">Speed</div>
-              <div className={`font-mono font-bold text-lg ${isBraking ? 'text-red-500' : 'text-blue-400'}`}>
-                {Math.round(velocity)}
+            {/* Scenery: Clouds */}
+            <div className={`absolute top-4 left-10 text-6xl opacity-${darkMode ? '10' : '20'}`}>☁️</div>
+            <div className={`absolute top-8 left-60 text-5xl opacity-${darkMode ? '10' : '30'}`}>☁️</div>
+            <div className={`absolute top-2 right-20 text-6xl opacity-${darkMode ? '10' : '20'}`}>☁️</div>
+
+            {/* The Road */}
+            <div className="absolute bottom-0 w-full h-16" style={{ backgroundColor: darkMode ? '#334155' : '#475569' }}>
+              <div className="w-full h-full border-t-2 border-b-2 border-white/20 flex items-center">
+                <div className="w-full border-t-2 border-dashed" style={{ borderColor: darkMode ? '#64748b' : 'rgba(250, 204, 21, 0.5)' }}></div>
+              </div>
+            </div>
+
+            {/* The Car */}
+            <div
+              className="absolute bottom-4 transition-transform duration-200 ease-out"
+              style={{
+                // Updated Transform: Uses carRotation variable calculated above
+                transform: `translateX(${carVisualX}px) rotate(${carRotation}deg)`,
+                transformOrigin: 'bottom center'
+              }}
+            >
+              {/* Brake Light Glow Effect (Only visible when braking AND NOT FINISHED) */}
+              {(isBraking && !isFinished) && (
+                <div className="absolute top-[22px] -left-1 w-6 h-3 bg-red-500 rounded-full blur-[4px] opacity-80 animate-pulse"></div>
+              )}
+
+              {/* STOPPED LABEL - Appears when finished */}
+              {isFinished && (
+                <div className="absolute -top-20 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white/90 px-2 py-1 rounded border-2 border-slate-800 text-slate-800 font-bold text-xs shadow-md animate-pulse">
+                  STOPPED
+                </div>
+              )}
+
+              {/* Simple SVG Car */}
+              <svg width="80" height="40" viewBox="0 0 100 50">
+                {/* Brake Light (Physical part) */}
+                <rect x="8" y="20" width="4" height="12" fill={(isBraking && !isFinished) ? "#ff2222" : "#7f1d1d"} rx="1" />
+
+                {/* Car Body */}
+                <path d="M10 40 L10 20 L25 10 L75 10 L90 20 L90 40 Z" fill="#ef4444" stroke="#991b1b" strokeWidth="2" />
+
+                {/* Wheels */}
+                <circle cx="25" cy="40" r="8" fill="#1e293b" />
+                <circle cx="75" cy="40" r="8" fill="#1e293b" />
+                <circle cx="25" cy="40" r="3" fill="#94a3b8" />
+                <circle cx="75" cy="40" r="3" fill="#94a3b8" />
+              </svg>
+
+              {/* Speedometer Floating Above Car */}
+              <div className="absolute -top-12 left-0 w-20 bg-black/80 text-white text-xs p-1 rounded text-center border border-white/20 backdrop-blur-sm">
+                <div className="text-[10px] text-slate-400 uppercase">Speed</div>
+                <div className={`font-mono font-bold text-lg ${isBraking ? 'text-red-500' : 'text-blue-400'}`}>
+                  {Math.round(velocity)}
+                </div>
+              </div>
+            </div>
+
+            {/* Phase Label Overlay (World) */}
+            <div className="absolute top-2 left-1/2 -translate-x-1/2">
+              <div className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm 
+                    ${phase === 'stopped' ? 'bg-slate-200 text-slate-600' :
+                  phase === 'accel' ? 'bg-green-100 text-green-700' :
+                    phase === 'cruise' ? 'bg-blue-100 text-blue-700' :
+                      'bg-red-100 text-red-700'}`}>
+                Current Phase: {phase.toUpperCase()}
               </div>
             </div>
           </div>
-
-          {/* Phase Label Overlay (World) */}
-          <div className="absolute top-2 left-1/2 -translate-x-1/2">
-            <div className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm 
-                    ${phase === 'stopped' ? 'bg-slate-200 text-slate-600' :
-                phase === 'accel' ? 'bg-green-100 text-green-700' :
-                  phase === 'cruise' ? 'bg-blue-100 text-blue-700' :
-                    'bg-red-100 text-red-700'}`}>
-              Current Phase: {phase.toUpperCase()}
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* --- PART 2: GRAPH WORLD (BOTTOM) --- */}
-        <div className="relative h-85 bg-slate-900 px-16 pt-16 pb-0 not-md:h-auto not-md:p-6">
+        <div className={`relative h-85 ${theme.graphBg} px-16 pt-16 pb-0 not-md:h-auto not-md:p-6 transition-colors`}>
 
           {/* Graph Grid/Axes */}
           <svg viewBox="0 0 800 200" className="w-full h-full overflow-visible">
@@ -1513,7 +1601,7 @@ export const GraphsOfMotion = ({ darkMode, mobile }) => {
         </div>
 
         {/* CONTROLS */}
-        <div className="p-4 bg-slate-100 border-t border-slate-200 flex justify-center gap-4">
+        <div className={`p-4 border-t flex justify-center gap-4 transition-colors ${theme.controlsBg}`}>
           {!isPlaying && !isFinished ? (
             <button
               onClick={handleStart}
@@ -1531,7 +1619,7 @@ export const GraphsOfMotion = ({ darkMode, mobile }) => {
           ) : (
             <button
               onClick={handleReset}
-              className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 px-8 rounded-full shadow transition-colors flex items-center gap-2"
+              className={`${theme.resetBtn} text-white font-bold py-3 px-8 rounded-full shadow transition-colors flex items-center gap-2`}
             >
               ↺ Reset
             </button>
