@@ -8,6 +8,10 @@ export function lectureLayout(lessonId) {
     suvatEquations: {
       layouts: 4,
       sectionIds: ['variables', 'goldenRule', 'equations', 'strategy']
+    },
+    graphsOfMotion: {
+      layouts: 4,
+      sectionIds: ['variables', 'goldenRule', 'strategy']
     }
 
   }

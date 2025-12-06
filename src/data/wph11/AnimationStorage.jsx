@@ -1024,8 +1024,8 @@ export const TheSUVATEquations = ({ darkMode }) => {
         {/* SIMULATION AREA */}
         <div className={`relative p-2 sm:p-6 overflow-hidden transition-colors ${theme.simulationBg}`}>
 
-          <svg 
-            viewBox={`0 0 ${TRACK_WIDTH} 400`} 
+          <svg
+            viewBox={`0 0 ${TRACK_WIDTH} 400`}
             className={`w-full h-auto rounded-lg border shadow-inner transition-colors ${theme.svgBg}`}
             style={{ borderColor: theme.svgBorder }}
             preserveAspectRatio="xMidYMid meet"
@@ -1171,6 +1171,370 @@ export const TheSUVATEquations = ({ darkMode }) => {
                 Reset
               </button>
             </>
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export const GraphsOfMotion = ({ darkMode, mobile }) => {
+  // --- STATE ---
+  const [currentTime, setCurrentTime] = useState(0); // 0 to 10 seconds
+  const [velocity, setVelocity] = useState(0);       // m/s
+  const [carX, setCarX] = useState(0);               // position units
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+
+  // Graph Data Points: Array of {x, y} for SVG path
+  const [graphPoints, setGraphPoints] = useState([]);
+
+  // --- REFS ---
+  const requestRef = useRef();
+  const startTimeRef = useRef(0);
+  const pausedTimeRef = useRef(0);
+
+  // --- CONFIG ---
+  const DURATION = 10; // seconds
+  const MAX_VELOCITY = 30; // m/s (for graph scaling)
+  const TRACK_LENGTH = 800; // pixels
+
+  // --- PHYSICS ENGINE ---
+  // Calculates state based on specific time t
+  const calculatePhysics = (t) => {
+    let v = 0;
+    let cue = "";
+    let phase = "";
+
+    // PHASE 1: STOPPED (0s to 2s)
+    if (t < 2) {
+      v = 0;
+      cue = "Velocity is 0";
+      phase = "stopped";
+    }
+    // PHASE 2: ACCELERATION (2s to 5s)
+    else if (t >= 2 && t < 5) {
+      // Linearly increase from 0 to 30 over 3 seconds
+      // v = u + at -> v = 0 + 10 * (t-2)
+      v = 10 * (t - 2);
+      cue = "Speeding Up = Slope UP";
+      phase = "accel";
+    }
+    // PHASE 3: CRUISING (5s to 8s)
+    else if (t >= 5 && t < 8) {
+      // Constant 30
+      v = 30;
+      cue = "Constant Speed = Flat Line";
+      phase = "cruise";
+    }
+    // PHASE 4: BRAKING (8s to 10s)
+    else if (t >= 8 && t <= 10) {
+      // Decrease from 30 to 0 over 2 seconds
+      // v = u + at -> v = 30 - 15 * (t-8)
+      v = 30 - 15 * (t - 8);
+      if (v < 0) v = 0;
+      cue = "Slowing Down = Slope DOWN";
+      phase = "brake";
+    }
+    // FINISHED
+    else {
+      v = 0;
+      cue = "Journey Complete";
+      phase = "finished";
+    }
+
+    return { v, cue, phase };
+  };
+
+  // --- ANIMATION LOOP ---
+  const animate = (timestamp) => {
+    if (!startTimeRef.current) startTimeRef.current = timestamp;
+
+    // Calculate elapsed time (seconds)
+    const elapsed = (timestamp - startTimeRef.current + pausedTimeRef.current) / 1000;
+
+    if (elapsed >= DURATION) {
+      setCurrentTime(DURATION);
+      setIsFinished(true);
+      setIsPlaying(false);
+      // Ensure final graph point hits 0
+      updateSimulation(DURATION);
+      return;
+    }
+
+    updateSimulation(elapsed);
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
+  const updateSimulation = (t) => {
+    const { v, cue, phase } = calculatePhysics(t);
+
+    // Update Car Position (Integrating velocity roughly for visual)
+    setCarX(prev => prev + (v * 0.15)); // Scaling factor for screen width
+
+    setCurrentTime(t);
+    setVelocity(v);
+
+    // Update Graph
+    setGraphPoints(prev => [...prev, { t: t, v: v }]);
+  };
+
+  // --- CONTROLS ---
+  const handleStart = () => {
+    setIsPlaying(true);
+    setIsFinished(false);
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    cancelAnimationFrame(requestRef.current);
+    pausedTimeRef.current += performance.now() - startTimeRef.current;
+    startTimeRef.current = 0;
+  };
+
+  const handleReset = () => {
+    setIsPlaying(false);
+    setIsFinished(false);
+    cancelAnimationFrame(requestRef.current);
+
+    // Reset Refs
+    startTimeRef.current = 0;
+    pausedTimeRef.current = 0;
+
+    // Reset State
+    setCurrentTime(0);
+    setVelocity(0);
+    setCarX(0);
+    setGraphPoints([{ t: 0, v: 0 }]);
+  };
+
+  // Cleanup
+  useEffect(() => {
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
+
+  // --- RENDER HELPERS ---
+  const { cue, phase } = calculatePhysics(currentTime);
+
+  // Convert points array to SVG path string
+  const getSvgPath = () => {
+    if (graphPoints.length === 0) return "";
+
+    const width = 800;
+    const height = 200;
+
+    const path = graphPoints.map((p, i) => {
+      const x = (p.t / DURATION) * width;
+      const y = height - ((p.v / MAX_VELOCITY) * height); // Invert Y
+      return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+    }).join(' ');
+
+    return path;
+  };
+
+  // Car Visual Logic
+  const carVisualX = Math.min(carX, 680); // Stop before edge
+  const trackLength = 800;
+  const carLeftPercent = (carX / trackLength) * 100;
+  const isBraking = phase === 'brake';
+  const isAccelerating = phase === 'accel';
+
+  // LOGIC FIX: Reset tilt if finished, otherwise use braking tilt
+  const carRotation = (isBraking && !isFinished) ? 3 : isAccelerating ? -1 : 0;
+
+  return (
+    <div className="bg-slate-50 font-sans text-slate-800 flex flex-col items-center py-6">
+
+      <div className="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-200">
+
+        {/* HEADER */}
+        <div className="bg-slate-900 text-white p-4 flex justify-between items-center">
+          <h1 className="text-xl font-bold">Velocity-Time Graph</h1>
+          <div className="flex gap-4 text-sm font-mono">
+            <span>Time: {currentTime.toFixed(2)}s</span>
+            <span className="text-blue-400">Vel: {velocity.toFixed(1)} m/s</span>
+          </div>
+        </div>
+
+        {/* --- PART 1: REAL WORLD (TOP) --- */}
+        <div className="relative h-48 bg-sky-100 overflow-hidden border-b-4 border-slate-300">
+
+          {/* Scenery: Clouds */}
+          <div className="absolute top-4 left-10 text-6xl opacity-20">☁️</div>
+          <div className="absolute top-8 left-60 text-5xl opacity-30">☁️</div>
+          <div className="absolute top-2 right-20 text-6xl opacity-20">☁️</div>
+
+          {/* The Road */}
+          <div className="absolute bottom-0 w-full h-16 bg-slate-600">
+            <div className="w-full h-full border-t-2 border-b-2 border-white/20 flex items-center">
+              <div className="w-full border-t-2 border-dashed border-yellow-400/50"></div>
+            </div>
+          </div>
+
+          {/* The Car */}
+          <div
+            className="absolute bottom-4 transition-transform duration-200 ease-out"
+            style={mobile ? ({
+              left: `${Math.min(carLeftPercent, 90)}%`,
+              transform: `rotate(${carRotation}deg)`,
+              transformOrigin: 'bottom center'
+            }) : ({
+              // Updated Transform: Uses carRotation variable calculated above
+              transform: `translateX(${carVisualX}px) rotate(${carRotation}deg)`,
+              transformOrigin: 'bottom center'
+            })}
+          >
+            {/* Brake Light Glow Effect (Only visible when braking AND NOT FINISHED) */}
+            {(isBraking && !isFinished) && (
+              <div className="absolute top-[22px] -left-1 w-6 h-3 bg-red-500 rounded-full blur-[4px] opacity-80 animate-pulse"></div>
+            )}
+
+            {/* STOPPED LABEL - Appears when finished */}
+            {isFinished && (
+              <div className="absolute -top-20 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white/90 px-2 py-1 rounded border-2 border-slate-800 text-slate-800 font-bold text-xs shadow-md animate-pulse">
+                STOPPED
+              </div>
+            )}
+
+            {/* Simple SVG Car */}
+            <svg width="80" height="40" viewBox="0 0 100 50">
+              {/* Brake Light (Physical part) */}
+              <rect x="8" y="20" width="4" height="12" fill={(isBraking && !isFinished) ? "#ff2222" : "#7f1d1d"} rx="1" />
+
+              {/* Car Body */}
+              <path d="M10 40 L10 20 L25 10 L75 10 L90 20 L90 40 Z" fill="#ef4444" stroke="#991b1b" strokeWidth="2" />
+
+              {/* Wheels */}
+              <circle cx="25" cy="40" r="8" fill="#1e293b" />
+              <circle cx="75" cy="40" r="8" fill="#1e293b" />
+              <circle cx="25" cy="40" r="3" fill="#94a3b8" />
+              <circle cx="75" cy="40" r="3" fill="#94a3b8" />
+            </svg>
+
+            {/* Speedometer Floating Above Car */}
+            <div className="absolute -top-12 left-0 w-20 bg-black/80 text-white text-xs p-1 rounded text-center border border-white/20 backdrop-blur-sm">
+              <div className="text-[10px] text-slate-400 uppercase">Speed</div>
+              <div className={`font-mono font-bold text-lg ${isBraking ? 'text-red-500' : 'text-blue-400'}`}>
+                {Math.round(velocity)}
+              </div>
+            </div>
+          </div>
+
+          {/* Phase Label Overlay (World) */}
+          <div className="absolute top-2 left-1/2 -translate-x-1/2">
+            <div className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm 
+                    ${phase === 'stopped' ? 'bg-slate-200 text-slate-600' :
+                phase === 'accel' ? 'bg-green-100 text-green-700' :
+                  phase === 'cruise' ? 'bg-blue-100 text-blue-700' :
+                    'bg-red-100 text-red-700'}`}>
+              Current Phase: {phase.toUpperCase()}
+            </div>
+          </div>
+        </div>
+
+        {/* --- PART 2: GRAPH WORLD (BOTTOM) --- */}
+        <div className="relative h-85 bg-slate-900 px-16 pt-16 pb-0 not-md:h-auto not-md:p-6">
+
+          {/* Graph Grid/Axes */}
+          <svg viewBox="0 0 800 200" className="w-full h-full overflow-visible">
+            {/* Grid Lines (Vertical - Time) */}
+            {[0, 2, 5, 8, 10].map(t => {
+              const x = (t / DURATION) * 800;
+              return (
+                <g key={t}>
+                  <line x1={x} y1="0" x2={x} y2="200" stroke="#334155" strokeWidth="1" strokeDasharray="4" />
+                  <text x={x} y="220" fill="#64748b" fontSize="12" textAnchor="middle">{t}s</text>
+                </g>
+              );
+            })}
+
+            {/* Grid Lines (Horizontal - Velocity) */}
+            {[0, 10, 20, 30].map(val => {
+              const y = 200 - ((val / MAX_VELOCITY) * 200);
+              return (
+                <g key={val}>
+                  <line x1="0" y1={y} x2="800" y2={y} stroke="#334155" strokeWidth="1" strokeDasharray="4" opacity="0.5" />
+                  {val > 0 && <text x="-10" y={y + 4} fill="#64748b" fontSize="10" textAnchor="end">{val}</text>}
+                </g>
+              );
+            })}
+
+            {/* Labels */}
+            <text x="400" y="240" fill="#94a3b8" fontSize="14" textAnchor="middle" fontWeight="bold">Time (s)</text>
+            <text x="-40" y="100" fill="#94a3b8" fontSize="14" textAnchor="middle" fontWeight="bold" transform="rotate(-90 -40 100)">Velocity (m/s)</text>
+
+            {/* THE LIVE GRAPH LINE */}
+            <path
+              d={getSvgPath()}
+              fill="none"
+              stroke="#38bdf8" // Sky blue 
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+
+            {/* The "Pen" (Current Point) */}
+            {graphPoints.length > 0 && (() => {
+              const lastPt = graphPoints[graphPoints.length - 1];
+              const cx = (lastPt.t / DURATION) * 800;
+              const cy = 200 - ((lastPt.v / MAX_VELOCITY) * 200);
+              return (
+                <circle cx={cx} cy={cy} r="6" fill="#fff" stroke="#38bdf8" strokeWidth="3" />
+              );
+            })()}
+
+          </svg>
+
+          {/* Dynamic Cue Card */}
+          {mobile ? (
+            <div className="w-full mt-10 md:mt-0 md:absolute md:top-6 md:right-6 md:w-64">
+              <div className={`p-4 rounded-lg shadow-lg border-l-4 transition-all duration-300
+                    ${phase === 'stopped' ? 'bg-slate-800 border-slate-500 text-slate-300' :
+                  phase === 'accel' ? 'bg-slate-800 border-green-500 text-green-400' :
+                    phase === 'cruise' ? 'bg-slate-800 border-blue-500 text-blue-400' :
+                      'bg-slate-800 border-red-500 text-red-400'}`}>
+                <h3 className="font-bold text-sm uppercase mb-1">Graph Interpretation</h3>
+                <p className="text-lg font-bold">{cue}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="absolute top-6 right-6">
+              <div className={`p-4 rounded-lg shadow-lg border-l-4 transition-all duration-300
+                    ${phase === 'stopped' ? 'bg-slate-800 border-slate-500 text-slate-300' :
+                  phase === 'accel' ? 'bg-slate-800 border-green-500 text-green-400' :
+                    phase === 'cruise' ? 'bg-slate-800 border-blue-500 text-blue-400' :
+                      'bg-slate-800 border-red-500 text-red-400'}`}>
+                <h3 className="font-bold text-sm uppercase mb-1">Graph Interpretation</h3>
+                <p className="text-lg font-bold">{cue}</p>
+              </div>
+            </div>)}
+        </div>
+
+        {/* CONTROLS */}
+        <div className="p-4 bg-slate-100 border-t border-slate-200 flex justify-center gap-4">
+          {!isPlaying && !isFinished ? (
+            <button
+              onClick={handleStart}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform active:scale-95 flex items-center gap-2"
+            >
+              {currentTime > 0 ? "▶ Resume" : "▶ Start Simulation"}
+            </button>
+          ) : isPlaying ? (
+            <button
+              onClick={handlePause}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full shadow transition-colors flex items-center gap-2"
+            >
+              ⏸ Pause
+            </button>
+          ) : (
+            <button
+              onClick={handleReset}
+              className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 px-8 rounded-full shadow transition-colors flex items-center gap-2"
+            >
+              ↺ Reset
+            </button>
           )}
         </div>
 

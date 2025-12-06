@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { Activity, TrendingUp, AreaChart, GitCommit, ArrowLeft } from 'lucide-react';
+import { Activity, GitCommit, TrendingUp, MonitorPlay, ArrowLeft } from 'lucide-react';
 import { Checkpoint } from './Checkpoint';
 
 export function DesignTesting({ darkMode }) {
@@ -21,101 +21,93 @@ export function DesignTesting({ darkMode }) {
     }
   }, [unlockedIndex]);
 
-  // --- CONTENT DATA (Corrected for Physics Accuracy) ---
+  // --- CONTENT DATA (Module 1.3) ---
   const content = {
-    module: "Module 1.3 • Mechanics",
-    title: "Graphs of Motion",
-    subtitle: "Visualizing the Story of Speed",
-    intro: "A graph is just a story told in lines. By learning to read the slopes and areas, you can instantly tell if an object is stopped, cruising, or accelerating, without doing a single calculation.",
+    module: "Module 1.3 • Kinematics",
+    title: "1.3 Drawing Graphs of Motion",
+    subtitle: "Telling the Story of Motion in Lines",
+    intro: "Before we calculate anything, we must learn to 'read' the lines. A single glance at the shape of a graph tells you if an object is stopped, cruising, or crashing—but only if you check the axis labels first.",
     sections: [
       {
         id: "types",
-        title: "Part 1: The 3 Types of Graphs",
+        title: "Part 1: The Three Storytellers",
         icon: <Activity className="w-6 h-6" />,
-        text: "Always check the Y-axis label first. The shape of the line means completely different things depending on what variable is being plotted.",
+        text: "In Physics, the same motion looks completely different depending on which graph you use. Always check the Y-axis first.",
         points: [
           {
             type: "Displacement-Time (s-t)",
-            def: "Shows CHANGE IN POSITION. How far (and which way) you are from the start.",
-            examples: "Horizontal line = Stopped. Diagonal line = Constant Velocity."
+            def: "Plots POSITION. Tells you 'Where is it?'",
+            examples: "Up = Moving Away. Down = Coming Back. Flat = Stopped."
           },
           {
             type: "Velocity-Time (v-t)",
-            def: "Shows SPEED & DIRECTION. This is the most versatile graph.",
-            examples: "Horizontal line = Constant Velocity. Diagonal line = Acceleration."
+            def: "Plots SPEED & DIRECTION. Tells you 'How fast?'",
+            examples: "This is the most useful graph. Flat (non-zero) = Constant Speed."
           },
           {
             type: "Acceleration-Time (a-t)",
-            def: "Shows the RATE OF CHANGE of velocity.",
-            examples: "Horizontal line at 0 = Constant Velocity. Horizontal line above 0 = Constant Acceleration."
+            def: "Plots THE PUSH. Tells you 'How is speed changing?'",
+            examples: "Usually looks like steps or blocks."
           }
         ],
         quiz: {
-          question: "You see a horizontal line on a graph. If the object is moving at a steady 20 m/s, which graph is it?",
-          options: ["Displacement-Time", "Acceleration-Time", "Velocity-Time"],
-          correctIndex: 2
-        }
-      },
-      {
-        id: "slope",
-        title: "Part 2: The Slope (Gradient)",
-        icon: <TrendingUp className="w-6 h-6" />,
-        text: "The steepness (Gradient) allows you to translate one graph into another. Gradient represents the 'Rate of Change'.",
-        comparison: [
-          { label: "Slope of s-t Graph", desc: "Equals VELOCITY. (Steeper = Faster. Negative Slope = Backward direction)." },
-          { label: "Slope of v-t Graph", desc: "Equals ACCELERATION. (Steeper = Rapid change in speed)." }
-        ],
-        goldenRule: "Golden Rule: A curved line on a Displacement graph means the Velocity is changing (Acceleration is present).",
-        // 
-
-        // [Image of displacement vs velocity time graphs comparison]
-
-        quiz: {
-          question: "On a Displacement-Time graph, the line is a straight diagonal going downwards. What is the velocity?",
-          options: ["Decreasing", "Constant and Negative", "Zero"],
+          question: "You see a horizontal line on a graph. The object is moving at 100 km/h. Which graph is it?",
+          options: ["Displacement-Time", "Velocity-Time", "Acceleration-Time (at zero)"],
           correctIndex: 1
         }
       },
       {
-        id: "shapes",
-        title: "Part 3: The 'Shape Dictionary'",
+        id: "dictionary",
+        title: "Part 2: The Shape Dictionary",
         icon: <GitCommit className="w-6 h-6" />,
-        text: "Memorize these shape meanings to analyze motion instantly.",
-        conditions: [
-          "Horizontal Line on s-t: Object is STATIONARY.",
-          "Horizontal Line on v-t: Object has CONSTANT VELOCITY (a = 0).",
-          "Diagonal Line ( / ) on v-t: Object has CONSTANT ACCELERATION (Uniform).",
-          "Line crossing X-axis on v-t: Object has CHANGED DIRECTION (turned around)."
+        text: "Memorize how these three basic shapes translate into motion.",
+        comparison: [
+          { label: "Horizontal Line (-)", desc: "Means 'Constant'. On s-t: Stopped. On v-t: Constant Velocity." },
+          { label: "Diagonal Line (/)", desc: "Means 'Changing at a steady rate'. On s-t: Constant Velocity. On v-t: Constant Acceleration." },
+          { label: "Curved Line ( )", desc: "Means 'Changing rate'. On s-t: Acceleration. On v-t: Non-uniform Acceleration." }
         ],
-        // 
-
-        // [Image of calculating slope on a velocity time graph]
-
+        goldenRule: "Visual Tip: 'Steeper' always means 'More Intense'. Steeper s-t = Faster. Steeper v-t = Harder Acceleration.",
+        // Image tag for context
+        imageTag: "",
         quiz: {
-          question: "A Velocity-Time graph shows a line crossing from positive to negative. What happened at the crossing point?",
-          options: ["The object stopped momentarily while turning around", "The object hit a wall", "The object reached max speed"],
+          question: "A Displacement-Time graph shows a curve getting steeper and steeper. What is happening?",
+          options: ["The object is slowing down.", "The object is accelerating (speeding up).", "The object is climbing a hill."],
+          correctIndex: 1
+        }
+      },
+      {
+        id: "scenarios",
+        title: "Part 3: Real World Translation",
+        icon: <TrendingUp className="w-6 h-6" />,
+        text: "Let's translate real-world scenarios into graph shapes.",
+        conditions: [
+          "Scenario A: Red Light (Stopped). -> s-t is Flat. v-t is Zero.",
+          "Scenario B: Highway Cruise (Constant Speed). -> s-t is Diagonal. v-t is Flat (High up).",
+          "Scenario C: Drag Race (Acceleration). -> s-t is Curved (Smiling). v-t is Diagonal.",
+          "Scenario D: Braking (Deceleration). -> s-t is Curved (Frowning). v-t is Diagonal Down."
+        ],
+        quiz: {
+          question: "A car brakes to a stop. What does the Velocity-Time graph look like?",
+          options: ["A line sloping down to the x-axis.", "A horizontal line.", "A curved line going up."],
           correctIndex: 0
         }
       },
       {
-        id: "area",
-        title: "Part 4: The Area (The Accumulator)",
-        icon: <AreaChart className="w-6 h-6" />,
-        text: "The area 'trapped' between the line and the x-axis represents the accumulation of a quantity. This is integration in visual form.",
-        equations: [
-          { name: "Area under v-t Graph", type: "Equals", formula: "Displacement (s)" },
-          { name: "Area under a-t Graph", type: "Equals", formula: "Change in Velocity (Δv)" },
-        ],
-        insight: "Visual Tip: Areas below the x-axis count as NEGATIVE displacement. If you have equal areas above and below, your total displacement is zero (you are back at the start).",
-        // 
-
-        // [Image of area under velocity time graph calculation]
-
-        quiz: {
-          question: "To find the total displacement from a Velocity-Time graph, what do you calculate?",
-          options: ["The slope of the line", "The y-intercept", "The area between the line and the time axis"],
-          correctIndex: 2
-        }
+        id: "animation_cue",
+        title: "Part 4: Visualizing the Link",
+        icon: <MonitorPlay className="w-6 h-6" />,
+        text: "To truly understand this, we need to see the object move and the graph draw itself simultaneously.",
+        // This is where your requested animation goes
+        animationCue: (
+          <div className={`p-6 rounded-xl border-2 border-dashed text-center ${darkMode ? 'border-indigo-500/50 bg-indigo-500/10' : 'border-indigo-300 bg-indigo-50'}`}>
+            <span className="font-mono text-sm opacity-70 block mb-2">ANIMATION SLOT</span>
+            <p className="font-bold text-lg">The Synced-Story Split Screen</p>
+            <p className="text-sm opacity-80 mt-2 max-w-md mx-auto">
+              Top: A car driving, stopping, and speeding up. <br />
+              Bottom: A pen drawing the v-t graph in real-time, matching the car's motion.
+            </p>
+          </div>
+        ),
       }
     ]
   };
@@ -201,8 +193,8 @@ export function DesignTesting({ darkMode }) {
                     </div>
                   )}
 
-                  {/* COMPARISON/RULE LAYOUT (Slopes) */}
-                  {section.id === "slope" && (
+                  {/* COMPARISON/RULE LAYOUT (Dictionary) */}
+                  {section.id === "dictionary" && (
                     <div className="space-y-4">
                       <div className={`rounded-xl overflow-hidden divide-y ${darkMode ? 'divide-slate-700 border border-slate-700' : 'divide-slate-200 border border-slate-200'}`}>
                         {section.comparison.map((item) => (
@@ -216,31 +208,17 @@ export function DesignTesting({ darkMode }) {
                         <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
                         {section.goldenRule}
                       </div>
+                      {/* Image Placeholder */}
+                      {section.imageTag && (
+                        <div className="mt-4 text-center text-sm opacity-50 italic">
+                          {section.imageTag}
+                        </div>
+                      )}
                     </div>
                   )}
 
-                  {/* EQUATIONS LAYOUT (Areas) */}
-                  {section.id === "area" && (
-                    <div className="space-y-4">
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        {section.equations.map((eq) => (
-                          <div key={eq.name} className={`p-5 rounded-xl border text-center ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-                            <div className="text-sm uppercase tracking-widest opacity-60 mb-2">{eq.type}</div>
-                            <div className="text-xl font-serif italic mb-2 font-bold tracking-wide">
-                              {eq.formula}
-                            </div>
-                            <div className="text-xs opacity-50">{eq.name}</div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className={`p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
-                        {section.insight}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* LIST/STEPS LAYOUT (Shapes Interpretation) */}
-                  {section.id === "shapes" && (
+                  {/* LIST/STEPS LAYOUT (Scenarios) */}
+                  {section.id === "scenarios" && (
                     <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
                       <ul className="space-y-4">
                         {section.conditions.map((cond, i) => (
@@ -252,6 +230,13 @@ export function DesignTesting({ darkMode }) {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  )}
+
+                  {/* ANIMATION BOX */}
+                  {section.animationCue && (
+                    <div className="my-8 animate-fade-in-up">
+                      {section.animationCue}
                     </div>
                   )}
 

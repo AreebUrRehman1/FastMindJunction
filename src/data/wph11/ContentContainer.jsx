@@ -1,8 +1,15 @@
-import { ArrowRight, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks } from 'lucide-react';
+import { ArrowRight, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay } from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
+import { GraphsOfMotion } from './AnimationStorage';
+import displacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/displacement-vs-velocity-time-graph.png'
+import darkdisplacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/dark-displacement-vs-velocity-time-graph.png'
 
-export function contentContainer(darkMode, lessonId) {
+export function contentContainer(darkMode, lessonId, mobile) {
+
+  const imageRender = {
+    displacementVsVelocityTimeGraph : darkMode ? (<img src={darkdisplacementVsVelocityTimeGraph} alt='Displacement Vs Velocity Time Graph'></img>) : (<img src={displacementVsVelocityTimeGraph} alt='Displacement Vs Velocity Time Graph'></img>),
+  } 
 
   // Content Data
   const LessonContent = {
@@ -88,26 +95,17 @@ export function contentContainer(darkMode, lessonId) {
               <span className="relative top-[25px] -ml-[45px]">t</span>
             </>
           ),
-          variablesFullForm : "(v = final velocity, u = initial velocity, t = time)",
+          variablesFullForm: "(v = final velocity, u = initial velocity, t = time)",
           conditions: [
             "You speed up.",
             "You slow down (deceleration).",
             "You change direction (even if speed stays constant!)."
           ],
-          animationCue: <DisplacementVelocityAndAcceleration3 darkMode={darkMode} />,
-          quiz: {
-            question: "If a car is slowing down while moving North, which way is the acceleration pointing?",
-            options: [
-              "North (Same as motion)",
-              "South (Opposite to motion)",
-              "Acceleration is zero"
-            ],
-            correctIndex: 1
-          }
+          animationCue: <DisplacementVelocityAndAcceleration3 darkMode={darkMode} />
         }
       ]
     },
-    suvatEquations : {
+    suvatEquations: {
       module: "Module 1.2 • Mechanics",
       title: "The SUVAT Equations",
       subtitle: "Predicting the Future of Motion",
@@ -194,15 +192,91 @@ export function contentContainer(darkMode, lessonId) {
             `Identify the variable you are trying to find (mark it with a "?" ).`,
             "Choose the equation that contains the 3 knowns and the 1 unknown.",
             "Plug in the numbers and solve."
+          ]
+        }
+      ]
+    },
+    graphsOfMotion: {
+      module: "Module 1.3 • Kinematics",
+      title: "1.3 Drawing Graphs of Motion",
+      subtitle: "Telling the Story of Motion in Lines",
+      intro: "Before we calculate anything, we must learn to 'read' the lines. A single glance at the shape of a graph tells you if an object is stopped, cruising, or crashing—but only if you check the axis labels first.",
+      sections: [
+        {
+          id: "variables",
+          title: "Part 1: The Three Storytellers",
+          icon: <Activity className="w-6 h-6" />,
+          text: "In Physics, the same motion looks completely different depending on which graph you use. Always check the Y-axis first.",
+          points: [
+            {
+              type: "Displacement-Time (s-t)",
+              def: "Plots POSITION. Tells you 'Where is it?'",
+              examples: "Up = Moving Away. Down = Coming Back. Flat = Stopped."
+            },
+            {
+              type: "Velocity-Time (v-t)",
+              def: "Plots SPEED & DIRECTION. Tells you 'How fast?'",
+              examples: "This is the most useful graph. Flat (non-zero) = Constant Speed."
+            },
+            {
+              type: "Acceleration-Time (a-t)",
+              def: "Plots THE PUSH. Tells you 'How is speed changing?'",
+              examples: "Usually looks like steps or blocks."
+            }
           ],
           quiz: {
-            question: "A car 'starts from rest'. What value do you write down immediately?",
-            options: ["v = 0", "u = 0", "a = 0"],
+            question: "You see a horizontal line on a graph. The object is moving at 100 km/h. Which graph is it?",
+            options: ["Displacement-Time", "Velocity-Time", "Acceleration-Time (at zero)"],
+            correctIndex: 1
+          }
+        }, {
+          id: "goldenRule",
+          title: "Part 2: The Shape Dictionary",
+          icon: <GitCommit className="w-6 h-6" />,
+          text: "Memorize how these three basic shapes translate into motion.",
+          comparison: [
+            { label: "Horizontal Line (-)", desc: "Means 'Constant'. On s-t: Stopped ┇ On v-t: Constant Velocity." },
+            { label: "Diagonal Line (/)", desc: "Means 'Changing at a steady rate'. On s-t: Constant Velocity ┇ On v-t: Constant Acceleration." },
+            { label: "Curved Line ( )", desc: "Means 'Changing rate'. On s-t: Acceleration ┇ On v-t: Non-uniform Acceleration." }
+          ],
+          goldenRule: "Visual Tip: 'Steeper' always means 'More Intense'. Steeper s-t = Faster. Steeper v-t = Harder Acceleration.",
+          // Image tag for context
+          imageTag: imageRender.displacementVsVelocityTimeGraph,
+          quiz: {
+            question: "A Displacement-Time graph shows a curve getting steeper and steeper. What is happening?",
+            options: ["The object is slowing down.", "The object is accelerating (speeding up).", "The object is climbing a hill."],
+            correctIndex: 1
+          }
+        }, {
+          id: "strategy",
+          title: "Part 3: Real World Translation",
+          icon: <TrendingUp className="w-6 h-6" />,
+          text: "Let's translate real-world scenarios into graph shapes.",
+          conditions: [
+            "Scenario A: Red Light (Stopped) → s-t is Flat ┇ v-t is Zero.",
+            "Scenario B: Highway Cruise (Constant Speed) → s-t is Diagonal ┇ v-t is Flat (High up).",
+            "Scenario C: Drag Race (Acceleration) → s-t is Curved (Smiling) ┇ v-t is Diagonal.",
+            "Scenario D: Braking (Deceleration) → s-t is Curved (Frowning) ┇ v-t is Diagonal Down."
+          ],
+          quiz: {
+            question: "A car brakes to a stop. What does the Velocity-Time graph look like?",
+            options: ["A line sloping down to the x-axis.", "A horizontal line.", "A curved line going up."],
+            correctIndex: 0
+          }
+        }, {
+          id: "animation_cue",
+          title: "Part 4: Visualizing the Link",
+          icon: <MonitorPlay className="w-6 h-6" />,
+          text: "To truly understand this, we need to see the object move and the graph draw itself simultaneously.",
+          animationCue: (<GraphsOfMotion darkMode={darkMode} mobile={mobile}/>),
+          quiz: {
+            question: "If the car moves BACKWARDS, where does the line go on a Velocity-Time graph?",
+            options: ["It goes down, but stays above the x-axis.", "It goes below the x-axis (Negative).", "It disappears."],
             correctIndex: 1
           }
         }
       ]
-    },
+    }
   }
 
   return LessonContent[lessonId];

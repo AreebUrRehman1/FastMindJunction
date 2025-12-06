@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { useMediaQuery } from '@uidotdev/usehooks';
 import { Checkpoint } from './Checkpoint';
 import { contentContainer } from '../../data/wph11/ContentContainer';
 import { Templates } from './Templates';
 import { lectureLayout } from '../../data/wph11/lecture-layout';
-import back from '../../assets/lesson/Back Icon2.png';
 import { LessonHeader } from '../LessonHeader';
+import back from '../../assets/lesson/Back Icon2.png';
 
 export function LessonPage({ darkMode, darkModeControl }) {
   // --- STATE ---
@@ -13,9 +14,10 @@ export function LessonPage({ darkMode, darkModeControl }) {
   const sectionRefs = useRef([]); // To handle auto-scrolling
   const navigate = useNavigate();
   const { lessonId } = useParams();
+  const mobile = useMediaQuery('(max-width: 768px)');
 
   // Accessing the content
-  const content = contentContainer(darkMode, lessonId);
+  const content = contentContainer(darkMode, lessonId, mobile);
   const lectureContentLayout = lectureLayout(lessonId);
 
 

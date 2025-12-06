@@ -28,6 +28,12 @@ export function Templates({ section, darkMode }) {
               </div>
             ))}
           </div>
+          {/* Image Placeholder */}
+          {section.imageTag && (
+            <div className="mt-4 text-center text-sm italic">
+              {section.imageTag}
+            </div>
+          )}
           <div className={`p-4 rounded-l-md border-l-4 ${darkMode ? 'bg-amber-900/20 border-amber-500 text-amber-200' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
             <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
             {section.goldenRule}
@@ -80,8 +86,8 @@ export function Templates({ section, darkMode }) {
         <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
           <ul className="space-y-4">
             {section.conditions.map((cond, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <div className={`mt-1.5 w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-xs font-bold ${darkMode ? 'bg-indigo-500 text-white' : 'bg-indigo-600 text-white'}`}>
+              <li key={i} className="flex items-center gap-x-3 py-1">
+                <div className={` w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-xs font-bold ${darkMode ? 'bg-indigo-500 text-white' : 'bg-indigo-600 text-white'}`}>
                   {i + 1}
                 </div>
                 <span>{cond}</span>
