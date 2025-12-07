@@ -6,10 +6,10 @@ import theAreaSplit from '../../assets/lesson/WPH11 - 1.4/the-area-split.png'
 import darkTheAreaSplit from '../../assets/lesson/WPH11 - 1.4/dark-the-area-split.png'
 import theTangentTechnique from '../../assets/lesson/WPH11 - 1.4/the-tangent-technique.png'
 import darkTheTangentTechnique from '../../assets/lesson/WPH11 - 1.4/dark-the-tangent-technique.png'
-import theResolutionTriangle from '../../assets/lesson/WPH11 - 1.5/the-resolution-triangle.png'
-import darkTheResolutionTriangle from '../../assets/lesson/WPH11 - 1.5/dark-the-resolution-triangle.png'
-import theHeadToTailMethod from '../../assets/lesson/WPH11 - 1.5/the-head-to-tail-method.png'
-import darkTheHeadToTailMethod from '../../assets/lesson/WPH11 - 1.5/dark-the-head-to-tail-method.png'
+import theResolutionTriangle from '../../assets/lesson/WPH11 - 2.1/the-resolution-triangle.png'
+import darkTheResolutionTriangle from '../../assets/lesson/WPH11 - 2.1/dark-the-resolution-triangle.png'
+import theHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/the-head-to-tail-method.png'
+import darkTheHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/dark-the-head-to-tail-method.png'
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
