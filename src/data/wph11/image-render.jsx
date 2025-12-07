@@ -7,14 +7,13 @@ import darkTheAreaSplit from '../../assets/lesson/WPH11 - 1.4/dark-the-area-spli
 import theTangentTechnique from '../../assets/lesson/WPH11 - 1.4/the-tangent-technique.png'
 import darkTheTangentTechnique from '../../assets/lesson/WPH11 - 1.4/dark-the-tangent-technique.png'
 
-export const ImageRender = ({darkMode, imageToDisplay}) => {
-  console.log(imageToDisplay);
+export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
   const imageRender = {
     "displacementVsVelocityTimeGraph": darkMode ? (<img src={darkdisplacementVsVelocityTimeGraph} alt='Displacement Vs Velocity Time Graph' />) : (<img src={displacementVsVelocityTimeGraph} alt='Dark Displacement Vs Velocity Time Graph' />),
-    "theGradientTriangle": darkMode ? (<img src={darkTheGradientTriangle} alt='Dark The Gradient Triangle' className='w-100 h-100'/>) : (<img src={theGradientTriangle} alt='The Gradient Triangle' className='w-100 h-100' />),
-    "theAreaSplit": darkMode ? (<img src={darkTheAreaSplit} alt='The Area Split' className='w-100 h-100' />) : (<img src={theAreaSplit} alt='Dark The Area Split' className='w-100 h-100'/>),
-    "theTangentTechnique": darkMode ? (<img src={darkTheTangentTechnique} alt='Dark The Tangent Technique' className='w-80 h-80'/>) : (<img src={theTangentTechnique} alt='The Tangent Technique' className='w-80 h-80' />),
+    "theGradientTriangle": darkMode ? (<img src={darkTheGradientTriangle} alt='Dark The Gradient Triangle' className='w-100 h-100 not-md:w-70 not-md:h-70' />) : (<img src={theGradientTriangle} alt='The Gradient Triangle' className='w-100 h-100 not-md:w-70 not-md:h-70' />),
+    "theAreaSplit": darkMode ? (<img src={darkTheAreaSplit} alt='The Area Split' className='w-100 h-100 not-md:w-70 not-md:h-70' />) : (<img src={theAreaSplit} alt='Dark The Area Split' className='w-100 h-100 not-md:w-70 not-md:h-70' />),
+    "theTangentTechnique": darkMode ? (<img src={darkTheTangentTechnique} alt='Dark The Tangent Technique' className='w-80 h-80 not-md:w-60 not-md:h-60' />) : (<img src={theTangentTechnique} alt='The Tangent Technique' className='w-80 h-80 not-md:w-60 not-md:h-60' />),
   }
 
 

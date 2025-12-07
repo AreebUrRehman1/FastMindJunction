@@ -1631,7 +1631,7 @@ export const GraphsOfMotion = ({ darkMode, mobile }) => {
   );
 };
 
-export const DecodingGraphs = ({ darkMode }) => {
+export const DecodingGraphs = ({ darkMode, mobile }) => {
   // --- STATE ---
   const [time, setTime] = useState(0); // 0 to 10 seconds
   const [isPlaying, setIsPlaying] = useState(false);
@@ -1647,10 +1647,11 @@ export const DecodingGraphs = ({ darkMode }) => {
   const MAX_TIME = 10;
   const MAX_DISP = 100; // y = x^2, so at x=10, y=100
 
-  // SVG DIMENSIONS
-  const WIDTH = 800;
-  const HEIGHT = 400;
-  const PADDING = 60;
+  // SVG DIMENSIONS (Responsive Logic)
+  // On mobile, we reduce logical width (zooming in) and adjust aspect ratio
+  const WIDTH = mobile ? 400 : 800;
+  const HEIGHT = mobile ? 350 : 400; // Taller on mobile for better visibility
+  const PADDING = mobile ? 40 : 60; 
 
   // DRAWING AREA
   const GRAPH_W = WIDTH - PADDING * 2;
@@ -1699,7 +1700,6 @@ export const DecodingGraphs = ({ darkMode }) => {
   const handlePause = () => {
     setIsPlaying(false);
     cancelAnimationFrame(requestRef.current);
-    // Only accumulate time if we were actually playing/had a start time
     if (startTimeRef.current > 0) {
       pausedTimeRef.current += performance.now() - startTimeRef.current;
       startTimeRef.current = 0;
@@ -1718,7 +1718,6 @@ export const DecodingGraphs = ({ darkMode }) => {
     handlePause();
     const newTime = Number(e.target.value);
     setTime(newTime);
-    // FIX: Sync the internal animation timer to the manual scrubber value
     pausedTimeRef.current = newTime * 1000;
   };
 
@@ -1733,18 +1732,21 @@ export const DecodingGraphs = ({ darkMode }) => {
   const cx = mapX(time);
   const cy = mapY(currentS);
 
-  // Calculate Tangent Line Angle visually
-  // We need two points very close together in PIXELS to get the correct visual rotation
+  // Tangent Calculation
   const delta = 0.1;
   const x1 = mapX(time);
   const y1 = mapY(time * time);
   const x2 = mapX(time + delta);
   const y2 = mapY((time + delta) ** 2);
 
-  // Math.atan2(dy, dx) -> Result is in radians
-  // Note: y is inverted in SVG, so y1 - y2 is positive "up"
   const angleRad = Math.atan2(y1 - y2, x2 - x1);
   const angleDeg = angleRad * (180 / Math.PI);
+
+  // Scaled Visual Constants
+  const tangentLength = mobile ? 80 : 150; // Shorter tangent line on mobile
+  const fontSizeMain = mobile ? "12" : "10";
+  const fontSizeLabel = mobile ? "14" : "12";
+  const strokeWidthMain = mobile ? "3" : "4";
 
   // Generate the Curve Path
   const generatePath = () => {
@@ -1755,125 +1757,149 @@ export const DecodingGraphs = ({ darkMode }) => {
     return d;
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col items-center py-8">
+  // Theme Constants
+  const theme = {
+    cardBg: darkMode ? 'bg-slate-800' : 'bg-white',
+    textMain: darkMode ? 'text-slate-100' : 'text-slate-800',
+    textSub: darkMode ? 'text-slate-400' : 'text-slate-500',
+    gridLine: darkMode ? '#334155' : '#e2e8f0', // slate-700 : slate-200
+    gridText: darkMode ? '#94a3b8' : '#94a3b8',
+    curve: '#3b82f6', // Blue-500
+    tangent: '#f59e0b', // Amber-500
+    triangle: '#ef4444' // Red-500
+  };
 
-      <div className="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-200">
+  return (
+    <div className={`font-sans ${theme.textMain} flex flex-col items-center py-4 sm:py-8`}>
+
+      <div className={`max-w-4xl w-full ${theme.cardBg} rounded-xl shadow-2xl overflow-hidden border ${darkMode ? 'border-slate-700' : 'border-slate-200'}`}>
 
         {/* HEADER */}
-        <div className="bg-slate-900 text-white p-6 flex justify-between items-center">
+        <div className={`${darkMode ? 'bg-slate-950' : 'bg-slate-900'} text-white p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4`}>
           <div>
-            <h1 className="text-2xl font-bold">Slope = Velocity</h1>
-            <p className="text-slate-400 text-sm">Visualizing Instantaneous Velocity on a Displacement-Time Graph</p>
+            <h1 className="text-xl sm:text-2xl font-bold">Slope = Velocity</h1>
+            <p className="text-slate-400 text-xs sm:text-sm">Visualizing Instantaneous Velocity</p>
           </div>
-          <div className="text-right">
-            <div className="text-xs uppercase text-slate-400">Current Slope</div>
-            <div className="font-mono text-2xl font-bold text-yellow-400">
+          <div className="flex items-center gap-3 w-full sm:w-auto bg-slate-800/50 p-2 rounded-lg sm:bg-transparent sm:p-0">
+            <div className="text-xs uppercase text-slate-400">Slope (v)</div>
+            <div className="font-mono text-xl sm:text-2xl font-bold text-yellow-400 ml-auto sm:ml-2">
               {currentV.toFixed(1)} <span className="text-sm text-yellow-600">m/s</span>
             </div>
           </div>
         </div>
 
         {/* GRAPH STAGE */}
-        <div className="relative bg-slate-100 p-4 overflow-hidden select-none">
+        <div className={`relative ${darkMode ? 'bg-slate-900' : 'bg-slate-100'} p-2 sm:p-4 overflow-hidden select-none`}>
 
-          <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className=" p-3 w-full h-full bg-white rounded border border-slate-200 shadow-inner">
+          <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className={`w-full h-auto ${theme.cardBg} rounded border ${darkMode ? 'border-slate-700' : 'border-slate-200'} shadow-inner`} preserveAspectRatio="xMidYMid meet">
 
             {/* GRID */}
             {/* Y-Axis Grid */}
             {[0, 25, 50, 75, 100].map(val => (
               <g key={val}>
-                <line x1={PADDING} y1={mapY(val)} x2={WIDTH - PADDING} y2={mapY(val)} stroke="#e2e8f0" strokeWidth="1" />
-                <text x={PADDING - 10} y={mapY(val) + 4} textAnchor="end" fontSize="10" fill="#94a3b8">{val}m</text>
+                <line x1={PADDING} y1={mapY(val)} x2={WIDTH - PADDING} y2={mapY(val)} stroke={theme.gridLine} strokeWidth="1" />
+                <text x={PADDING - (mobile ? 5 : 10)} y={mapY(val) + 4} textAnchor="end" fontSize={fontSizeMain} fill={theme.gridText}>{val}</text>
               </g>
             ))}
             {/* X-Axis Grid */}
             {[0, 2, 4, 6, 8, 10].map(val => (
               <g key={val}>
-                <line x1={mapX(val)} y1={HEIGHT - PADDING} x2={mapX(val)} y2={PADDING} stroke="#e2e8f0" strokeWidth="1" />
-                <text x={mapX(val)} y={HEIGHT - PADDING + 20} textAnchor="middle" fontSize="10" fill="#94a3b8">{val}s</text>
+                <line x1={mapX(val)} y1={HEIGHT - PADDING} x2={mapX(val)} y2={PADDING} stroke={theme.gridLine} strokeWidth="1" />
+                <text x={mapX(val)} y={HEIGHT - PADDING + (mobile ? 15 : 20)} textAnchor="middle" fontSize={fontSizeMain} fill={theme.gridText}>{val}</text>
               </g>
             ))}
 
             {/* AXIS LABELS */}
-            <text x={WIDTH / 2} y={HEIGHT - 10} textAnchor="middle" fontWeight="bold" fill="#64748b">Time (s)</text>
-            <text x={15} y={HEIGHT / 2} textAnchor="middle" fontWeight="bold" fill="#64748b" transform={`rotate(-90 15 ${HEIGHT / 2})`}>Displacement (m)</text>
+            <text x={WIDTH / 2} y={HEIGHT - (mobile ? 5 : 10)} textAnchor="middle" fontWeight="bold" fontSize={fontSizeLabel} fill={theme.textSub}>Time (s)</text>
+            <text x={mobile ? 10 : 15} y={HEIGHT / 2} textAnchor="middle" fontWeight="bold" fontSize={fontSizeLabel} fill={theme.textSub} transform={`rotate(-90 ${mobile ? 10 : 15} ${HEIGHT / 2})`}>Displacement (m)</text>
 
             {/* THE CURVE */}
-            <path d={generatePath()} fill="none" stroke="#3b82f6" strokeWidth="4" strokeLinecap="round" />
+            <path d={generatePath()} fill="none" stroke={theme.curve} strokeWidth={strokeWidthMain} strokeLinecap="round" />
 
             {/* SLOPE TRIANGLE (Ghost) */}
-            {/* We draw a right triangle under the tangent to show Rise/Run */}
             {showSlopeTriangle && time < 9.5 && time > 0.5 && (
               <g opacity="0.6">
-                {/* Run Line (Horizontal) */}
+                {/* Run Line */}
                 <line
                   x1={cx} y1={cy}
-                  x2={cx + 60} y2={cy}
-                  stroke="#94a3b8" strokeWidth="1" strokeDasharray="4"
+                  x2={cx + (mobile ? 40 : 60)} y2={cy}
+                  stroke={theme.gridText} strokeWidth="1" strokeDasharray="4"
                 />
-                {/* Rise Line (Vertical) */}
+                {/* Rise Line */}
                 <line
-                  x1={cx + 60} y1={cy}
-                  x2={cx + 60} y2={cy - (Math.tan(angleRad) * 60)}
-                  stroke="#ef4444" strokeWidth="2"
+                  x1={cx + (mobile ? 40 : 60)} y1={cy}
+                  x2={cx + (mobile ? 40 : 60)} y2={cy - (Math.tan(angleRad) * (mobile ? 40 : 60))}
+                  stroke={theme.triangle} strokeWidth="2"
                 />
-                {/* Labels */}
-                <text x={cx + 30} y={cy + 15} fontSize="10" fill="#64748b" textAnchor="middle">Run</text>
-                <text x={cx + 65} y={cy - (Math.tan(angleRad) * 30)} fontSize="10" fill="#ef4444" textAnchor="start">Rise (v)</text>
               </g>
             )}
 
             {/* THE TANGENT "SEESAW" */}
             <g transform={`translate(${cx}, ${cy}) rotate(${-angleDeg})`}>
-              {/* The long tangent line */}
-              <line x1="-150" y1="0" x2="150" y2="0" stroke="#f59e0b" strokeWidth="3" opacity="0.8" />
-
-              {/* Visual weights/ends of the seesaw */}
-              <circle cx="-150" cy="0" r="3" fill="#f59e0b" />
-              <circle cx="150" cy="0" r="3" fill="#f59e0b" />
+              {/* Tangent Line */}
+              <line x1={-tangentLength} y1="0" x2={tangentLength} y2="0" stroke={theme.tangent} strokeWidth={mobile ? "2" : "3"} opacity="0.8" />
+              {/* Weights */}
+              <circle cx={-tangentLength} cy="0" r={mobile ? "2" : "3"} fill={theme.tangent} />
+              <circle cx={tangentLength} cy="0" r={mobile ? "2" : "3"} fill={theme.tangent} />
             </g>
 
             {/* THE POINT (SURFER) */}
-            <circle cx={cx} cy={cy} r="8" fill="#f59e0b" stroke="white" strokeWidth="3" className="shadow-lg" />
+            <circle cx={cx} cy={cy} r={mobile ? "6" : "8"} fill={theme.tangent} stroke={theme.cardBg} strokeWidth="3" className="shadow-lg" />
 
-            {/* FLOATING LABEL */}
-            <g transform={`translate(${cx - 60}, ${cy - 40})`}>
-              <rect width="120" height="30" rx="4" fill="rgba(30, 41, 59, 0.9)" />
-              <text x="60" y="20" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">
-                v = {currentV.toFixed(1)} m/s
+            {/* FLOATING LABEL (Smart Positioning for Mobile) */}
+            {/* On mobile, we move the label slightly differently so it doesn't clip */}
+            <g transform={`translate(${cx - (mobile ? 50 : 60)}, ${cy - (mobile ? 35 : 40)})`}>
+              <rect width={mobile ? "100" : "120"} height={mobile ? "25" : "30"} rx="4" fill="rgba(30, 41, 59, 0.9)" />
+              <text x={mobile ? "50" : "60"} y={mobile ? "17" : "20"} textAnchor="middle" fill="white" fontSize={fontSizeMain} fontWeight="bold">
+                v = {currentV.toFixed(1)}
               </text>
-              {/* Little arrow pointing down to dot */}
-              <path d="M 60 30 L 60 40" stroke="rgba(30, 41, 59, 0.9)" strokeWidth="2" />
+              <path d={`M ${mobile ? 50 : 60} ${mobile ? 25 : 30} L ${mobile ? 50 : 60} ${mobile ? 35 : 40}`} stroke="rgba(30, 41, 59, 0.9)" strokeWidth="2" />
             </g>
 
           </svg>
 
-          {/* CONTEXT OVERLAYS */}
-          <div className="absolute top-8 left-20 pointer-events-none">
-            <div className={`transition-opacity duration-500 ${time < 2 ? 'opacity-100' : 'opacity-0'}`}>
-              <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded shadow text-sm font-bold border border-blue-300">
-                Flat Curve = Horizontal Tangent (v ≈ 0)
+          {/* CONTEXT OVERLAYS (Stacked on Mobile) */}
+          {/* On mobile, we show these below the graph instead of floating inside */}
+          {!mobile && (
+            <>
+              <div className="absolute top-8 left-20 pointer-events-none">
+                <div className={`transition-opacity duration-500 ${time < 2 ? 'opacity-100' : 'opacity-0'}`}>
+                  <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded shadow text-sm font-bold border border-blue-300">
+                    Flat Curve = v ≈ 0
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="absolute bottom-20 right-20 pointer-events-none">
-            <div className={`transition-opacity duration-500 ${time > 8 ? 'opacity-100' : 'opacity-0'}`}>
-              <div className="bg-red-100 text-red-800 px-3 py-1 rounded shadow text-sm font-bold border border-red-300">
-                Steep Curve = Steep Tangent (High v)
+              <div className="absolute bottom-20 right-20 pointer-events-none">
+                <div className={`transition-opacity duration-500 ${time > 8 ? 'opacity-100' : 'opacity-0'}`}>
+                  <div className="bg-red-100 text-red-800 px-3 py-1 rounded shadow text-sm font-bold border border-red-300">
+                    Steep Curve = High v
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
 
         </div>
 
+        {/* MOBILE CONTEXT BAR */}
+        {mobile && (
+             <div className="flex border-b border-slate-200 text-center">
+                 <div className={`flex-1 p-2 text-xs font-bold ${time < 2 ? 'bg-blue-100 text-blue-700' : 'bg-slate-50 text-slate-300'}`}>
+                     Flat = Slow
+                 </div>
+                 <div className={`flex-1 p-2 text-xs font-bold ${time > 8 ? 'bg-red-100 text-red-700' : 'bg-slate-50 text-slate-300'}`}>
+                     Steep = Fast
+                 </div>
+             </div>
+        )}
+
         {/* CONTROLS */}
-        <div className="p-6 bg-slate-50 border-t border-slate-200">
+        <div className={`p-4 sm:p-6 ${darkMode ? 'bg-slate-900 border-slate-700' : 'bg-slate-50 border-slate-200'} border-t`}>
 
           {/* Scrubber */}
-          <div className="mb-6">
-            <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">
+          <div className="mb-4 sm:mb-6">
+            <label className={`text-xs font-bold ${theme.textSub} uppercase mb-2 block`}>
               Surf the curve (Manual Control)
             </label>
             <input
@@ -1881,29 +1907,29 @@ export const DecodingGraphs = ({ darkMode }) => {
               min="0" max="10" step="0.01"
               value={time}
               onChange={handleScrub}
-              className="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              className={`w-full h-3 sm:h-2 rounded-lg appearance-none cursor-pointer accent-blue-600 ${darkMode ? 'bg-slate-700' : 'bg-slate-300'}`}
             />
           </div>
 
-          <div className="flex justify-between items-center">
-            <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex gap-3 w-full sm:w-auto">
               <button
                 onClick={isPlaying ? handlePause : handleStart}
-                className={`font-bold py-3 px-8 rounded-full shadow transition-all active:scale-95 flex items-center gap-2
+                className={`flex-1 sm:flex-none font-bold py-3 px-8 rounded-full shadow transition-all active:scale-95 flex items-center justify-center gap-2
                             ${isPlaying ? 'bg-yellow-500 hover:bg-yellow-600 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
               >
-                {isPlaying ? "⏸ Pause" : time >= DURATION ? "↺ Replay" : "▶ Start Surfing"}
+                {isPlaying ? "⏸ Pause" : time >= DURATION ? "↺ Replay" : "▶ Start"}
               </button>
 
               <button
                 onClick={handleReset}
-                className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-full"
+                className={`flex-1 sm:flex-none font-bold py-3 px-6 rounded-full transition-colors ${darkMode ? 'bg-slate-700 hover:bg-slate-600 text-white' : 'bg-slate-200 hover:bg-slate-300 text-slate-700'}`}
               >
                 Reset
               </button>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start">
               <input
                 type="checkbox"
                 id="showTriangle"
@@ -1911,8 +1937,8 @@ export const DecodingGraphs = ({ darkMode }) => {
                 onChange={(e) => setShowSlopeTriangle(e.target.checked)}
                 className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300"
               />
-              <label htmlFor="showTriangle" className="text-sm font-medium text-slate-700 cursor-pointer select-none">
-                Show Slope Triangle (Rise/Run)
+              <label htmlFor="showTriangle" className={`text-sm font-medium cursor-pointer select-none ${theme.textMain}`}>
+                Show Slope Triangle
               </label>
             </div>
           </div>
@@ -1920,7 +1946,7 @@ export const DecodingGraphs = ({ darkMode }) => {
 
       </div>
 
-      <div className={`p-4 mt-5 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
+      <div className={`max-w-4xl w-full p-4 mt-5 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
         The readout shows the Perfect Mathematical Value. Your job with the ruler is to get as close to that number as humanly possible. If you get <strong>8.4 m/s</strong> and the screen says <strong>8.2 m/s</strong>, you did a great job estimating!
       </div>
     </div>
