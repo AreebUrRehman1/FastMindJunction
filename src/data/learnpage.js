@@ -3,7 +3,7 @@ export const unitDetailsContainer = [
     Name: "Module 1: Kinematics",
     key: "UDC1"
   }, {
-    Name: "Unit 2 - Force & Momentum",
+    Name: "Module 2: Vectors & Projectiles",
     key: "UDC2"
   }, {
     Name: "Unit 3 - Moments",
@@ -50,44 +50,16 @@ export const topicDetailsContainer = {
       ToolTipColor: "bg-[#069dcb]",
       Lecture : "decodingGraphs",
       key: "TDC4"
-    },
-    {
-      Name: "Resolving Vectors",
-      Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[110px]",
-      ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
-      key: "TDC5"
-    },
-    {
-      Name: "Adding Vectors",
-      Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[85px]",
-      ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
-      key: "TDC6"
-    },
-    {
-      Name: "Components of Velocity",
-      Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[50px]",
-      ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
-      key: "TDC7"
-    },
-    {
-      Name: "Free-body Force Diagrams",
-      Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5]",
-      ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
-      key: "TDC8"
     }
   ],
 
   Unit2: [
     {
-      Name: "Force & Acceleration",
+      Name: "Vector Math",
       Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#d33302]",
-      Lecture : "",
+      Lecture : "vectorMath",
       key: "TDC9"
     },
     {

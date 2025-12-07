@@ -1651,7 +1651,7 @@ export const DecodingGraphs = ({ darkMode, mobile }) => {
   // On mobile, we reduce logical width (zooming in) and adjust aspect ratio
   const WIDTH = mobile ? 400 : 800;
   const HEIGHT = mobile ? 350 : 400; // Taller on mobile for better visibility
-  const PADDING = mobile ? 40 : 60; 
+  const PADDING = mobile ? 40 : 60;
 
   // DRAWING AREA
   const GRAPH_W = WIDTH - PADDING * 2;
@@ -1884,14 +1884,14 @@ export const DecodingGraphs = ({ darkMode, mobile }) => {
 
         {/* MOBILE CONTEXT BAR */}
         {mobile && (
-             <div className="flex border-b border-slate-200 text-center">
-                 <div className={`flex-1 p-2 text-xs font-bold ${time < 2 ? 'bg-blue-100 text-blue-700' : 'bg-slate-50 text-slate-300'}`}>
-                     Flat = Slow
-                 </div>
-                 <div className={`flex-1 p-2 text-xs font-bold ${time > 8 ? 'bg-red-100 text-red-700' : 'bg-slate-50 text-slate-300'}`}>
-                     Steep = Fast
-                 </div>
-             </div>
+          <div className="flex border-b border-slate-200 text-center">
+            <div className={`flex-1 p-2 text-xs font-bold ${time < 2 ? 'bg-blue-100 text-blue-700' : 'bg-slate-50 text-slate-300'}`}>
+              Flat = Slow
+            </div>
+            <div className={`flex-1 p-2 text-xs font-bold ${time > 8 ? 'bg-red-100 text-red-700' : 'bg-slate-50 text-slate-300'}`}>
+              Steep = Fast
+            </div>
+          </div>
         )}
 
         {/* CONTROLS */}
@@ -1948,6 +1948,275 @@ export const DecodingGraphs = ({ darkMode, mobile }) => {
 
       <div className={`max-w-4xl w-full p-4 mt-5 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
         The readout shows the Perfect Mathematical Value. Your job with the ruler is to get as close to that number as humanly possible. If you get <strong>8.4 m/s</strong> and the screen says <strong>8.2 m/s</strong>, you did a great job estimating!
+      </div>
+    </div>
+  );
+};
+
+export const VectorMath = ({ darkMode, mobile }) => {
+  // --- STATE ---
+  const [angle, setAngle] = useState(0); // Degrees 0 to 90
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(0.5); // Animation speed multiplier
+
+  // --- REFS ---
+  const requestRef = useRef();
+
+  // --- CONFIG ---
+  // Responsive Drawing Constants
+  const SVG_SIZE = mobile ? 285 : 400;
+  const VECTOR_LENGTH = mobile ? 220 : 280; // Shorter on mobile to fit screen
+  const ORIGIN_X = 0;
+  const ORIGIN_Y = mobile ? 280 : 360; // Shift up slightly on mobile
+
+  // --- MATH HELPERS ---
+  const toRad = (deg) => (deg * Math.PI) / 180;
+
+  // Calculate coordinates
+  // Note: SVG Y-axis is inverted (0 is top), so we subtract from ORIGIN_Y
+  const rad = toRad(angle);
+  const tipX = ORIGIN_X + VECTOR_LENGTH * Math.cos(rad);
+  const tipY = ORIGIN_Y - VECTOR_LENGTH * Math.sin(rad);
+
+  // Component Lengths (Normalized 0-1 for labels, Pixels for drawing)
+  const compX_Norm = Math.cos(rad);
+  const compY_Norm = Math.sin(rad);
+
+  const compX_Px = VECTOR_LENGTH * compX_Norm;
+  const compY_Px = VECTOR_LENGTH * compY_Norm;
+
+  // --- ANIMATION LOOP ---
+  const animate = () => {
+    setAngle(prev => {
+      let next = prev + (0.5 * speed);
+      if (next >= 90) {
+        setIsPlaying(false);
+        return 90;
+      }
+      return next;
+    });
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
+  useEffect(() => {
+    if (isPlaying) {
+      requestRef.current = requestAnimationFrame(animate);
+    } else {
+      cancelAnimationFrame(requestRef.current);
+    }
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [isPlaying, speed]);
+
+  // --- CONTROLS ---
+  const handlePlayPause = () => {
+    if (angle >= 90) setAngle(0); // Auto-restart if finished
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleScrub = (e) => {
+    setIsPlaying(false);
+    setAngle(Number(e.target.value));
+  };
+
+  const handleReset = () => {
+    setIsPlaying(false);
+    setAngle(0);
+  };
+
+  // --- TEXT LABELS LOGIC ---
+  const getContextLabel = () => {
+    if (angle < 2) return "Horizontal MAX";
+    if (angle > 88) return "Vertical MAX";
+    if (Math.abs(angle - 45) < 2) return "Equal Components";
+    return "Resolving...";
+  };
+
+  // Theme Colors
+  const theme = {
+    cardBg: darkMode ? 'bg-slate-800' : 'bg-white',
+    border: darkMode ? 'border-slate-700' : 'border-slate-200',
+    textMain: darkMode ? 'text-slate-100' : 'text-slate-800',
+    textSub: darkMode ? 'text-slate-400' : 'text-slate-500',
+    svgBg: darkMode ? '#0f172a' : '#1e293b', // Always dark for graph contrast
+    controlsBg: darkMode ? 'bg-slate-900' : 'bg-slate-50'
+  };
+
+  return (
+    <div className={`font-sans ${theme.textMain} flex flex-col items-center py-4 sm:py-8`}>
+
+      <div className={`max-w-4xl w-full ${theme.cardBg} rounded-xl shadow-2xl overflow-hidden border ${theme.border}`}>
+
+        {/* HEADER */}
+        <div className={`${darkMode ? 'bg-slate-950' : 'bg-slate-900'} text-white p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2`}>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold">Vector Resolution</h1>
+            <p className="text-slate-400 text-xs sm:text-sm">Breaking a force into X and Y components</p>
+          </div>
+          <div className="flex items-center gap-3 w-full sm:w-auto bg-slate-800/50 p-2 rounded-lg sm:bg-transparent sm:p-0">
+            <div className="text-xs uppercase text-slate-400">Status</div>
+            <div className={`font-bold font-mono text-base sm:text-lg transition-colors duration-300 ml-auto sm:ml-2
+                    ${angle < 2 ? 'text-blue-400' : angle > 88 ? 'text-red-400' : Math.abs(angle - 45) < 2 ? 'text-purple-400' : 'text-yellow-400'}
+                `}>
+              {getContextLabel()}
+            </div>
+          </div>
+        </div>
+
+        {/* VISUALIZATION STAGE */}
+        <div className={`relative ${theme.svgBg}  pt-10 pb-20 pl-8 md:p-13 flex justify-center overflow-hidden`}>
+
+          <svg width={SVG_SIZE} height={SVG_SIZE} viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`} className="overflow-visible" preserveAspectRatio="xMidYMid meet">
+
+            {/* 1. GRID & AXES */}
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" strokeWidth="1" />
+              </pattern>
+              <marker id="arrow-yellow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#fbbf24" />
+              </marker>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+
+            {/* Axes */}
+            <line x1={ORIGIN_X} y1={ORIGIN_Y} x2={SVG_SIZE - 20} y2={ORIGIN_Y} stroke="#94a3b8" strokeWidth="2" /> {/* X Axis */}
+            <line x1={ORIGIN_X} y1={ORIGIN_Y} x2={ORIGIN_X} y2={20} stroke="#94a3b8" strokeWidth="2" />  {/* Y Axis */}
+            <text x={SVG_SIZE - 20} y={ORIGIN_Y + 20} fill="#94a3b8" fontSize="12" fontWeight="bold">x</text>
+            <text x={ORIGIN_X - 20} y="30" fill="#94a3b8" fontSize="12" fontWeight="bold">y</text>
+
+            {/* 2. PROJECTION LINES (Dashed) */}
+            <path
+              d={`M ${tipX} ${tipY} L ${tipX} ${ORIGIN_Y}`}
+              stroke="#3b82f6"
+              strokeWidth="1"
+              strokeDasharray="4"
+              opacity="0.5"
+            />
+            <path
+              d={`M ${tipX} ${tipY} L ${ORIGIN_X} ${tipY}`}
+              stroke="#ef4444"
+              strokeWidth="1"
+              strokeDasharray="4"
+              opacity="0.5"
+            />
+
+            {/* 3. COMPONENTS (Bars) */}
+
+            {/* BLUE BAR (X-Component) */}
+            <line
+              x1={ORIGIN_X} y1={ORIGIN_Y + 5}
+              x2={ORIGIN_X + compX_Px} y2={ORIGIN_Y + 5}
+              stroke="#3b82f6" strokeWidth={mobile ? "4" : "6"} strokeLinecap="round"
+            />
+
+            {/* RED BAR (Y-Component) */}
+            <line
+              x1={ORIGIN_X - 5} y1={ORIGIN_Y}
+              x2={ORIGIN_X - 5} y2={ORIGIN_Y - compY_Px}
+              stroke="#ef4444" strokeWidth={mobile ? "4" : "6"} strokeLinecap="round"
+            />
+
+            {/* 4. MAIN VECTOR (Yellow) */}
+            <line
+              x1={ORIGIN_X} y1={ORIGIN_Y}
+              x2={tipX} y2={tipY}
+              stroke="#fbbf24" strokeWidth={mobile ? "4" : "6"}
+              markerEnd="url(#arrow-yellow)"
+            />
+
+            {/* 5. ANGLE ARC */}
+            {angle > 5 && (
+              <path
+                d={`M ${ORIGIN_X + 40} ${ORIGIN_Y} A 40 40 0 0 0 ${ORIGIN_X + 40 * Math.cos(rad)} ${ORIGIN_Y - 40 * Math.sin(rad)}`}
+                fill="none" stroke="#fbbf24" strokeWidth="2" opacity="0.6"
+              />
+            )}
+            {angle > 10 && (
+              <text x={ORIGIN_X + 50} y={ORIGIN_Y - 15} fill="#fbbf24" fontSize="12">
+                {Math.round(angle)}°
+              </text>
+            )}
+
+            {/* 6. DYNAMIC LABELS ON GRAPH */}
+
+            {/* Cosine Label */}
+            <text
+              x={ORIGIN_X + compX_Px / 2}
+              y={ORIGIN_Y + (mobile ? 20 : 25)}
+              fill="#3b82f6"
+              textAnchor="middle"
+              fontWeight="bold"
+              fontSize={mobile ? "12" : "14"}
+            >
+              cos {Math.round(angle)}° = {compX_Norm.toFixed(2)}
+            </text>
+
+            {/* Sine Label */}
+            <text
+              x={ORIGIN_X - 15}
+              y={ORIGIN_Y - compY_Px / 2}
+              fill="#ef4444"
+              textAnchor="end"
+              dominantBaseline="middle"
+              fontWeight="bold"
+              fontSize={mobile ? "12" : "14"}
+              transform={`rotate(-90, ${ORIGIN_X - 15}, ${ORIGIN_Y - compY_Px / 2})`}
+            >
+              sin {Math.round(angle)}° = {compY_Norm.toFixed(2)}
+            </text>
+
+          </svg>
+        </div>
+
+        {/* MATH CONTEXT (Visible on Mobile now too) */}
+        <div className={`flex justify-around p-3 text-xs sm:text-sm font-mono border-t ${theme.border} ${theme.controlsBg}`}>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-blue-500 rounded-sm"></div>
+            <span className={theme.textSub}>x = R·cos(θ)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-red-500 rounded-sm"></div>
+            <span className={theme.textSub}>y = R·sin(θ)</span>
+          </div>
+        </div>
+
+        {/* CONTROLS */}
+        <div className={`${theme.controlsBg} p-4 sm:p-6 border-t ${theme.border}`}>
+
+          {/* Scrubber */}
+          <div className="mb-6">
+            <div className={`flex justify-between text-xs font-bold ${theme.textSub} uppercase mb-2`}>
+              <span>0° (Flat)</span>
+              <span>90° (Vertical)</span>
+            </div>
+            <input
+              type="range"
+              min="0" max="90" step="0.1"
+              value={angle}
+              onChange={handleScrub}
+              className={`w-full h-4 sm:h-3 rounded-lg appearance-none cursor-pointer accent-yellow-500 ${darkMode ? 'bg-slate-700' : 'bg-slate-200'}`}
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+            <button
+              onClick={handlePlayPause}
+              className={`w-full sm:w-auto font-bold py-3 px-8 rounded-full shadow transition-all active:scale-95 flex items-center justify-center gap-2 text-white
+                            ${isPlaying ? 'bg-slate-600 hover:bg-slate-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+            >
+              {isPlaying ? "⏸ Pause" : angle >= 90 ? "↺ Replay" : "▶ Animate Rotation"}
+            </button>
+
+            <button
+              onClick={handleReset}
+              className={`w-full sm:w-auto border font-bold py-3 px-6 rounded-full transition-colors 
+              ${darkMode ? 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700' : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-100'}`}
+            >
+              Reset (0°)
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );

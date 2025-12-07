@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { AreaChart, TrendingUp, Zap, ArrowLeft, Ruler } from 'lucide-react';
+import { Ruler, CornerUpLeft, PlusCircle, ArrowLeft } from 'lucide-react';
 import { Checkpoint } from './Checkpoint';
 
 export function DesignTesting({ darkMode }) {
@@ -21,63 +21,87 @@ export function DesignTesting({ darkMode }) {
     }
   }, [unlockedIndex]);
 
-  // --- CONTENT DATA (Module 1.4) ---
+  // --- CONTENT DATA (Module 2.1) ---
   const content = {
-    module: "Module 1.4 • Kinematics",
-    title: "1.4 Decoding Graphs (Slopes & Areas)",
-    subtitle: "Extracting Hidden Information",
-    intro: "The true power of a graph isn't just its shape. By measuring the 'steepness' (Slope) or the 'space underneath' (Area), we can unlock hidden variables like velocity and displacement without needing a single formula.",
+    module: "Module 2.1 • Vectors & Projectiles",
+    title: "2.1 Vector Math",
+    subtitle: "Resolving and Resulting 2D Motion",
+    intro: "Vectors are the language of two-dimensional motion. We can't solve physics problems by just adding numbers; we must use geometry. This module teaches you the two fundamental vector skills: breaking them down and adding them up.",
     sections: [
       {
-        id: "slope",
-        title: "Part 1: The Slope is the Rate",
-        icon: <TrendingUp className="w-6 h-6" />,
-        text: "The Gradient (Slope) of a line represents the 'Rate of Change'. It tells you how fast the Y-variable is changing compared to the X-variable.",
+        id: "resolving",
+        title: "Part 1: The Art of Resolving (Breaking Down)",
+        icon: <CornerUpLeft className="w-6 h-6" />,
+        text: "Resolving a vector means breaking it into two perpendicular components (usually horizontal and vertical). We do this because the motion in the x-direction is independent of the motion in the y-direction.",
         comparison: [
-          { label: "Slope of s-t Graph", desc: "Calculates Velocity (v). (Change in Position / Time)" },
-          { label: "Slope of v-t Graph", desc: "Calculates Acceleration (a). (Change in Speed / Time)" }
+          {
+            label: "Horizontal Component (Fx)",
+            desc: "The side adjacent to the angle θ. Calculated using F cos θ."
+          },
+          {
+            label: "Vertical Component (Fy)",
+            desc: "The side opposite the angle θ. Calculated using F sin θ."
+          }
         ],
-        goldenRule: "Calculation Tip: Gradient = (y₂ - y₁) / (x₂ - x₁). Always pick two points as far apart as possible for accuracy.",
-        imageTag: "[Image of calculating slope on a velocity time graph]",
+        goldenRule: "Always draw a right-angled triangle. If the angle θ is measured from the horizontal, use Cosine for the horizontal and Sine for the vertical.",
+        // Static Image Placeholder
+        imageTag: (
+          <div className="mt-4 text-center text-sm opacity-60 italic">
+
+            <br />A vector F split into horizontal (F cos θ) and vertical (F sin θ) parts.
+          </div>
+        ),
         quiz: {
-          question: "You calculate the gradient of a Velocity-Time graph and get a negative number (e.g., -5 m/s²). What does this mean?",
-          options: ["The object is moving backwards.", "The object is slowing down (Decelerating).", "The calculation is wrong."],
+          question: "A force of 10 N acts at 30° to the horizontal. Which component uses sin(30°)?",
+          options: ["Horizontal (Fx)", "Vertical (Fy)", "Both components"],
           correctIndex: 1
         }
       },
       {
-        id: "area",
-        title: "Part 2: The Area is the Accumulator",
-        icon: <AreaChart className="w-6 h-6" />,
-        text: "The area trapped between the line and the x-axis represents the 'product' of the axes (Y multiplied by X).",
+        id: "resultant",
+        title: "Part 2: Finding the Resultant (Adding Up)",
+        icon: <PlusCircle className="w-6 h-6" />,
+        text: "The resultant vector is the single vector that replaces all other vectors. This is the net effect of multiple forces or displacements acting on an object.",
         equations: [
-          { name: "Area under v-t Graph", type: "Equals", formula: "Displacement (s)" },
-          { name: "Area under a-t Graph", type: "Equals", formula: "Change in Velocity (Δv)" },
+          {
+            name: "Magnitude (Size)",
+            type: "Pythagoras' Theorem",
+            formula: "R = √(Rₓ² + Rᵧ²)"
+          },
+          {
+            name: "Direction (Angle)",
+            type: "Trigonometry",
+            formula: "θ = tan⁻¹(Rᵧ / Rₓ)"
+          }
         ],
-        insight: "Visual Tip: Split complex shapes into rectangles and triangles. Remember: Area below the X-axis subtracts from your total displacement.",
-        imageTag: "[Image of area under velocity time graph calculation]",
+        insight: "Key Insight: You can only add or subtract vectors directly if they are parallel (on the same axis). Therefore, always resolve them first!",
+        // Static Image Placeholder
+        imageTag: (
+          <div className="mt-4 text-center text-sm opacity-60 italic">
+            [Image of vector addition head to tail method]
+            <br />Adding vectors head-to-tail to find the Resultant (R).
+          </div>
+        ),
         quiz: {
-          question: "A Velocity-Time graph is a rectangle 4s wide and 10m/s high. What is the displacement?",
-          options: ["2.5 m", "14 m", "40 m"],
+          question: "Two perpendicular forces, 3 N (East) and 4 N (North), act on an object. What is the magnitude of the resultant force?",
+          options: ["1 N", "7 N", "5 N"],
           correctIndex: 2
         }
       },
       {
-        id: "curves",
-        title: "Part 3: Advanced - The Curve Decoder",
-        icon: <Zap className="w-6 h-6" />,
-        text: "What if the line is curved? A curve means the slope (velocity or acceleration) is changing every instant. You cannot use 'Rise over Run' directly.",
+        id: "methods",
+        title: "Part 3: Calculation vs. Drawing",
+        icon: <Ruler className="w-6 h-6" />,
+        text: "The syllabus requires you to be able to find the resultant and components using both methods, especially when vectors are NOT at 90 degrees to each other.",
         conditions: [
-          "To find the Instantaneous Rate at a specific time 't':",
-          "1. Place your ruler at point 't' on the curve.",
-          "2. Draw a TANGENT (a straight line that just touches the curve without cutting through it).",
-          "3. Calculate the gradient of that straight tangent line."
+          "Calculation: Used for accuracy, especially when vectors are perpendicular (using Pythagoras/SOH CAH TOA).",
+          "Drawing (Scale Diagram): Used to find the resultant of two vectors at ANY angle (e.g., 60°). Requires a ruler and protractor.",
+          "Vector Addition Rule: The resultant always goes from the start of the first vector (tail) to the end of the last vector (head)."
         ],
-        imageTag: "[Image of tangent line drawn on a curved graph to find instantaneous slope]",
         quiz: {
-          question: "On a Displacement-Time graph, the curve is getting flatter (less steep). What is happening to the velocity?",
-          options: ["Velocity is decreasing (Slowing down).", "Velocity is increasing.", "Velocity is constant."],
-          correctIndex: 0
+          question: "When adding two non-perpendicular vectors graphically, what method is used?",
+          options: ["Tail-to-tail method", "Scale diagram (head-to-tail)", "The component method only"],
+          correctIndex: 1
         }
       }
     ]
@@ -151,8 +175,8 @@ export function DesignTesting({ darkMode }) {
 
                   {/* --- LAYOUTS --- */}
 
-                  {/* COMPARISON/RULE LAYOUT (Slope) */}
-                  {section.id === "slope" && (
+                  {/* COMPARISON/RULE LAYOUT (Resolving) */}
+                  {section.id === "resolving" && (
                     <div className="space-y-4">
                       <div className={`rounded-xl overflow-hidden divide-y ${darkMode ? 'divide-slate-700 border border-slate-700' : 'divide-slate-200 border border-slate-200'}`}>
                         {section.comparison.map((item) => (
@@ -166,16 +190,13 @@ export function DesignTesting({ darkMode }) {
                         <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
                         {section.goldenRule}
                       </div>
-                      {section.imageTag && (
-                        <div className="mt-4 text-center text-sm opacity-50 italic">
-                          {section.imageTag}
-                        </div>
-                      )}
+                      {/* Image Render */}
+                      {section.imageTag}
                     </div>
                   )}
 
-                  {/* EQUATIONS LAYOUT (Area) */}
-                  {section.id === "area" && (
+                  {/* EQUATIONS LAYOUT (Resultant) */}
+                  {section.id === "resultant" && (
                     <div className="space-y-4">
                       <div className="grid sm:grid-cols-2 gap-4">
                         {section.equations.map((eq) => (
@@ -191,16 +212,13 @@ export function DesignTesting({ darkMode }) {
                       <div className={`p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
                         {section.insight}
                       </div>
-                      {section.imageTag && (
-                        <div className="mt-4 text-center text-sm opacity-50 italic">
-                          {section.imageTag}
-                        </div>
-                      )}
+                      {/* Image Render */}
+                      {section.imageTag}
                     </div>
                   )}
 
-                  {/* LIST/STEPS LAYOUT (Curves/Tangents) */}
-                  {section.id === "curves" && (
+                  {/* LIST/STEPS LAYOUT (Methods) */}
+                  {section.id === "methods" && (
                     <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
                       <ul className="space-y-4">
                         {section.conditions.map((cond, i) => (
@@ -212,11 +230,6 @@ export function DesignTesting({ darkMode }) {
                           </li>
                         ))}
                       </ul>
-                      {section.imageTag && (
-                        <div className="mt-4 text-center text-sm opacity-50 italic">
-                          {section.imageTag}
-                        </div>
-                      )}
                     </div>
                   )}
 

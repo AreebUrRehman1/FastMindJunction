@@ -16,6 +16,10 @@ export function lectureLayout(lessonId) {
     decodingGraphs: {
       layouts: 3,
       sectionIds: ['goldenRule', 'equations', 'strategy']
+    },
+    vectorMath: {
+      layout: 3,
+      sectionIds: ['goldenRule', 'equations', 'strategy']
     }
 
   }

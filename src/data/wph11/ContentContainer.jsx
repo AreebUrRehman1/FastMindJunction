@@ -1,8 +1,9 @@
-import { ArrowRight, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart } from 'lucide-react';
+import { ArrowRight, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler } from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
 import { GraphsOfMotion } from './AnimationStorage';
 import { DecodingGraphs } from './AnimationStorage';
+import { VectorMath } from './AnimationStorage';
 import { ImageRender } from './image-render';
 
 
@@ -237,7 +238,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
             { label: "Curved Line ( )", desc: "Means 'Changing rate'. On s-t: Acceleration ┇ On v-t: Non-uniform Acceleration." }
           ],
           goldenRule: "Visual Tip: 'Steeper' always means 'More Intense'. Steeper s-t = Faster. Steeper v-t = Harder Acceleration.",
-          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"displacementVsVelocityTimeGraph"}/>,
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"displacementVsVelocityTimeGraph"} />,
           quiz: {
             question: "A Displacement-Time graph shows a curve getting steeper and steeper. What is happening?",
             options: ["The object is slowing down.", "The object is accelerating (speeding up).", "The object is climbing a hill."],
@@ -289,7 +290,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
             { label: "Slope of v-t Graph", desc: "Calculates Acceleration (a). (Change in Speed / Time)" }
           ],
           goldenRule: "Calculation Tip: Gradient = (y₂ - y₁) / (x₂ - x₁). Always pick two points as far apart as possible for accuracy.",
-          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theGradientTriangle"}/>,
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theGradientTriangle"} />,
           quiz: {
             question: "You calculate the gradient of a Velocity-Time graph and get a negative number (e.g., -5 m/s²). What does this mean?",
             options: ["The object is moving backwards.", "The object is slowing down (Decelerating).", "The calculation is wrong."],
@@ -305,7 +306,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
             { name: "Area under a-t Graph", type: "Equals", formula: "Change in Velocity (Δv)" },
           ],
           insight: "Visual Tip: Split complex shapes into rectangles and triangles. Remember: Area below the X-axis subtracts from your total displacement.",
-          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theAreaSplit"}/>,
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theAreaSplit"} />,
           quiz: {
             question: "A Velocity-Time graph is a rectangle 4s wide and 10m/s high. What is the displacement?",
             options: ["2.5 m", "14 m", "40 m"],
@@ -323,8 +324,74 @@ export function contentContainer(darkMode, lessonId, mobile) {
             "3. Make sure the area (highlight in pink) on both sides are almost equal.",
             "4. Take two points and calculate the gradient of that straight tangent line."
           ],
-          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theTangentTechnique"}/>,
-          animationCue : <DecodingGraphs darkMode={darkMode} />
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theTangentTechnique"} />,
+          animationCue: <DecodingGraphs darkMode={darkMode} />
+        }
+      ]
+    },
+    vectorMath: {
+      module: "Module 2.1 • Vectors & Projectiles",
+      title: "2.1 Vector Math",
+      subtitle: "Resolving and Resulting 2D Motion",
+      intro: "Vectors are the language of two-dimensional motion. We can't solve physics problems by just adding numbers; we must use geometry. This module teaches you the two fundamental vector skills: breaking them down and adding them up.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: The Art of Resolving (Breaking Down)",
+          icon: <CornerUpLeft className="w-6 h-6" />,
+          text: "Resolving a vector means breaking it into two perpendicular components (usually horizontal and vertical). We do this because the motion in the x-direction is independent of the motion in the y-direction.",
+          comparison: [
+            {
+              label: "Horizontal Component (Fx)",
+              desc: "The side adjacent to the angle θ. Calculated using F cos θ."
+            },
+            {
+              label: "Vertical Component (Fy)",
+              desc: "The side opposite the angle θ. Calculated using F sin θ."
+            }
+          ],
+          goldenRule: "Always draw a right-angled triangle. If the angle θ is measured from the horizontal, use Cosine for the horizontal and Sine for the vertical.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theResolutionTriangle"} />,
+          animationCue: <VectorMath darkMode={darkMode} mobile={mobile} />,
+          quiz: {
+            question: "A force of 10 N acts at 30° to the horizontal. Which component uses sin(30°)?",
+            options: ["Horizontal (Fx)", "Vertical (Fy)", "Both components"],
+            correctIndex: 1
+          }
+        }, {
+          id: "equations",
+          title: "Part 2: Finding the Resultant (Adding Up)",
+          icon: <PlusCircle className="w-6 h-6" />,
+          text: "The resultant vector is the single vector that replaces all other vectors. This is the net effect of multiple forces or displacements acting on an object.",
+          equations: [
+            {
+              name: "Magnitude (Size)",
+              type: "Pythagoras' Theorem",
+              formula: "R = √(Rₓ² + Rᵧ²)"
+            },
+            {
+              name: "Direction (Angle)",
+              type: "Trigonometry",
+              formula: "θ = tan⁻¹(Rᵧ / Rₓ)"
+            }
+          ],
+          insight: "Key Insight: You can only add or subtract vectors directly if they are parallel (on the same axis). Therefore, always resolve them first!",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theHeadToTailMethod"} />,
+          quiz: {
+            question: "Two perpendicular forces, 3 N (East) and 4 N (North), act on an object. What is the magnitude of the resultant force?",
+            options: ["1 N", "7 N", "5 N"],
+            correctIndex: 2
+          }
+        }, {
+          id: "strategy",
+          title: "Part 3: Calculation vs. Drawing",
+          icon: <Ruler className="w-6 h-6" />,
+          text: "The syllabus requires you to be able to find the resultant and components using both methods, especially when vectors are NOT at 90 degrees to each other.",
+          conditions: [
+            "Calculation: Used for accuracy, especially when vectors are perpendicular (using Pythagoras/SOH CAH TOA).",
+            "Drawing (Scale Diagram): Used to find the resultant of two vectors at ANY angle (e.g., 60°). Requires a ruler and protractor.",
+            "Vector Addition Rule: The resultant always goes from the start of the first vector (tail) to the end of the last vector (head)."
+          ]
         }
       ]
     }
