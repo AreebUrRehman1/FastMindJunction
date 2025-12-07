@@ -1630,3 +1630,299 @@ export const GraphsOfMotion = ({ darkMode, mobile }) => {
     </div>
   );
 };
+
+export const DecodingGraphs = ({ darkMode }) => {
+  // --- STATE ---
+  const [time, setTime] = useState(0); // 0 to 10 seconds
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showSlopeTriangle, setShowSlopeTriangle] = useState(true);
+
+  // --- REFS ---
+  const requestRef = useRef();
+  const startTimeRef = useRef(0);
+  const pausedTimeRef = useRef(0);
+
+  // --- CONFIG ---
+  const DURATION = 10;
+  const MAX_TIME = 10;
+  const MAX_DISP = 100; // y = x^2, so at x=10, y=100
+
+  // SVG DIMENSIONS
+  const WIDTH = 800;
+  const HEIGHT = 400;
+  const PADDING = 60;
+
+  // DRAWING AREA
+  const GRAPH_W = WIDTH - PADDING * 2;
+  const GRAPH_H = HEIGHT - PADDING * 2;
+
+  // --- MATH HELPERS ---
+
+  // The Function: s = t^2 (Parabola)
+  const getDisplacement = (t) => t * t;
+
+  // The Derivative: v = 2t (Linear)
+  const getVelocity = (t) => 2 * t;
+
+  // Coordinate mappers
+  const mapX = (t) => PADDING + (t / MAX_TIME) * GRAPH_W;
+  const mapY = (s) => (HEIGHT - PADDING) - (s / MAX_DISP) * GRAPH_H;
+
+  // --- ANIMATION LOOP ---
+  const animate = (timestamp) => {
+    if (!startTimeRef.current) startTimeRef.current = timestamp;
+    const elapsed = (timestamp - startTimeRef.current + pausedTimeRef.current) / 1000;
+
+    // Loop physics speed: 1 real second = 1 graph second
+    if (elapsed >= DURATION) {
+      setTime(DURATION);
+      setIsPlaying(false);
+      startTimeRef.current = 0;
+      pausedTimeRef.current = 0;
+      return;
+    }
+
+    setTime(elapsed);
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
+  // --- CONTROLS ---
+  const handleStart = () => {
+    if (time >= DURATION) {
+      setTime(0);
+      pausedTimeRef.current = 0;
+    }
+    setIsPlaying(true);
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    cancelAnimationFrame(requestRef.current);
+    // Only accumulate time if we were actually playing/had a start time
+    if (startTimeRef.current > 0) {
+      pausedTimeRef.current += performance.now() - startTimeRef.current;
+      startTimeRef.current = 0;
+    }
+  };
+
+  const handleReset = () => {
+    setIsPlaying(false);
+    cancelAnimationFrame(requestRef.current);
+    setTime(0);
+    startTimeRef.current = 0;
+    pausedTimeRef.current = 0;
+  };
+
+  const handleScrub = (e) => {
+    handlePause();
+    const newTime = Number(e.target.value);
+    setTime(newTime);
+    // FIX: Sync the internal animation timer to the manual scrubber value
+    pausedTimeRef.current = newTime * 1000;
+  };
+
+  useEffect(() => {
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
+
+  // --- CALCULATE RENDER VISUALS ---
+  const currentS = getDisplacement(time);
+  const currentV = getVelocity(time);
+
+  const cx = mapX(time);
+  const cy = mapY(currentS);
+
+  // Calculate Tangent Line Angle visually
+  // We need two points very close together in PIXELS to get the correct visual rotation
+  const delta = 0.1;
+  const x1 = mapX(time);
+  const y1 = mapY(time * time);
+  const x2 = mapX(time + delta);
+  const y2 = mapY((time + delta) ** 2);
+
+  // Math.atan2(dy, dx) -> Result is in radians
+  // Note: y is inverted in SVG, so y1 - y2 is positive "up"
+  const angleRad = Math.atan2(y1 - y2, x2 - x1);
+  const angleDeg = angleRad * (180 / Math.PI);
+
+  // Generate the Curve Path
+  const generatePath = () => {
+    let d = `M ${mapX(0)} ${mapY(0)}`;
+    for (let t = 0; t <= 10; t += 0.1) {
+      d += ` L ${mapX(t)} ${mapY(t * t)}`;
+    }
+    return d;
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col items-center py-8">
+
+      <div className="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-200">
+
+        {/* HEADER */}
+        <div className="bg-slate-900 text-white p-6 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold">Slope = Velocity</h1>
+            <p className="text-slate-400 text-sm">Visualizing Instantaneous Velocity on a Displacement-Time Graph</p>
+          </div>
+          <div className="text-right">
+            <div className="text-xs uppercase text-slate-400">Current Slope</div>
+            <div className="font-mono text-2xl font-bold text-yellow-400">
+              {currentV.toFixed(1)} <span className="text-sm text-yellow-600">m/s</span>
+            </div>
+          </div>
+        </div>
+
+        {/* GRAPH STAGE */}
+        <div className="relative bg-slate-100 p-4 overflow-hidden select-none">
+
+          <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className=" p-3 w-full h-full bg-white rounded border border-slate-200 shadow-inner">
+
+            {/* GRID */}
+            {/* Y-Axis Grid */}
+            {[0, 25, 50, 75, 100].map(val => (
+              <g key={val}>
+                <line x1={PADDING} y1={mapY(val)} x2={WIDTH - PADDING} y2={mapY(val)} stroke="#e2e8f0" strokeWidth="1" />
+                <text x={PADDING - 10} y={mapY(val) + 4} textAnchor="end" fontSize="10" fill="#94a3b8">{val}m</text>
+              </g>
+            ))}
+            {/* X-Axis Grid */}
+            {[0, 2, 4, 6, 8, 10].map(val => (
+              <g key={val}>
+                <line x1={mapX(val)} y1={HEIGHT - PADDING} x2={mapX(val)} y2={PADDING} stroke="#e2e8f0" strokeWidth="1" />
+                <text x={mapX(val)} y={HEIGHT - PADDING + 20} textAnchor="middle" fontSize="10" fill="#94a3b8">{val}s</text>
+              </g>
+            ))}
+
+            {/* AXIS LABELS */}
+            <text x={WIDTH / 2} y={HEIGHT - 10} textAnchor="middle" fontWeight="bold" fill="#64748b">Time (s)</text>
+            <text x={15} y={HEIGHT / 2} textAnchor="middle" fontWeight="bold" fill="#64748b" transform={`rotate(-90 15 ${HEIGHT / 2})`}>Displacement (m)</text>
+
+            {/* THE CURVE */}
+            <path d={generatePath()} fill="none" stroke="#3b82f6" strokeWidth="4" strokeLinecap="round" />
+
+            {/* SLOPE TRIANGLE (Ghost) */}
+            {/* We draw a right triangle under the tangent to show Rise/Run */}
+            {showSlopeTriangle && time < 9.5 && time > 0.5 && (
+              <g opacity="0.6">
+                {/* Run Line (Horizontal) */}
+                <line
+                  x1={cx} y1={cy}
+                  x2={cx + 60} y2={cy}
+                  stroke="#94a3b8" strokeWidth="1" strokeDasharray="4"
+                />
+                {/* Rise Line (Vertical) */}
+                <line
+                  x1={cx + 60} y1={cy}
+                  x2={cx + 60} y2={cy - (Math.tan(angleRad) * 60)}
+                  stroke="#ef4444" strokeWidth="2"
+                />
+                {/* Labels */}
+                <text x={cx + 30} y={cy + 15} fontSize="10" fill="#64748b" textAnchor="middle">Run</text>
+                <text x={cx + 65} y={cy - (Math.tan(angleRad) * 30)} fontSize="10" fill="#ef4444" textAnchor="start">Rise (v)</text>
+              </g>
+            )}
+
+            {/* THE TANGENT "SEESAW" */}
+            <g transform={`translate(${cx}, ${cy}) rotate(${-angleDeg})`}>
+              {/* The long tangent line */}
+              <line x1="-150" y1="0" x2="150" y2="0" stroke="#f59e0b" strokeWidth="3" opacity="0.8" />
+
+              {/* Visual weights/ends of the seesaw */}
+              <circle cx="-150" cy="0" r="3" fill="#f59e0b" />
+              <circle cx="150" cy="0" r="3" fill="#f59e0b" />
+            </g>
+
+            {/* THE POINT (SURFER) */}
+            <circle cx={cx} cy={cy} r="8" fill="#f59e0b" stroke="white" strokeWidth="3" className="shadow-lg" />
+
+            {/* FLOATING LABEL */}
+            <g transform={`translate(${cx - 60}, ${cy - 40})`}>
+              <rect width="120" height="30" rx="4" fill="rgba(30, 41, 59, 0.9)" />
+              <text x="60" y="20" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">
+                v = {currentV.toFixed(1)} m/s
+              </text>
+              {/* Little arrow pointing down to dot */}
+              <path d="M 60 30 L 60 40" stroke="rgba(30, 41, 59, 0.9)" strokeWidth="2" />
+            </g>
+
+          </svg>
+
+          {/* CONTEXT OVERLAYS */}
+          <div className="absolute top-8 left-20 pointer-events-none">
+            <div className={`transition-opacity duration-500 ${time < 2 ? 'opacity-100' : 'opacity-0'}`}>
+              <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded shadow text-sm font-bold border border-blue-300">
+                Flat Curve = Horizontal Tangent (v ≈ 0)
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute bottom-20 right-20 pointer-events-none">
+            <div className={`transition-opacity duration-500 ${time > 8 ? 'opacity-100' : 'opacity-0'}`}>
+              <div className="bg-red-100 text-red-800 px-3 py-1 rounded shadow text-sm font-bold border border-red-300">
+                Steep Curve = Steep Tangent (High v)
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* CONTROLS */}
+        <div className="p-6 bg-slate-50 border-t border-slate-200">
+
+          {/* Scrubber */}
+          <div className="mb-6">
+            <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">
+              Surf the curve (Manual Control)
+            </label>
+            <input
+              type="range"
+              min="0" max="10" step="0.01"
+              value={time}
+              onChange={handleScrub}
+              className="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            />
+          </div>
+
+          <div className="flex justify-between items-center">
+            <div className="flex gap-4">
+              <button
+                onClick={isPlaying ? handlePause : handleStart}
+                className={`font-bold py-3 px-8 rounded-full shadow transition-all active:scale-95 flex items-center gap-2
+                            ${isPlaying ? 'bg-yellow-500 hover:bg-yellow-600 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+              >
+                {isPlaying ? "⏸ Pause" : time >= DURATION ? "↺ Replay" : "▶ Start Surfing"}
+              </button>
+
+              <button
+                onClick={handleReset}
+                className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-full"
+              >
+                Reset
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="showTriangle"
+                checked={showSlopeTriangle}
+                onChange={(e) => setShowSlopeTriangle(e.target.checked)}
+                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300"
+              />
+              <label htmlFor="showTriangle" className="text-sm font-medium text-slate-700 cursor-pointer select-none">
+                Show Slope Triangle (Rise/Run)
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div className={`p-4 mt-5 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
+        The readout shows the Perfect Mathematical Value. Your job with the ruler is to get as close to that number as humanly possible. If you get <strong>8.4 m/s</strong> and the screen says <strong>8.2 m/s</strong>, you did a great job estimating!
+      </div>
+    </div>
+  );
+};

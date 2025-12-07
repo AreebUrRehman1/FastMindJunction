@@ -118,6 +118,7 @@ export function LessonPage({ darkMode, darkModeControl }) {
                         darkMode={darkMode}
                         quiz={section.quiz}
                         isLast={isLast}
+                        titleFinished={content.title}
                         nextSectionTitle={!isLast ? content.sections[idx + 1].title : 'Finish'}
                         onUnlock={() => setUnlockedIndex(prev => prev + 1)}
                       />

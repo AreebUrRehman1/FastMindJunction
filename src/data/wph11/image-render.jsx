@@ -1,0 +1,22 @@
+import displacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/displacement-vs-velocity-time-graph.png'
+import darkdisplacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/dark-displacement-vs-velocity-time-graph.png'
+import theGradientTriangle from '../../assets/lesson/WPH11 - 1.4/the-gradient-triangle.png'
+import darkTheGradientTriangle from '../../assets/lesson/WPH11 - 1.4/dark-the-gradient-triangle.png'
+import theAreaSplit from '../../assets/lesson/WPH11 - 1.4/the-area-split.png'
+import darkTheAreaSplit from '../../assets/lesson/WPH11 - 1.4/dark-the-area-split.png'
+import theTangentTechnique from '../../assets/lesson/WPH11 - 1.4/the-tangent-technique.png'
+import darkTheTangentTechnique from '../../assets/lesson/WPH11 - 1.4/dark-the-tangent-technique.png'
+
+export const ImageRender = ({darkMode, imageToDisplay}) => {
+  console.log(imageToDisplay);
+
+  const imageRender = {
+    "displacementVsVelocityTimeGraph": darkMode ? (<img src={darkdisplacementVsVelocityTimeGraph} alt='Displacement Vs Velocity Time Graph' />) : (<img src={displacementVsVelocityTimeGraph} alt='Dark Displacement Vs Velocity Time Graph' />),
+    "theGradientTriangle": darkMode ? (<img src={darkTheGradientTriangle} alt='Dark The Gradient Triangle' className='w-100 h-100'/>) : (<img src={theGradientTriangle} alt='The Gradient Triangle' className='w-100 h-100' />),
+    "theAreaSplit": darkMode ? (<img src={darkTheAreaSplit} alt='The Area Split' className='w-100 h-100' />) : (<img src={theAreaSplit} alt='Dark The Area Split' className='w-100 h-100'/>),
+    "theTangentTechnique": darkMode ? (<img src={darkTheTangentTechnique} alt='Dark The Tangent Technique' className='w-80 h-80'/>) : (<img src={theTangentTechnique} alt='The Tangent Technique' className='w-80 h-80' />),
+  }
+
+
+  return imageRender[imageToDisplay];
+}

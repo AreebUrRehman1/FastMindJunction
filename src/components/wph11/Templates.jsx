@@ -30,7 +30,7 @@ export function Templates({ section, darkMode }) {
           </div>
           {/* Image Placeholder */}
           {section.imageTag && (
-            <div className="mt-4 text-center text-sm italic">
+            <div className="flex justify-center mt-4 text-center text-sm italic">
               {section.imageTag}
             </div>
           )}
@@ -55,6 +55,12 @@ export function Templates({ section, darkMode }) {
               </div>
             ))}
           </div>
+          {/* Image Placeholder */}
+          {section.imageTag && (
+            <div className="flex justify-center mt-4 text-center text-sm italic">
+              {section.imageTag}
+            </div>
+          )}
           <div className={`p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
             {section.insight}
           </div>
@@ -94,6 +100,12 @@ export function Templates({ section, darkMode }) {
               </li>
             ))}
           </ul>
+          {/* Image Placeholder */}
+          {section.imageTag && (
+            <div className="flex justify-center mt-4 text-center text-sm italic">
+              {section.imageTag}
+            </div>
+          )}
         </div>
       );
 

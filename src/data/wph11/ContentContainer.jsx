@@ -1,20 +1,17 @@
-import { ArrowRight, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay } from 'lucide-react';
+import { ArrowRight, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart } from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
 import { GraphsOfMotion } from './AnimationStorage';
-import displacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/displacement-vs-velocity-time-graph.png'
-import darkdisplacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/dark-displacement-vs-velocity-time-graph.png'
+import { DecodingGraphs } from './AnimationStorage';
+import { ImageRender } from './image-render';
+
 
 export function contentContainer(darkMode, lessonId, mobile) {
-
-  const imageRender = {
-    displacementVsVelocityTimeGraph : darkMode ? (<img src={darkdisplacementVsVelocityTimeGraph} alt='Displacement Vs Velocity Time Graph'></img>) : (<img src={displacementVsVelocityTimeGraph} alt='Displacement Vs Velocity Time Graph'></img>),
-  } 
 
   // Content Data
   const LessonContent = {
     'displacementVelocity&Acceleration': {
-      module: "Module 1.1 • Mechanics",
+      module: "Module 1.1 • Kinematics",
       title: "1.1 Displacement, Velocity & Acceleration",
       subtitle: "Speaking the Language of Motion",
       intro: "Before we can predict where a rocket lands or how fast a car crashes, we need to agree on the language we use to describe moving things. In Physics, \"how far\" and \"how fast\" can mean two very different things depending on whether you care about the direction.",
@@ -106,7 +103,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
       ]
     },
     suvatEquations: {
-      module: "Module 1.2 • Mechanics",
+      module: "Module 1.2 • Kinematics",
       title: "The SUVAT Equations",
       subtitle: "Predicting the Future of Motion",
       intro: "If an object is speeding up or slowing down at a steady rate, we can use a special set of four equations to predict its future. These are the 'SUVAT' equations—the most powerful tools in your kinematics toolkit.",
@@ -240,8 +237,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
             { label: "Curved Line ( )", desc: "Means 'Changing rate'. On s-t: Acceleration ┇ On v-t: Non-uniform Acceleration." }
           ],
           goldenRule: "Visual Tip: 'Steeper' always means 'More Intense'. Steeper s-t = Faster. Steeper v-t = Harder Acceleration.",
-          // Image tag for context
-          imageTag: imageRender.displacementVsVelocityTimeGraph,
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"displacementVsVelocityTimeGraph"}/>,
           quiz: {
             question: "A Displacement-Time graph shows a curve getting steeper and steeper. What is happening?",
             options: ["The object is slowing down.", "The object is accelerating (speeding up).", "The object is climbing a hill."],
@@ -268,12 +264,67 @@ export function contentContainer(darkMode, lessonId, mobile) {
           title: "Part 4: Visualizing the Link",
           icon: <MonitorPlay className="w-6 h-6" />,
           text: "To truly understand this, we need to see the object move and the graph draw itself simultaneously.",
-          animationCue: (<GraphsOfMotion darkMode={darkMode} mobile={mobile}/>),
+          animationCue: (<GraphsOfMotion darkMode={darkMode} mobile={mobile} />),
           quiz: {
             question: "If the car moves BACKWARDS, where does the line go on a Velocity-Time graph?",
             options: ["It goes down, but stays above the x-axis.", "It goes below the x-axis (Negative).", "It disappears."],
             correctIndex: 1
           }
+        }
+      ]
+    },
+    decodingGraphs: {
+      module: "Module 1.4 • Kinematics",
+      title: "1.4 Decoding Graphs (Slopes & Areas)",
+      subtitle: "Extracting Hidden Information",
+      intro: "The true power of a graph isn't just its shape. By measuring the 'steepness' (Slope) or the 'space underneath' (Area), we can unlock hidden variables like velocity and displacement without needing a single formula.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: The Slope is the Rate",
+          icon: <TrendingUp className="w-6 h-6" />,
+          text: "The Gradient (Slope) of a line represents the 'Rate of Change'. It tells you how fast the Y-variable is changing compared to the X-variable.",
+          comparison: [
+            { label: "Slope of s-t Graph", desc: "Calculates Velocity (v). (Change in Position / Time)" },
+            { label: "Slope of v-t Graph", desc: "Calculates Acceleration (a). (Change in Speed / Time)" }
+          ],
+          goldenRule: "Calculation Tip: Gradient = (y₂ - y₁) / (x₂ - x₁). Always pick two points as far apart as possible for accuracy.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theGradientTriangle"}/>,
+          quiz: {
+            question: "You calculate the gradient of a Velocity-Time graph and get a negative number (e.g., -5 m/s²). What does this mean?",
+            options: ["The object is moving backwards.", "The object is slowing down (Decelerating).", "The calculation is wrong."],
+            correctIndex: 1
+          }
+        }, {
+          id: "equations",
+          title: "Part 2: The Area is the Accumulator",
+          icon: <AreaChart className="w-6 h-6" />,
+          text: "The area trapped between the line and the x-axis represents the 'product' of the axes (Y multiplied by X).",
+          equations: [
+            { name: "Area under v-t Graph", type: "Equals", formula: "Displacement (s)" },
+            { name: "Area under a-t Graph", type: "Equals", formula: "Change in Velocity (Δv)" },
+          ],
+          insight: "Visual Tip: Split complex shapes into rectangles and triangles. Remember: Area below the X-axis subtracts from your total displacement.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theAreaSplit"}/>,
+          quiz: {
+            question: "A Velocity-Time graph is a rectangle 4s wide and 10m/s high. What is the displacement?",
+            options: ["2.5 m", "14 m", "40 m"],
+            correctIndex: 2
+          }
+        }, {
+          id: "strategy",
+          title: "Part 3: Advanced - The Curve Decoder",
+          icon: <Zap className="w-6 h-6" />,
+          text: "What if the line is curved? A curve means the slope (velocity or acceleration) is changing every instant. You cannot use 'Rise over Run' directly.",
+          conditions: [
+            "To find the Instantaneous Rate at a specific time 't':",
+            "1. Place your ruler at point 't' on the curve.",
+            "2. Draw a TANGENT (a straight line that just touches the curve without cutting through it).",
+            "3. Make sure the area (highlight in pink) on both sides are almost equal.",
+            "4. Take two points and calculate the gradient of that straight tangent line."
+          ],
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theTangentTechnique"}/>,
+          animationCue : <DecodingGraphs darkMode={darkMode} />
         }
       ]
     }

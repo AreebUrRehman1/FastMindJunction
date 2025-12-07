@@ -3,7 +3,7 @@ import {CheckCircle, Lock, AlertCircle } from 'lucide-react';
 
 // --- CHECKPOINT COMPONENT ---
 // This acts as the "Gatekeeper" between sections
-export const Checkpoint = ({ darkMode, quiz, onUnlock, nextSectionTitle, isLast }) => {
+export const Checkpoint = ({ darkMode, quiz, onUnlock, titleFinished, nextSectionTitle, isLast }) => {
   const [selected, setSelected] = useState(null);
   const [status, setStatus] = useState('idle'); // idle, error, success
 
@@ -27,7 +27,7 @@ export const Checkpoint = ({ darkMode, quiz, onUnlock, nextSectionTitle, isLast 
         <CheckCircle size={32} />
       </div>
       <h3 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Lesson Complete!</h3>
-      <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>You've mastered the basics of motion.</p>
+      <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>You've mastered {titleFinished}.</p>
     </div>
   );
 

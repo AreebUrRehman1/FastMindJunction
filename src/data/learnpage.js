@@ -1,6 +1,6 @@
 export const unitDetailsContainer = [
   {
-    Name: "Unit 1 - Motion",
+    Name: "Module 1: Kinematics",
     key: "UDC1"
   }, {
     Name: "Unit 2 - Force & Momentum",
@@ -45,10 +45,10 @@ export const topicDetailsContainer = {
       key: "TDC3" 
     },
     {
-      Name: "Scalars & Vectors",
+      Name: "Decoding Graphs (Slopes & Areas)",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
+      Lecture : "decodingGraphs",
       key: "TDC4"
     },
     {

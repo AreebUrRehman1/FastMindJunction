@@ -12,6 +12,10 @@ export function lectureLayout(lessonId) {
     graphsOfMotion: {
       layouts: 4,
       sectionIds: ['variables', 'goldenRule', 'strategy']
+    },
+    decodingGraphs: {
+      layouts: 3,
+      sectionIds: ['goldenRule', 'equations', 'strategy']
     }
 
   }
