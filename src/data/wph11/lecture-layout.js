@@ -20,6 +20,10 @@ export function lectureLayout(lessonId) {
     vectorMath: {
       layout: 3,
       sectionIds: ['goldenRule', 'equations', 'strategy']
+    },
+    projectileMotionPrinciples: {
+      layout: 3,
+      sectionIds: ['goldenRule', 'equations', 'strategy']
     }
 
   }

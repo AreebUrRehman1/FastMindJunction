@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useMediaQuery } from '@uidotdev/usehooks';
-import { Checkpoint } from './Checkpoint';
-import { contentContainer } from '../../data/wph11/ContentContainer';
-import { Templates } from './Templates';
-import { lectureLayout } from '../../data/wph11/lecture-layout';
-import { LessonHeader } from '../LessonHeader';
-import back from '../../assets/lesson/Back Icon2.png';
+import { Checkpoint } from '../components/wph11/Checkpoint';
+import { contentContainer } from '../data/wph11/ContentContainer';
+import { Templates } from '../components/wph11/Templates';
+import { lectureLayout } from '../data/wph11/lecture-layout';
+import { LessonHeader } from '../components/LessonHeader';
+import back from '../assets/lesson/Back Icon2.png';
 
 export function LessonPage({ darkMode, darkModeControl }) {
   // --- STATE ---
@@ -83,7 +83,7 @@ export function LessonPage({ darkMode, darkModeControl }) {
                 <section
                   key={section.id}
                   ref={el => sectionRefs.current[idx] = el}
-                  className={`space-y-6 transition-opacity duration-700 ${isCurrent ? 'opacity-100' : 'opacity-80'}`}
+                  className={`space-y-6 transition-opacity duration-700`}
                 >
 
                   {/* Section Header */}

@@ -29,22 +29,19 @@ export const topicDetailsContainer = {
       ToolTipColor: "bg-[#069dcb]",
       Lecture : "displacementVelocity&Acceleration",
       key: "TDC1", 
-    },
-    {
+    }, {
       Name: "The 4 SUVAT Equations",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[50px]",
       ToolTipColor: "bg-[#069dcb]",
       Lecture : "suvatEquations",
       key: "TDC2"
-    },
-    {
+    }, {
       Name: "Graphs of Motion",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[85px]",
       ToolTipColor: "bg-[#069dcb]",
       Lecture : "graphsOfMotion",
       key: "TDC3" 
-    },
-    {
+    }, {
       Name: "Decoding Graphs (Slopes & Areas)",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[110px]",
       ToolTipColor: "bg-[#069dcb]",
@@ -61,13 +58,12 @@ export const topicDetailsContainer = {
       ToolTipColor: "bg-[#d33302]",
       Lecture : "vectorMath",
       key: "TDC9"
-    },
-    {
-      Name: "Mass, Weight & Gravitational Field Strength",
+    }, {
+      Name: "Projectile Motion Principles",
       Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302] ml-[-50px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#d33302]",
-      Lecture : "",
+      Lecture : "projectileMotionPrinciples",
       key: "TDC10"
     },
     {

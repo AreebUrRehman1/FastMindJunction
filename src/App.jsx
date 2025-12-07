@@ -4,7 +4,7 @@ import { HomePage } from './pages/HomePage'
 import { LearningPathPage } from './pages/LearningPathPage'
 import { ComingSoonPage } from './pages/ComingSoonPage'
 import { LearnPage } from './pages/LearnPage'
-import { LessonPage } from './components/wph11/LessonPage'
+import { LessonPage } from './pages/LessonPage'
 import { DesignTesting } from './components/wph11/DesignTesting'
 import './App.css'
 

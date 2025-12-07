@@ -10,6 +10,8 @@ import theResolutionTriangle from '../../assets/lesson/WPH11 - 2.1/the-resolutio
 import darkTheResolutionTriangle from '../../assets/lesson/WPH11 - 2.1/dark-the-resolution-triangle.png'
 import theHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/the-head-to-tail-method.png'
 import darkTheHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/dark-the-head-to-tail-method.png'
+import theVectorAnatomy from '../../assets/lesson/WPH11 - 2.2/the-vector-anatomy.png'
+import darkTheVectorAnatomy from '../../assets/lesson/WPH11 - 2.2/dark-the-vector-anatomy.png'
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
@@ -25,6 +27,8 @@ export const ImageRender = ({ darkMode, imageToDisplay }) => {
     theResolutionTriangle: darkMode ? (<img src={darkTheResolutionTriangle} alt='Dark The Resolution Triangle' className='w-100 not-md:w-60 object-contain' />) : (<img src={theResolutionTriangle} alt='The Resolution Triangle' className='w-100 not-md:w-60 object-contain' />),
 
     theHeadToTailMethod: darkMode ? (<img src={darkTheHeadToTailMethod} alt='Dark The Head-to-Tail Method' className='w-80 not-md:w-60 object-contain' />) : (<img src={theHeadToTailMethod} alt='The Head-to-Tail Method' className='w-80 not-md:w-60 object-contain' />),
+
+    theVectorAnatomy: darkMode ? (<img src={darkTheVectorAnatomy} alt='Dark The Vector Anatomy' className='w-150 not-md:w-100 object-contain' />) : (<img src={theVectorAnatomy} alt='The Vector Anatomy' className='w-150 not-md:w-100 object-contain' />),
   }
 
 

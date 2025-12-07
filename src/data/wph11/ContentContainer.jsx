@@ -1,10 +1,11 @@
-import { ArrowRight, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler } from 'lucide-react';
+import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split } from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
 import { GraphsOfMotion } from './AnimationStorage';
 import { DecodingGraphs } from './AnimationStorage';
 import { VectorMath } from './AnimationStorage';
-import { ImageRender } from './image-render';
+import { ProjectileMotionPrinciples } from './AnimationStorage';
+import { ImageRender } from './ImageRender';
 
 
 export function contentContainer(darkMode, lessonId, mobile) {
@@ -392,6 +393,77 @@ export function contentContainer(darkMode, lessonId, mobile) {
             "Drawing (Scale Diagram): Used to find the resultant of two vectors at ANY angle (e.g., 60°). Requires a ruler and protractor.",
             "Vector Addition Rule: The resultant always goes from the start of the first vector (tail) to the end of the last vector (head)."
           ]
+        }
+      ]
+    },
+    projectileMotionPrinciples: {
+      module: "Module 2.2 • Vectors & Projectiles",
+      title: "2.2 Projectile Motion Principles",
+      subtitle: "The Art of Falling with Style",
+      intro: "A projectile is any object that is given an initial push and then moves freely under gravity. The secret to solving these curved paths is simple but counter-intuitive: what happens horizontally has absolutely NO effect on what happens vertically.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: The Golden Rule of Independence",
+          icon: <Split className="w-6 h-6" />,
+          text: "The horizontal motion and vertical motion are completely independent. They don't talk to each other. They don't affect each other. The only thing they share is TIME.",
+          comparison: [
+            {
+              label: "Horizontal Motion (x)",
+              desc: "Unaffected by gravity. No air resistance (usually). Therefore, ACCELERATION IS ZERO."
+            },
+            {
+              label: "Vertical Motion (y)",
+              desc: "Controlled by gravity. ACCELERATION IS CONSTANT (g = 9.81 m/s² downwards)."
+            }
+          ],
+          goldenRule: "Treat a projectile as two separate problems happening at the same time: A car driving at constant speed (Horizontal) and a ball dropping (Vertical).",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theVectorAnatomy"} />,
+          quiz: {
+            question: "If you drop a bullet and fire a bullet horizontally from the same height at the same time, which hits the ground first?",
+            options: ["The dropped bullet", "The fired bullet", "They hit at the exact same time"],
+            correctIndex: 2
+          }
+        }, {
+          id: "equations",
+          title: "Part 2: Horizontal Motion (The Easy Part)",
+          icon: <ArrowRight className="w-6 h-6" />,
+          text: "Since there is no air resistance (in our ideal physics world) and gravity acts downwards, there is nothing to speed up or slow down the object horizontally.",
+          equations: [
+            {
+              name: "Acceleration (aₓ)",
+              type: "Zero",
+              formula: "a = 0 m/s²"
+            },
+            {
+              name: "Velocity (vₓ)",
+              type: "Constant",
+              formula: "v = u (Initial = Final)"
+            },
+            {
+              name: "Displacement (Range)",
+              type: "Simple Speed",
+              formula: "s = u × t"
+            }
+          ],
+          animationCue : <ProjectileMotionPrinciples darkMode={darkMode} mobile={mobile} /> ,
+          insight: "Visual Tip: If you looked at a projectile from directly above (bird's eye view), it would look like it's moving in a straight line at a steady speed.",
+          quiz: {
+            question: "A ball is thrown horizontally at 20 m/s. After 3 seconds, what is its horizontal velocity?",
+            options: ["0 m/s", "20 m/s", "29.8 m/s"],
+            correctIndex: 1
+          }
+        }, {
+          id: "strategy",
+          title: "Part 3: Vertical Motion (The SUVAT Part)",
+          icon: <ArrowDown className="w-6 h-6" />,
+          text: "Vertically, the object is just in free fall. It starts with some initial vertical velocity (which might be zero!) and accelerates downwards due to gravity.",
+          conditions: [
+            "Acceleration (aᵧ) = 9.81 m/s² (Downwards).",
+            "Initial Velocity (uᵧ) = 0 if fired horizontally.",
+            "Displacement (sᵧ) = Height fallen.",
+            "Use your SUVAT equations here: s = ut + ½at² is the most common one."
+          ],
         }
       ]
     }
