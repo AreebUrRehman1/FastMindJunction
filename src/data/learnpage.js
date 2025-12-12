@@ -67,36 +67,12 @@ export const topicDetailsContainer = {
       key: "TDC10"
     },
     {
-      Name: "Core Practical 1: Investigating the Acceleration of Freefall",
+      Name: "Projectile Problems",
       Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302] ml-[-85px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#d33302]",
-      Lecture : "",
+      Lecture : "projectileProblems",
       key: "TDC11"
-    },
-    {
-      Name: "Newton's Third Law of Motion",
-      Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302] ml-[-110px]",
-      ToolTipMove: "ml-[-110px]",
-      ToolTipColor: "bg-[#d33302]",
-      Lecture : "",
-      key: "TDC12"
-    },
-    {
-      Name: "Momentum",
-      Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302] ml-[-110px]",
-      ToolTipMove: "ml-[-110px]",
-      ToolTipColor: "bg-[#d33302]",
-      Lecture : "",
-      key: "TDC13"
-    },
-    {
-      Name: "Conservation of Linear Momentum",
-      Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302] ml-[-85px]",
-      ToolTipMove: "ml-[-110px]",
-      ToolTipColor: "bg-[#d33302]",
-      Lecture : "",
-      key: "TDC14"
     }
   ],
 

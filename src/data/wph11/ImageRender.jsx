@@ -12,6 +12,11 @@ import theHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/the-head-to-tai
 import darkTheHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/dark-the-head-to-tail-method.png'
 import theVectorAnatomy from '../../assets/lesson/WPH11 - 2.2/the-vector-anatomy.png'
 import darkTheVectorAnatomy from '../../assets/lesson/WPH11 - 2.2/dark-the-vector-anatomy.png'
+import theAngledLaunchResolution from '../../assets/lesson/WPH11 - 2.3/the-angled-launch-resolution.png'
+import DarktheAngledLaunchResolution from '../../assets/lesson/WPH11 - 2.3/dark-the-angled-launch-resolution.png'
+import theHorizontalLaunchProfile from '../../assets/lesson/WPH11 - 2.3/the-horizontal-launch-profile.png'
+import DarktheHorizontalLaunchProfile from '../../assets/lesson/WPH11 - 2.3/dark-the-horizontal-launch-profile.png'
+import theTwoColumnBlueprint from '../../assets/lesson/WPH11 - 2.3/the-two-column-blueprint.png'
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
@@ -29,6 +34,12 @@ export const ImageRender = ({ darkMode, imageToDisplay }) => {
     theHeadToTailMethod: darkMode ? (<img src={darkTheHeadToTailMethod} alt='Dark The Head-to-Tail Method' className='w-80 not-md:w-60 object-contain' />) : (<img src={theHeadToTailMethod} alt='The Head-to-Tail Method' className='w-80 not-md:w-60 object-contain' />),
 
     theVectorAnatomy: darkMode ? (<img src={darkTheVectorAnatomy} alt='Dark The Vector Anatomy' className='w-150 not-md:w-100 object-contain' />) : (<img src={theVectorAnatomy} alt='The Vector Anatomy' className='w-150 not-md:w-100 object-contain' />),
+
+    theAngledLaunchResolution: darkMode ? (<img src={DarktheAngledLaunchResolution} alt='Dark The Angled Launch Resolution' className='w-150 not-md:w-100 object-contain' />) : (<img src={theAngledLaunchResolution} alt='The Angled Launch Resolution' className='w-150 not-md:w-100 object-contain' />),
+
+    theHorizontalLaunchProfile: darkMode ? (<img src={DarktheHorizontalLaunchProfile} alt='Dark The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />) : (<img src={theHorizontalLaunchProfile} alt='The The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />),
+
+    theTwoColumnBlueprint: (<img src={theTwoColumnBlueprint} alt='The Two Column Blueprint' className='w-150 not-md:w-100 object-contain' />),
   }
 
 

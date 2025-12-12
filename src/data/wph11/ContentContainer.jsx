@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split } from 'lucide-react';
+import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split, LayoutList, Target } from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
 import { GraphsOfMotion } from './AnimationStorage';
@@ -446,7 +446,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
               formula: "s = u × t"
             }
           ],
-          animationCue : <ProjectileMotionPrinciples darkMode={darkMode} mobile={mobile} /> ,
+          animationCue: <ProjectileMotionPrinciples darkMode={darkMode} mobile={mobile} />,
           insight: "Visual Tip: If you looked at a projectile from directly above (bird's eye view), it would look like it's moving in a straight line at a steady speed.",
           quiz: {
             question: "A ball is thrown horizontally at 20 m/s. After 3 seconds, what is its horizontal velocity?",
@@ -463,6 +463,95 @@ export function contentContainer(darkMode, lessonId, mobile) {
             "Initial Velocity (uᵧ) = 0 if fired horizontally.",
             "Displacement (sᵧ) = Height fallen.",
             "Use your SUVAT equations here: s = ut + ½at² is the most common one."
+          ],
+        }
+      ]
+    },
+    projectileProblems: {
+      module: "Module 2.3 • Vectors & Projectiles",
+      title: "2.3 Projectile Problems",
+      subtitle: "From Theory to Calculation",
+      intro: "Now that we know the rules, it's time to play the game. Projectile problems can look scary, but they always follow the exact same recipe. We will break them down into a 'Vertical Column' and a 'Horizontal Column'.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: The Two-Column Method",
+          icon: <LayoutList className="w-6 h-6" />,
+          text: "Never try to do everything in your head. Start every single problem by drawing a table with two columns. This prevents you from accidentally using a vertical acceleration for a horizontal distance.",
+          comparison: [
+            {
+              label: "Horizontal Column (x)",
+              desc: "Velocity is CONSTANT. Acceleration (a) = 0. Range = speed × time."
+            },
+            {
+              label: "Vertical Column (y)",
+              desc: "Acceleration (a) = 9.81 m/s² downwards. Use SUVAT equations here."
+            }
+          ],
+          goldenRule: "The variable 't' (Time) is the bridge. It is the ONLY value that is the same in both columns. Find 't' in one column to use it in the other.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theAngledLaunchResolution"} />,
+          quiz: {
+            question: "You are solving a projectile problem. You calculate the time of flight using the vertical data. Can you use this same time value for the horizontal calculation?",
+            options: ["No, horizontal time is different", "Yes, time is scalar and universal", "Only if air resistance is zero"],
+            correctIndex: 1
+          }
+        }, {
+          id: "strategy",
+          title: "Part 2: Scenario A - The Horizontal Launch",
+          icon: <ArrowRight className="w-6 h-6" />,
+          text: "This is when an object rolls off a table or is fired flat from a cliff. It is the simpler version because the initial vertical velocity is zero.",
+          conditions: [
+            "Vertical Initial Velocity (uᵧ) = 0 m/s (Key Concept!).",
+            "Horizontal Initial Velocity (uₓ) = The launch speed.",
+            "Acceleration (aᵧ) = 9.81 m/s² (downwards).",
+            "Vertical Displacement (sᵧ) = Height of the cliff."
+          ],
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theHorizontalLaunchProfile"} />,
+          quiz: {
+            question: "A ball rolls off a 5m high table at 10 m/s. What is its initial vertical velocity?",
+            options: ["10 m/s", "5 m/s", "0 m/s"],
+            correctIndex: 2
+          }
+        }, {
+          id: "equations",
+          title: "Part 3: Scenario B - The Angled Launch",
+          icon: <Target className="w-6 h-6" />,
+          text: "This is the 'classic' projectile, like kicking a football. You must resolve the initial velocity vector first before you can do anything else.",
+          equations: [
+            {
+              name: "Initial Horizontal (uₓ)",
+              type: "Constant",
+              formula: "u cos θ"
+            },
+            {
+              name: "Initial Vertical (uᵧ)",
+              type: "Changes",
+              formula: "u sin θ"
+            },
+            {
+              name: "At Max Height",
+              type: "Key Fact",
+              formula: "vᵧ = 0 m/s"
+            }
+          ],
+          insight: "Sign Convention Tip: Usually, we treat UP as positive. This means uᵧ is positive, but Acceleration (g) is NEGATIVE (-9.81).",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theTwoColumnBlueprint"} />,
+          quiz: {
+            question: "A cannonball is fired at an angle. At the very peak of its flight, what is its vertical velocity?",
+            options: ["Maximum", "9.81 m/s", "Zero"],
+            correctIndex: 2
+          }
+        }, {
+          id: "strategy",
+          title: "Part 4: The Strategy Guide",
+          icon: <Calculator className="w-6 h-6" />,
+          text: "When facing a tough exam question, don't panic. Just follow this algorithm.",
+          conditions: [
+            "1. Resolve Initial Velocity into Uₓ (cos) and Uᵧ (sin).",
+            "2. Set up your Table (Horizontal vs. Vertical).",
+            "3. Fill in what you know (Remember: aₓ = 0, aᵧ = -9.81).",
+            "4. Solve for Time (t) using the Vertical column.",
+            "5. Use 't' to find Range (Horizontal distance)."
           ],
         }
       ]

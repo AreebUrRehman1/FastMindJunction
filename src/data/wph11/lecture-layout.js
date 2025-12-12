@@ -24,6 +24,10 @@ export function lectureLayout(lessonId) {
     projectileMotionPrinciples: {
       layout: 3,
       sectionIds: ['goldenRule', 'equations', 'strategy']
+    },
+    projectileProblems: {
+      layout: 4,
+      sectionIds: ['goldenRule', 'strategy' , 'equations', 'strategy']
     }
 
   }
