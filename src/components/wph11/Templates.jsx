@@ -67,6 +67,33 @@ export function Templates({ section, darkMode }) {
         </div>
       );
 
+    case 'equationsWithGoldenRule':
+      return (
+        <div className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            {section.equations.map((eq) => (
+              <div key={eq.name} className={`p-5 rounded-xl border text-center ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                <div className="text-sm uppercase tracking-widest opacity-60 mb-2">{eq.type}</div>
+                <div className="text-xl font-serif italic mb-2 font-bold tracking-wide">
+                  {eq.formula}
+                </div>
+                <div className="text-xs opacity-50">{eq.name}</div>
+              </div>
+            ))}
+          </div>
+          {/* Image Placeholder */}
+          {section.imageTag && (
+            <div className="flex justify-center mt-4 text-center text-sm italic">
+              {section.imageTag}
+            </div>
+          )}
+          <div className={`p-4 rounded-l-md border-l-4 ${darkMode ? 'bg-amber-900/20 border-amber-500 text-amber-200' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
+            <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
+            {section.goldenRule}
+          </div>
+        </div>
+      );
+
     case 'conceptBreakdown':
       return (
         <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>

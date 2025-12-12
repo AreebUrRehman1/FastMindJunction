@@ -28,6 +28,10 @@ export function lectureLayout(lessonId) {
     projectileProblems: {
       layout: 4,
       sectionIds: ['goldenRule', 'strategy' , 'equations', 'strategy']
+    },
+    freeBodyDiagrams: {
+      layout: 4,
+      sectionIds: ['goldenRule', 'variables' , 'strategy', 'equationsWithGoldenRule']
     }
 
   }

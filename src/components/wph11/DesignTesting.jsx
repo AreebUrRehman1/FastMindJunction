@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { Calculator, Target, LayoutList, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowDown, Box, Maximize2, Move, ArrowLeft } from 'lucide-react';
 import { Checkpoint } from './Checkpoint';
 
 export function DesignTesting({ darkMode }) {
@@ -21,113 +21,121 @@ export function DesignTesting({ darkMode }) {
     }
   }, [unlockedIndex]);
 
-  // --- CONTENT DATA (Module 2.3) ---
+  // --- CONTENT DATA (Module 3.1) ---
   const content = {
-    module: "Module 2.3 • Vectors & Projectiles",
-    title: "2.3 Projectile Problems",
-    subtitle: "From Theory to Calculation",
-    intro: "Now that we know the rules, it's time to play the game. Projectile problems can look scary, but they always follow the exact same recipe. We will break them down into a 'Vertical Column' and a 'Horizontal Column'.",
+    module: "Module 3.1 • Dynamics",
+    title: "3.1 Free Body Diagrams",
+    subtitle: "The Map of Forces",
+    intro: "Dynamics is the study of *why* things move. To predict motion, we must identify every single push and pull acting on an object. The Free Body Diagram (FBD) is the standard engineer's tool for visualizing these invisible forces.",
     sections: [
       {
-        id: "setup",
-        title: "Part 1: The Two-Column Method",
-        icon: <LayoutList className="w-6 h-6" />,
-        text: "Never try to do everything in your head. Start every single problem by drawing a table with two columns. This prevents you from accidentally using a vertical acceleration for a horizontal distance.",
+        id: "concept",
+        title: "Part 1: The Particle Model",
+        icon: <Box className="w-6 h-6" />,
+        text: "Real objects are complex shapes (cars, planes, people). In Physics, we simplify them into a single dot called a 'Particle'. We assume all mass is concentrated at this one point.",
         comparison: [
           {
-            label: "Horizontal Column (x)",
-            desc: "Velocity is CONSTANT. Acceleration (a) = 0. Range = speed × time."
+            label: "Center of Gravity",
+            desc: "The single point where the object's weight appears to act. For a uniform box, it's the geometric center."
           },
           {
-            label: "Vertical Column (y)",
-            desc: "Acceleration (a) = 9.81 m/s² downwards. Use SUVAT equations here."
+            label: "The Diagram",
+            desc: "Draw the object as a simple box or dot. All forces must point AWAY from the dot."
           }
         ],
-        goldenRule: "The variable 't' (Time) is the bridge. It is the ONLY value that is the same in both columns. Find 't' in one column to use it in the other.",
+        goldenRule: "Never draw forces acting *on* other objects. Only draw the forces acting ON the object you are studying.",
         // Static Image Placeholder
         imageTag: (
           <div className="mt-4 text-center text-sm opacity-60 italic">
 
-            <br />The Standard Projectile Table setup.
+            <br />Simplifying reality into the Particle Model.
           </div>
         ),
         quiz: {
-          question: "You are solving a projectile problem. You calculate the time of flight using the vertical data. Can you use this same time value for the horizontal calculation?",
-          options: ["No, horizontal time is different", "Yes, time is scalar and universal", "Only if air resistance is zero"],
+          question: "When drawing a Free Body Diagram for a book resting on a table, which force do you NOT include?",
+          options: ["The weight of the book", "The force of the table pushing up", "The force of the book pushing down on the table"],
+          correctIndex: 2
+        }
+      },
+      {
+        id: "forces",
+        title: "Part 2: The Force Checklist",
+        icon: <ArrowDown className="w-6 h-6" />,
+        text: "Don't guess. Go through this checklist to ensure you haven't missed anything.",
+        points: [
+          {
+            type: "Weight (W = mg)",
+            def: "Always points vertically DOWN towards the center of the Earth.",
+            examples: "Present on every object with mass."
+          },
+          {
+            type: "Normal Reaction (R)",
+            def: "The 'support' force from a surface. Always points PERPENDICULAR (90°) away from the surface.",
+            examples: "A table holding up a book."
+          },
+          {
+            type: "Friction / Drag",
+            def: "Resistive forces. Always point OPPOSITE to the direction of motion.",
+            examples: "Air resistance, grip on the road."
+          },
+          {
+            type: "Tension / Thrust",
+            def: "Pulling forces (strings) or driving forces (engines). Point along the line of action.",
+            examples: "Rope pulling a sled, jet engine pushing a plane."
+          }
+        ],
+        quiz: {
+          question: "A block is sliding down a rough slope. In which direction does the Friction force point?",
+          options: ["Down the slope", "Up the slope (Opposite to motion)", "Perpendicular to the slope"],
           correctIndex: 1
         }
       },
       {
-        id: "horizontal_launch",
-        title: "Part 2: Scenario A - The Horizontal Launch",
-        icon: <ArrowRight className="w-6 h-6" />,
-        text: "This is when an object rolls off a table or is fired flat from a cliff. It is the simpler version because the initial vertical velocity is zero.",
+        id: "signs",
+        title: "Part 3: The Coordinate System (Signs)",
+        icon: <Move className="w-6 h-6" />,
+        text: "This is the most critical step. Forces are vectors, so Direction = Sign. You must choose which way is 'Positive'.",
         conditions: [
-          "Vertical Initial Velocity (uᵧ) = 0 m/s (Key Concept!).",
-          "Horizontal Initial Velocity (uₓ) = The launch speed.",
-          "Acceleration (aᵧ) = 9.81 m/s² (downwards).",
-          "Vertical Displacement (sᵧ) = Height of the cliff."
+          "Standard Convention: Up is (+), Down is (-). Right is (+), Left is (-).",
+          "Adaptive Convention: It is often smarter to define the 'Direction of Acceleration' as Positive.",
+          "Example: If a lift is accelerating DOWN, treat Down as (+) and Up as (-). This makes the math easier (a is positive).",
+          "Crucial Rule: Once you choose a direction, you must stick to it for ALL vectors (u, v, a, F) in that problem."
         ],
-        // Static Image Placeholder
         imageTag: (
           <div className="mt-4 text-center text-sm opacity-60 italic">
-
-            <br />Note: u_y starts at zero.
+            [Image showing the same FBD with two different coordinate systems]
+            <br />Both systems are correct, as long as you are consistent.
           </div>
         ),
         quiz: {
-          question: "A ball rolls off a 5m high table at 10 m/s. What is its initial vertical velocity?",
-          options: ["10 m/s", "5 m/s", "0 m/s"],
-          correctIndex: 2
+          question: "A rocket accelerates upwards. Gravity acts downwards. If you choose 'Up' as positive, what is the sign of Weight (W)?",
+          options: ["Positive (+W)", "Negative (-W)", "Zero"],
+          correctIndex: 1
         }
       },
       {
-        id: "angled_launch",
-        title: "Part 3: Scenario B - The Angled Launch",
-        icon: <Target className="w-6 h-6" />,
-        text: "This is the 'classic' projectile, like kicking a football. You must resolve the initial velocity vector first before you can do anything else.",
+        id: "net_force",
+        title: "Part 4: The Resultant (Net Force)",
+        icon: <Maximize2 className="w-6 h-6" />,
+        text: "The 'Net Force' (ΣF) is the vector sum of all forces. This is what actually causes acceleration.",
         equations: [
           {
-            name: "Initial Horizontal (uₓ)",
-            type: "Constant",
-            formula: "u cos θ"
+            name: "Equilibrium (Balanced)",
+            type: "a = 0",
+            formula: "ΣF = 0 (Up = Down)"
           },
           {
-            name: "Initial Vertical (uᵧ)",
-            type: "Changes",
-            formula: "u sin θ"
-          },
-          {
-            name: "At Max Height",
-            type: "Key Fact",
-            formula: "vᵧ = 0 m/s"
+            name: "Accelerating (Unbalanced)",
+            type: "a ≠ 0",
+            formula: "ΣF = ma (Forward - Back = ma)"
           }
         ],
-        insight: "Sign Convention Tip: Usually, we treat UP as positive. This means uᵧ is positive, but Acceleration (g) is NEGATIVE (-9.81).",
-        // Static Image Placeholder
-        imageTag: (
-          <div className="mt-4 text-center text-sm opacity-60 italic">
-
-          </div>
-        ),
+        goldenRule: "Newton's Second Law: Acceleration happens in the exact same direction as the Net Force.",
         quiz: {
-          question: "A cannonball is fired at an angle. At the very peak of its flight, what is its vertical velocity?",
-          options: ["Maximum", "9.81 m/s", "Zero"],
-          correctIndex: 2
+          question: "A car is traveling at a constant velocity of 100 km/h. What is the Net Force acting on it?",
+          options: ["Large forward force", "Zero", "Small backward force"],
+          correctIndex: 1
         }
-      },
-      {
-        id: "calculator",
-        title: "Part 4: The Strategy Guide",
-        icon: <Calculator className="w-6 h-6" />,
-        text: "When facing a tough exam question, don't panic. Just follow this algorithm.",
-        conditions: [
-          "1. Resolve Initial Velocity into Uₓ (cos) and Uᵧ (sin).",
-          "2. Set up your Table (Horizontal vs. Vertical).",
-          "3. Fill in what you know (Remember: aₓ = 0, aᵧ = -9.81).",
-          "4. Solve for Time (t) using the Vertical column.",
-          "5. Use 't' to find Range (Horizontal distance)."
-        ],
       }
     ]
   };
@@ -200,8 +208,8 @@ export function DesignTesting({ darkMode }) {
 
                   {/* --- LAYOUTS --- */}
 
-                  {/* COMPARISON/RULE LAYOUT (Setup) */}
-                  {section.id === "setup" && (
+                  {/* COMPARISON LAYOUT (Particle Model) */}
+                  {section.id === "concept" && (
                     <div className="space-y-4">
                       <div className={`rounded-xl overflow-hidden divide-y ${darkMode ? 'divide-slate-700 border border-slate-700' : 'divide-slate-200 border border-slate-200'}`}>
                         {section.comparison.map((item) => (
@@ -215,13 +223,26 @@ export function DesignTesting({ darkMode }) {
                         <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
                         {section.goldenRule}
                       </div>
-                      {/* Image Render */}
                       {section.imageTag}
                     </div>
                   )}
 
-                  {/* LIST/STEPS LAYOUT (Horizontal Launch) */}
-                  {section.id === "horizontal_launch" && (
+                  {/* GRID LAYOUT (Force Types) */}
+                  {section.id === "forces" && (
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {section.points.map((pt) => (
+                        <div key={pt.type} className={`p-5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                          <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{pt.type}</h3>
+                          <p className="mb-3 text-sm opacity-90">{pt.def}</p>
+                          <div className="text-xs font-mono uppercase tracking-wide opacity-60">Examples:</div>
+                          <div className="font-medium text-sm">{pt.examples}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* LIST/STEPS LAYOUT (Signs) */}
+                  {section.id === "signs" && (
                     <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
                       <ul className="space-y-4">
                         {section.conditions.map((cond, i) => (
@@ -233,13 +254,12 @@ export function DesignTesting({ darkMode }) {
                           </li>
                         ))}
                       </ul>
-                      {/* Image Render */}
                       {section.imageTag}
                     </div>
                   )}
 
-                  {/* EQUATIONS LAYOUT (Angled Launch) */}
-                  {section.id === "angled_launch" && (
+                  {/* EQUATIONS LAYOUT (Net Force) */}
+                  {section.id === "net_force" && (
                     <div className="space-y-4">
                       <div className="grid sm:grid-cols-2 gap-4">
                         {section.equations.map((eq) => (
@@ -252,27 +272,10 @@ export function DesignTesting({ darkMode }) {
                           </div>
                         ))}
                       </div>
-                      <div className={`p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
-                        {section.insight}
+                      <div className={`p-4 rounded-l-md border-l-4 ${darkMode ? 'bg-amber-900/20 border-amber-500 text-amber-200' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
+                        <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
+                        {section.goldenRule}
                       </div>
-                      {/* Image Render */}
-                      {section.imageTag}
-                    </div>
-                  )}
-
-                  {/* LIST/STEPS LAYOUT (Calculator/Strategy) */}
-                  {section.id === "calculator" && (
-                    <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
-                      <ul className="space-y-4">
-                        {section.conditions.map((cond, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <div className={`mt-1.5 w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-xs font-bold ${darkMode ? 'bg-indigo-500 text-white' : 'bg-indigo-600 text-white'}`}>
-                              {i + 1}
-                            </div>
-                            <span>{cond}</span>
-                          </li>
-                        ))}
-                      </ul>
                     </div>
                   )}
 

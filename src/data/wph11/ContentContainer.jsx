@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split, LayoutList, Target } from 'lucide-react';
+import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split, LayoutList, Target, Box, Move, Maximize2 } from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
 import { GraphsOfMotion } from './AnimationStorage';
@@ -553,6 +553,115 @@ export function contentContainer(darkMode, lessonId, mobile) {
             "4. Solve for Time (t) using the Vertical column.",
             "5. Use 't' to find Range (Horizontal distance)."
           ],
+        }
+      ]
+    },
+    freeBodyDiagrams: {
+      module: "Module 3.1 • Dynamics",
+      title: "3.1 Free Body Diagrams",
+      subtitle: "The Map of Forces",
+      intro: "Dynamics is the study of *why* things move. To predict motion, we must identify every single push and pull acting on an object. The Free Body Diagram (FBD) is the standard engineer's tool for visualizing these invisible forces.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: The Particle Model",
+          icon: <Box className="w-6 h-6" />,
+          text: "Real objects are complex shapes (cars, planes, people). In Physics, we simplify them into a single dot called a 'Particle'. We assume all mass is concentrated at this one point.",
+          comparison: [
+            {
+              label: "Center of Gravity",
+              desc: "The single point where the object's weight appears to act. For a uniform box, it's the geometric center."
+            },
+            {
+              label: "The Diagram",
+              desc: "Draw the object as a simple box or dot. All forces must point AWAY from the dot."
+            }
+          ],
+          goldenRule: "Never draw forces acting *on* other objects. Only draw the forces acting ON the object you are studying.",
+          // Static Image Placeholder
+          imageTag: (
+            <div className="mt-4 text-center text-sm opacity-60 italic">
+
+              <br />Simplifying reality into the Particle Model.
+            </div>
+          ),
+          quiz: {
+            question: "When drawing a Free Body Diagram for a book resting on a table, which force do you NOT include?",
+            options: ["The weight of the book", "The force of the table pushing up", "The force of the book pushing down on the table"],
+            correctIndex: 2
+          }
+        }, {
+          id: "variables",
+          title: "Part 2: The Force Checklist",
+          icon: <ArrowDown className="w-6 h-6" />,
+          text: "Don't guess. Go through this checklist to ensure you haven't missed anything.",
+          points: [
+            {
+              type: "Weight (W = mg)",
+              def: "Always points vertically DOWN towards the center of the Earth.",
+              examples: "Present on every object with mass."
+            },
+            {
+              type: "Normal Reaction (R)",
+              def: "The 'support' force from a surface. Always points PERPENDICULAR (90°) away from the surface.",
+              examples: "A table holding up a book."
+            },
+            {
+              type: "Friction / Drag",
+              def: "Resistive forces. Always point OPPOSITE to the direction of motion.",
+              examples: "Air resistance, grip on the road."
+            },
+            {
+              type: "Tension / Thrust",
+              def: "Pulling forces (strings) or driving forces (engines). Point along the line of action.",
+              examples: "Rope pulling a sled, jet engine pushing a plane."
+            }
+          ],
+          quiz: {
+            question: "A block is sliding down a rough slope. In which direction does the Friction force point?",
+            options: ["Down the slope", "Up the slope (Opposite to motion)", "Perpendicular to the slope"],
+            correctIndex: 1
+          }
+        }, {
+          id: "strategy",
+          title: "Part 3: The Coordinate System (Signs)",
+          icon: <Move className="w-6 h-6" />,
+          text: "This is the most critical step. Forces are vectors, so Direction = Sign. You must choose which way is 'Positive'.",
+          conditions: [
+            "Standard Convention: Up is (+), Down is (-). Right is (+), Left is (-).",
+            "Adaptive Convention: It is often smarter to define the 'Direction of Acceleration' as Positive.",
+            "Example: If a lift is accelerating DOWN, treat Down as (+) and Up as (-). This makes the math easier (a is positive).",
+            "Crucial Rule: Once you choose a direction, you must stick to it for ALL vectors (u, v, a, F) in that problem."
+          ],
+          imageTag: (
+            <div className="mt-4 text-center text-sm opacity-60 italic">
+              [Image showing the same FBD with two different coordinate systems]
+              <br />Both systems are correct, as long as you are consistent.
+            </div>
+          ),
+          quiz: {
+            question: "A rocket accelerates upwards. Gravity acts downwards. If you choose 'Up' as positive, what is the sign of Weight (W)?",
+            options: ["Positive (+W)", "Negative (-W)", "Zero"],
+            correctIndex: 1
+          }
+        }, {
+          id: "equationsWithGoldenRule",
+          title: "Part 4: The Resultant (Net Force)",
+          icon: <Maximize2 className="w-6 h-6" />,
+          text: "The 'Net Force' (ΣF) is the vector sum of all forces. This is what actually causes acceleration.",
+          equations: [
+            {
+              name: "Equilibrium (Balanced)",
+              type: "a = 0",
+              formula: "ΣF = 0 (Up = Down)"
+            },
+            {
+              name: "Accelerating (Unbalanced)",
+              type: "a ≠ 0",
+              formula: "ΣF = ma (Forward - Back = ma)"
+            }
+          ],
+          goldenRule: "Newton's Second Law: Acceleration happens in the exact same direction as the Net Force.",
         }
       ]
     }

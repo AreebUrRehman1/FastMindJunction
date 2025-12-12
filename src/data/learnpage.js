@@ -27,25 +27,25 @@ export const topicDetailsContainer = {
       Name: "Displacement, Velocity & Acceleration",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "displacementVelocity&Acceleration",
-      key: "TDC1", 
+      Lecture: "displacementVelocity&Acceleration",
+      key: "TDC1",
     }, {
       Name: "The 4 SUVAT Equations",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[50px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "suvatEquations",
+      Lecture: "suvatEquations",
       key: "TDC2"
     }, {
       Name: "Graphs of Motion",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[85px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "graphsOfMotion",
-      key: "TDC3" 
+      Lecture: "graphsOfMotion",
+      key: "TDC3"
     }, {
       Name: "Decoding Graphs (Slopes & Areas)",
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "decodingGraphs",
+      Lecture: "decodingGraphs",
       key: "TDC4"
     }
   ],
@@ -56,14 +56,14 @@ export const topicDetailsContainer = {
       Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#d33302]",
-      Lecture : "vectorMath",
+      Lecture: "vectorMath",
       key: "TDC9"
     }, {
       Name: "Projectile Motion Principles",
       Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302] ml-[-50px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#d33302]",
-      Lecture : "projectileMotionPrinciples",
+      Lecture: "projectileMotionPrinciples",
       key: "TDC10"
     },
     {
@@ -71,24 +71,24 @@ export const topicDetailsContainer = {
       Circle: "bg-[#FF3D00] shadow-[0px_9px_1px_#eb3802] hover:bg-[#ff5421] hover:shadow-[0px_9px_1px_#d33302] ml-[-85px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#d33302]",
-      Lecture : "projectileProblems",
+      Lecture: "projectileProblems",
       key: "TDC11"
     }
   ],
 
   Unit3: [
     {
-      Name: "Moment",
+      Name: "Free Body Diagrams",
       Circle: "bg-[#FFC107] shadow-[0px_9px_1px_#eab207] hover:bg-[#fcc92f] hover:shadow-[0px_9px_1px_#d3a007]",
       ToolTipColor: "bg-[#d3a007]",
-      Lecture : "",
+      Lecture: "freeBodyDiagrams",
       key: "TDC15"
     },
     {
       Name: "Centre of Gravity & The Principle of Moments",
       Circle: "bg-[#FFC107] shadow-[0px_9px_1px_#eab207] hover:bg-[#fcc92f] hover:shadow-[0px_9px_1px_#d3a007] ml-[50px]",
       ToolTipColor: "bg-[#d3a007]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC16"
     }
   ],
@@ -99,7 +99,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC17"
     },
     {
@@ -107,7 +107,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[-50px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC18"
     },
     {
@@ -115,7 +115,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[-85px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC19"
     },
     {
@@ -123,7 +123,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[-110px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC20"
     },
     {
@@ -131,7 +131,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[-110px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC21"
     },
     {
@@ -139,7 +139,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#06c1fab8] shadow-[0px_9px_1px_#049ac8b8] hover:bg-[#11d8ffb8] hover:shadow-[0px_9px_1px_#069dcbd5] ml-[-85px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#069dcb]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC22"
     }
   ],
@@ -149,28 +149,28 @@ export const topicDetailsContainer = {
       Name: "Density",
       Circle: "bg-[#009688] shadow-[0px_9px_1px_#007d71] hover:bg-[#149a8d] hover:shadow-[0px_9px_1px_#016359]",
       ToolTipColor: "bg-[#016359]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC23"
     },
     {
       Name: "Upthrust",
       Circle: "bg-[#009688] shadow-[0px_9px_1px_#007d71] hover:bg-[#149a8d] hover:shadow-[0px_9px_1px_#016359] ml-[50px]",
       ToolTipColor: "bg-[#016359]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC24"
     },
     {
       Name: "Viscous Drag",
       Circle: "bg-[#009688] shadow-[0px_9px_1px_#007d71] hover:bg-[#149a8d] hover:shadow-[0px_9px_1px_#016359] ml-[85px]",
       ToolTipColor: "bg-[#016359]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC25"
     },
     {
       Name: "Core Practical 2: Investigating Viscosity",
       Circle: "bg-[#009688] shadow-[0px_9px_1px_#007d71] hover:bg-[#149a8d] hover:shadow-[0px_9px_1px_#016359] ml-[110px]",
       ToolTipColor: "bg-[#016359]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC26"
     }
   ],
@@ -181,7 +181,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#9C27B0] shadow-[0px_9px_1px_#872299] hover:bg-[#a03cb1] hover:shadow-[0px_9px_1px_#711d80]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#711d80]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC27"
     },
     {
@@ -189,7 +189,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#9C27B0] shadow-[0px_9px_1px_#872299] hover:bg-[#a03cb1] hover:shadow-[0px_9px_1px_#711d80] ml-[-50px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#711d80]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC28"
     },
     {
@@ -197,7 +197,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#9C27B0] shadow-[0px_9px_1px_#872299] hover:bg-[#a03cb1] hover:shadow-[0px_9px_1px_#711d80] ml-[-85px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#711d80]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC29"
     },
     {
@@ -205,7 +205,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#9C27B0] shadow-[0px_9px_1px_#872299] hover:bg-[#a03cb1] hover:shadow-[0px_9px_1px_#711d80] ml-[-110px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#711d80]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC30"
     },
     {
@@ -213,7 +213,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#9C27B0] shadow-[0px_9px_1px_#872299] hover:bg-[#a03cb1] hover:shadow-[0px_9px_1px_#711d80] ml-[-110px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#711d80]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC31"
     },
     {
@@ -221,7 +221,7 @@ export const topicDetailsContainer = {
       Circle: "bg-[#9C27B0] shadow-[0px_9px_1px_#872299] hover:bg-[#a03cb1] hover:shadow-[0px_9px_1px_#711d80] ml-[-85px]",
       ToolTipMove: "ml-[-110px]",
       ToolTipColor: "bg-[#711d80]",
-      Lecture : "",
+      Lecture: "",
       key: "TDC32"
     }
   ],
