@@ -5,6 +5,7 @@ import { GraphsOfMotion } from './AnimationStorage';
 import { DecodingGraphs } from './AnimationStorage';
 import { VectorMath } from './AnimationStorage';
 import { ProjectileMotionPrinciples } from './AnimationStorage';
+import { FreeBodyDiagrams } from './AnimationStorage';
 import { ImageRender } from './ImageRender';
 
 
@@ -578,13 +579,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
             }
           ],
           goldenRule: "Never draw forces acting *on* other objects. Only draw the forces acting ON the object you are studying.",
-          // Static Image Placeholder
-          imageTag: (
-            <div className="mt-4 text-center text-sm opacity-60 italic">
-
-              <br />Simplifying reality into the Particle Model.
-            </div>
-          ),
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theParticleModelSimplication"} />,
           quiz: {
             question: "When drawing a Free Body Diagram for a book resting on a table, which force do you NOT include?",
             options: ["The weight of the book", "The force of the table pushing up", "The force of the book pushing down on the table"],
@@ -617,6 +612,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
               examples: "Rope pulling a sled, jet engine pushing a plane."
             }
           ],
+          animationCue: <FreeBodyDiagrams darkMode={darkMode} mobile={mobile} />,
           quiz: {
             question: "A block is sliding down a rough slope. In which direction does the Friction force point?",
             options: ["Down the slope", "Up the slope (Opposite to motion)", "Perpendicular to the slope"],
@@ -633,12 +629,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
             "Example: If a lift is accelerating DOWN, treat Down as (+) and Up as (-). This makes the math easier (a is positive).",
             "Crucial Rule: Once you choose a direction, you must stick to it for ALL vectors (u, v, a, F) in that problem."
           ],
-          imageTag: (
-            <div className="mt-4 text-center text-sm opacity-60 italic">
-              [Image showing the same FBD with two different coordinate systems]
-              <br />Both systems are correct, as long as you are consistent.
-            </div>
-          ),
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theCoordinateSystemSwitch"} />,
           quiz: {
             question: "A rocket accelerates upwards. Gravity acts downwards. If you choose 'Up' as positive, what is the sign of Weight (W)?",
             options: ["Positive (+W)", "Negative (-W)", "Zero"],

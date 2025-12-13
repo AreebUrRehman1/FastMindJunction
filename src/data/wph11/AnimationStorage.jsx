@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDown, ArrowRight, ArrowLeft, ArrowUp, RotateCcw, CheckCircle2, XCircle } from 'lucide-react';
 
 export const DisplacementVelocityAndAcceleration = ({ darkMode }) => {
   // --- SCALAR STATE (Thermometer) ---
@@ -2482,5 +2484,335 @@ export const ProjectileMotionPrinciples = ({ darkMode, mobile }) => {
 
       </div>
     </div >
+  );
+};
+
+export const FreeBodyDiagrams = ({ darkMode, mobile }) => {
+  const [scene, setScene] = useState('flat'); // 'flat' or 'ramp'
+  const [placedArrows, setPlacedArrows] = useState({});
+  const [feedback, setFeedback] = useState({ msg: 'Drag forces onto the box', type: 'neutral' });
+  const boxRef = useRef(null);
+
+  const Forces = [
+    { id: 'weight', label: 'Weight (mg)', color: 'bg-blue-500', arrow: 'ArrowDown' },
+    { id: 'normal', label: 'Normal Force (Fn)', color: 'bg-purple-500', arrow: 'ArrowUp' },
+    { id: 'friction', label: 'Friction (f)', color: 'bg-red-500', arrow: 'ArrowLeft' },
+    { id: 'tension', label: 'Tension (T)', color: 'bg-orange-500', arrow: 'ArrowRight' },
+  ];
+
+  // --- DARK MODE THEME ---
+  const theme = {
+    // Layout
+    containerText: darkMode ? 'text-slate-200' : 'text-slate-800',
+    
+    // Sidebar
+    sidebarBg: darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100',
+    sidebarTitle: darkMode ? 'text-slate-100' : 'text-slate-700',
+    sidebarText: darkMode ? 'text-slate-400' : 'text-slate-400',
+    
+    // Draggable Items (Active)
+    dragItemBg: darkMode ? 'bg-slate-700 border-slate-600' : 'bg-white border-slate-200',
+    dragItemText: darkMode ? 'text-slate-200' : 'text-slate-700',
+    dragItemHoverBorder: darkMode ? 'hover:border-blue-500' : 'hover:border-blue-200',
+    dragItemHoverBg: darkMode ? '#334155' : '#f8fafc', // slate-700 vs slate-50
+    
+    // Draggable Items (Placed)
+    placedItemBg: darkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-100',
+    
+    // Main Canvas Area
+    canvasBg: darkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200',
+    
+    // The Physics World
+    surfaceColor: darkMode ? 'bg-slate-600' : 'bg-slate-800',
+    boxBg: darkMode ? 'bg-slate-700' : 'bg-slate-200',
+    boxBorder: darkMode ? 'border-slate-500' : 'border-slate-300',
+    boxDot: darkMode ? 'bg-slate-200' : 'bg-slate-800',
+    
+    // Controls
+    controlsBorder: darkMode ? 'border-slate-700' : 'border-slate-100',
+    sceneBtnBg: darkMode ? 'bg-slate-900' : 'bg-slate-100',
+    sceneBtnActive: darkMode ? 'bg-slate-600 text-blue-300 shadow' : 'bg-white text-blue-600 shadow',
+    sceneBtnInactive: darkMode ? 'text-slate-400 hover:bg-slate-700' : 'text-slate-500 hover:bg-slate-50',
+    resetBtn: darkMode ? 'text-slate-400 hover:bg-slate-700' : 'text-slate-500 hover:bg-slate-50',
+    
+    // Feedback Toast colors
+    toastSuccess: darkMode ? 'bg-green-900/50 text-green-300' : 'bg-green-100 text-green-700',
+    toastError: darkMode ? 'bg-red-900/50 text-red-300' : 'bg-red-100 text-red-700',
+    toastNeutral: darkMode ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600',
+  };
+
+  // Configuration for arrow placements
+  const NORMALSCENARIOS = {
+    flat: {
+      rotation: 0,
+      zones: {
+        weight: { top: '130%', left: '45%', rotation: 0 }, // Straight down
+        normal: { top: '30%', left: '47%', rotation: 180 }, // Straight up (from bottom)
+        friction: { top: '80%', left: '-5%', rotation: 90 }, // Left along surface
+        tension: { top: '80%', left: '95%', rotation: -90 }, // Pulling right
+      }
+    },
+    ramp: {
+      rotation: 25, // The box tilts 25 degrees
+      zones: {
+        // Weight must counter-rotate to stay absolute vertical
+        weight: { top: '130%', left: '45%', rotation: 0 },
+        // Normal stays perpendicular to the surface (relative rotation 180)
+        normal: { top: '30%', left: '45%', rotation: 180 },
+        // Friction acts up the ramp
+        friction: { top: '80%', left: '-6%', rotation: 90 },
+        tension: { top: '75%', left: '95%', rotation: -90 },
+      }
+    }
+  };
+  const MOBILESCENARIOS = {
+    flat: {
+      rotation: 0,
+      zones: {
+        weight: { top: '150%', left: '45%', rotation: 0 }, // Straight down
+        normal: { top: '48%', left: '47%', rotation: 180 }, // Straight up (from bottom)
+        friction: { top: '100%', left: '-10%', rotation: 90 }, // Left along surface
+        tension: { top: '100%', left: '95%', rotation: -90 }, // Pulling right
+      }
+    },
+    ramp: {
+      rotation: 25, // The box tilts 25 degrees
+      zones: {
+        // Weight must counter-rotate to stay absolute vertical
+        weight: { top: '150%', left: '45%', rotation: 0 },
+        // Normal stays perpendicular to the surface (relative rotation 180)
+        normal: { top: '48%', left: '45%', rotation: 180 },
+        // Friction acts up the ramp
+        friction: { top: '95%', left: '-9%', rotation: 90 },
+        tension: { top: '95%', left: '95%', rotation: -90 },
+      }
+    }
+  };
+
+  const SCENARIOS = mobile ? MOBILESCENARIOS : NORMALSCENARIOS;
+  const currentConfig = SCENARIOS[scene];
+
+  // Sub-component for the sidebar items
+  const DraggableArrow = ({ force, onDragEnd, isPlaced, arrowDirection }) => {
+    // If placed, we dim the sidebar item
+    if (isPlaced) {
+      return (
+        <div className={`flex items-center gap-3 p-3 rounded-lg opacity-40 cursor-not-allowed ${theme.placedItemBg}`}>
+          <div className={`w-3 h-3 rounded-full ${force.color}`} />
+          <span className="font-medium text-slate-400 line-through">{force.label}</span>
+        </div>
+      );
+    }
+
+    return (
+      <motion.div
+        drag
+        dragSnapToOrigin={true} // Bounces back if not handled
+        dragElastic={0.2}
+        dragMomentum={false}
+        whileDrag={{ scale: 1.1, cursor: 'grabbing', zIndex: 50 }}
+        whileHover={{ scale: 1.02, backgroundColor: darkMode ? '#334155' : '#f8fafc' }}
+        onDragEnd={(e, info) => onDragEnd(e, info, force.id)}
+        className={`flex items-center gap-3 p-3 rounded-lg shadow-sm cursor-grab active:cursor-grabbing transition-colors ${theme.dragItemBg} ${theme.dragItemHoverBorder}`}
+      >
+        <div className={`w-8 h-8 rounded-full ${force.color} bg-opacity-20 flex items-center justify-center`}>
+          {arrowDirection === "ArrowDown" ? <ArrowDown size={16} className={theme.dragItemText} /> : 
+          arrowDirection === "ArrowUp" ? <ArrowUp size={16} className={theme.dragItemText} /> :
+          arrowDirection === "ArrowRight" ? <ArrowRight size={16} className={theme.dragItemText} /> : 
+          <ArrowLeft size={16} className={theme.dragItemText} /> }
+        </div>
+        <span className={`font-medium ${theme.dragItemText}`}>{force.label}</span>
+      </motion.div>
+    );
+  };
+
+  const handleDragEnd = (event, info, forceId) => {
+    const boxRect = boxRef.current.getBoundingClientRect();
+
+    // 🐛 FIX FOR MOBILE/SCROLLING: Adjust the drop point to be viewport-relative
+    // Framer Motion's info.point can be document-relative on some mobile browsers.
+    const dropPoint = {
+      x: info.point.x - (window.scrollX || window.pageXOffset),
+      y: info.point.y - (window.scrollY || window.pageYOffset)
+    };
+
+    // Check if dropped roughly inside the box area
+    // Increased the buffer from 50px to 80px for easier mobile target
+    const buffer = 80;
+    const isOverBox =
+      dropPoint.x >= boxRect.left - buffer &&
+      dropPoint.x <= boxRect.right + buffer &&
+      dropPoint.y >= boxRect.top - buffer &&
+      dropPoint.y <= boxRect.bottom + buffer;
+
+    if (isOverBox) {
+      setPlacedArrows(prev => ({ ...prev, [forceId]: true }));
+      setFeedback({ msg: `Correct! Added ${Forces.find(f => f.id === forceId).label}.`, type: 'success' });
+    } else {
+      setFeedback({ msg: 'Missed! Try dragging closer to the box.', type: 'error' });
+    }
+  };
+
+  const reset = () => {
+    setPlacedArrows({});
+    setFeedback({ msg: 'Reset complete.', type: 'neutral' });
+    setTimeout(() => {
+      setFeedback({ msg: 'Drag forces onto the box', type: 'neutral' });
+    }, 1000)
+  };
+
+  return (
+    // ⚙️ Added min-h-screen for better mobile layout stability
+    <div className={`flex flex-col-reverse md:flex-row p-8 px-4 gap-8 font-sans transition-colors duration-300 ${theme.containerText}`}>
+
+      {/* SIDEBAR PALETTE */}
+      <div className={`w-full md:w-64 flex flex-col gap-4 p-6 rounded-2xl shadow-xl border z-10 transition-colors ${theme.sidebarBg}`}>
+        <h2 className={`text-xl font-bold mb-2 ${theme.sidebarTitle}`}>Force Palette</h2>
+        <p className={`text-sm mb-4 ${theme.sidebarText}`}>Drag these arrows onto the object.</p>
+
+        <div className="flex flex-col gap-3">
+          {Forces.map((force) => (
+            <DraggableArrow
+              key={force.id}
+              force={force}
+              arrowDirection={force.arrow}
+              onDragEnd={handleDragEnd}
+              isPlaced={placedArrows[force.id]}
+            />
+          ))}
+        </div>
+
+        <div className={`mt-auto pt-6 border-t flex flex-col gap-3 ${theme.controlsBorder}`}>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold">Scene:</span>
+            <div className={`flex p-1 rounded-lg ${theme.sceneBtnBg}`}>
+              <button
+                onClick={() => { setScene('flat'); reset(); }}
+                className={`px-3 py-1 text-xs rounded-md transition-all ${scene === 'flat' ? theme.sceneBtnActive : theme.sceneBtnInactive}`}
+              >
+                Flat
+              </button>
+              <button
+                onClick={() => { setScene('ramp'); reset(); }}
+                className={`px-3 py-1 text-xs rounded-md transition-all ${scene === 'ramp' ? theme.sceneBtnActive : theme.sceneBtnInactive}`}
+              >
+                Ramp
+              </button>
+            </div>
+          </div>
+          <button
+            onClick={reset}
+            className={`flex items-center justify-center gap-2 w-full py-2 text-sm rounded-lg transition-colors ${theme.resetBtn}`}
+          >
+            <RotateCcw size={16} /> Reset Diagram
+          </button>
+        </div>
+      </div>
+
+      {/* MAIN CANVAS */}
+      <div className={`flex-1 relative rounded-3xl shadow-inner border flex flex-col items-center justify-center transition-colors ${theme.canvasBg} ${theme.canvasBorder}`}>
+
+        {/* Feedback Toast */}
+        <div className={`absolute top-6 px-6 py-2 rounded-full text-sm font-medium shadow-sm transition-colors duration-300 flex items-center gap-2
+          ${feedback.type === 'success' ? theme.toastSuccess :
+            feedback.type === 'error' ? theme.toastError : theme.toastNeutral}`}>
+          {feedback.type === 'success' && <CheckCircle2 size={16} />}
+          {feedback.type === 'error' && <XCircle size={16} />}
+          {feedback.msg}
+        </div>
+
+        {/* The Physics World Container */}
+        <div className="relative w-full max-w-2xl not-md:mt-30 h-96 flex items-center justify-center overflow-x-hidden">
+
+          {/* The Surface (Table/Ramp) */}
+          <motion.div
+            className={`absolute w-[120%] h-4 rounded-full transition-colors ${theme.surfaceColor}`}
+            animate={{ rotate: currentConfig.rotation }}
+            transition={{ type: "spring", stiffness: 60 }}
+            style={{ top: '60%' }}
+          />
+
+          {/* The Object (Box) */}
+          <motion.div
+            ref={boxRef}
+            animate={{
+              rotate: currentConfig.rotation,
+              y: mobile ? 5 : -15 // Sit exactly on the line
+            }}
+            transition={{ type: "spring", stiffness: 60 }}
+            className={`relative w-32 h-32 not-md:w-20 not-md:h-20 rounded-lg border-2 shadow-sm z-0 transition-colors ${theme.boxBg} ${theme.boxBorder}`}
+          >
+            {/* Center of Mass Dot */}
+            <div className={`absolute top-1/2 left-1/2 w-2 h-2 rounded-full -translate-x-1/2 -translate-y-1/2 z-20 ${theme.boxDot}`} />
+
+            {/* PLACED ARROWS RENDERED HERE */}
+            <AnimatePresence>
+              {Object.keys(placedArrows).map((key) => {
+                if (!placedArrows[key]) return null;
+                const zone = currentConfig.zones[key];
+                const forceData = Forces.find(f => f.id === key);
+
+                // Rotation logic for the arrow's graphic
+                let arrowRotation = zone.rotation;
+
+                // If the scene is a ramp, the box is rotated. 
+                // We need to counter-rotate Weight to keep it vertical, 
+                // but the others stay relative to the box's tilt.
+                if (scene === 'ramp') {
+                  if (key === 'weight') {
+                    // Weight is always straight down (0 deg absolute)
+                    arrowRotation = 0;
+                  } else {
+                    // Normal, Friction, Tension rotate with the box 
+                    arrowRotation = zone.rotation;
+                  }
+                }
+
+                return (
+                  <motion.div
+                    key={key}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    className="absolute pointer-events-none flex items-center"
+                    style={{
+                      top: zone.top,
+                      left: zone.left,
+                      // We apply manual offsets to fine-tune placement
+                      x: zone.xOffset,
+                      y: zone.yOffset,
+                      transformOrigin: '0 0',
+                      width: 0, // Zero width so it acts as a point
+                      height: 0
+                    }}
+                  >
+                    {/* The Actual Arrow Graphic */}
+                    <div
+                      className="relative flex flex-col items-center"
+                      style={{
+                        transform: `rotate(${arrowRotation}deg)`,
+                        transformOrigin: 'top center' // Pivot around the attachment point
+                      }}
+                    >
+                      {/* Line */}
+                      <div className={`w-1 h-16 ${forceData.color} rounded-full`} />
+                      {/* Arrow Head */}
+                      <div className={`w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-${forceData.color.replace('bg-', '')}`} />
+
+                      {/* Label */}
+                      <span className={`absolute top-full mt-1 text-xs font-bold whitespace-nowrap ${theme.containerText}`}>
+                        {forceData.label}
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+
+          </motion.div>
+        </div>
+
+      </div>
+    </div>
   );
 };

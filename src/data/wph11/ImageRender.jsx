@@ -17,6 +17,11 @@ import DarktheAngledLaunchResolution from '../../assets/lesson/WPH11 - 2.3/dark-
 import theHorizontalLaunchProfile from '../../assets/lesson/WPH11 - 2.3/the-horizontal-launch-profile.png'
 import DarktheHorizontalLaunchProfile from '../../assets/lesson/WPH11 - 2.3/dark-the-horizontal-launch-profile.png'
 import theTwoColumnBlueprint from '../../assets/lesson/WPH11 - 2.3/the-two-column-blueprint.png'
+import theParticleModelSimplication from '../../assets/lesson/WPH11 - 3.1/the-particle-model-simplification.png'
+import darkTheParticleModelSimplication from '../../assets/lesson/WPH11 - 3.1/dark-the-particle-model-simplification.png'
+import theCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/the-coordinate-system-switch.png'
+import darkTheCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/dark-the-coordinate-system-switch.png'
+
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
@@ -37,9 +42,13 @@ export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
     theAngledLaunchResolution: darkMode ? (<img src={DarktheAngledLaunchResolution} alt='Dark The Angled Launch Resolution' className='w-150 not-md:w-100 object-contain' />) : (<img src={theAngledLaunchResolution} alt='The Angled Launch Resolution' className='w-150 not-md:w-100 object-contain' />),
 
-    theHorizontalLaunchProfile: darkMode ? (<img src={DarktheHorizontalLaunchProfile} alt='Dark The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />) : (<img src={theHorizontalLaunchProfile} alt='The The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />),
+    theHorizontalLaunchProfile: darkMode ? (<img src={DarktheHorizontalLaunchProfile} alt='Dark The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />) : (<img src={theHorizontalLaunchProfile} alt='The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />),
 
     theTwoColumnBlueprint: (<img src={theTwoColumnBlueprint} alt='The Two Column Blueprint' className='w-150 not-md:w-100 object-contain' />),
+
+    theParticleModelSimplication: darkMode ? (<img src={darkTheParticleModelSimplication} alt='Dark The Particle Model Simplication' className='w-150 not-md:w-100 object-contain' />) : (<img src={theParticleModelSimplication} alt='The Particle Model Simplication' className='w-150 not-md:w-100 object-contain' />),
+
+    theCoordinateSystemSwitch: darkMode ? (<img src={darkTheCoordinateSystemSwitch} alt='Dark The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />) : (<img src={theCoordinateSystemSwitch} alt='Dark The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />),
   }
 
 
