@@ -32,6 +32,10 @@ export function lectureLayout(lessonId) {
     freeBodyDiagrams: {
       layout: 4,
       sectionIds: ['goldenRule', 'variables' , 'strategy', 'equationsWithGoldenRule']
+    },
+    "newton'sFirst&SecondLaws": {
+      layout: 3,
+      sectionIds: ['goldenRule', 'equations', 'strategy']
     }
 
   }

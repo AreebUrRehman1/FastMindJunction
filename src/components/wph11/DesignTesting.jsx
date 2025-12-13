@@ -1,272 +1,259 @@
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowDown, RotateCcw, CheckCircle2, XCircle } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { Scale, Activity, Zap, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Checkpoint } from './Checkpoint'; 
 
-export const DesignTesting = () => {
-  const [scene, setScene] = useState('flat'); // 'flat' or 'ramp'
-  const [placedArrows, setPlacedArrows] = useState({});
-  const [feedback, setFeedback] = useState({ msg: 'Drag forces onto the box', type: 'neutral' });
-  const boxRef = useRef(null);
+export function DesignTesting({ darkMode }) {
+  // --- STATE ---
+  const [unlockedIndex, setUnlockedIndex] = useState(0); 
+  const sectionRefs = useRef([]); 
+  const navigate = useNavigate();
 
-  const Forces = [
-    { id: 'weight', label: 'Weight (mg)', color: 'bg-blue-500' },
-    { id: 'normal', label: 'Normal Force (Fn)', color: 'bg-purple-500' },
-    { id: 'friction', label: 'Friction (f)', color: 'bg-red-500' },
-    { id: 'tension', label: 'Tension (T)', color: 'bg-orange-500' },
-  ];
+  // Scroll to new section when unlocked
+  useEffect(() => {
+    if (unlockedIndex > 0 && sectionRefs.current[unlockedIndex]) {
+      setTimeout(() => {
+        sectionRefs.current[unlockedIndex].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 100);
+    }
+  }, [unlockedIndex]);
 
-  // Configuration for correct arrow placements
-  // Adjusted for better visual alignment and consistency (e.g., normal starts from 100% bottom, not 30% top)
-  const SCENARIOS = {
-    flat: {
-      rotation: 0,
-      zones: {
-        weight: { top: '130%', left: '45%', rotation: 0 }, // Straight down
-        normal: { top: '30%', left: '47%', rotation: 180 }, // Straight up (from bottom)
-        friction: { top: '80%', left: '-5%', rotation: 90 }, // Left along surface
-        tension: { top: '80%', left: '95%', rotation: -90 }, // Pulling right
+  // --- CONTENT DATA (Module 3.2) ---
+  const content = {
+    module: "Module 3.2 • Dynamics",
+    title: "3.2 Newton's First & Second Laws",
+    subtitle: "The Rules of Reality",
+    intro: "Now that we can draw forces, we need to know what they actually DO. Sir Isaac Newton gave us three laws that explain almost all motion in the universe. In this lesson, we focus on the first two: Inertia and Acceleration.",
+    sections: [
+      {
+        id: "first_law",
+        title: "Part 1: Newton's First Law (Inertia)",
+        icon: <Scale className="w-6 h-6" />,
+        text: "Objects are lazy. They want to keep doing exactly what they are already doing. If you leave them alone (Balanced Forces), they won't change.",
+        comparison: [
+          { 
+            label: "Condition", 
+            desc: "Resultant Force (ΣF) is ZERO." 
+          },
+          { 
+            label: "Result", 
+            desc: "Acceleration is ZERO. The object either stays at rest OR moves at a constant velocity in a straight line." 
+          }
+        ],
+        goldenRule: "Common Trap: 'Constant Velocity' requires ZERO net force. You don't need a forward force to keep moving; you only need it to overcome friction.",
+        // Static Image Placeholder
+        imageTag: (
+          <div className="mt-4 text-center text-sm opacity-60 italic">
+            
+            <br/>Both have zero net force, even though one is moving fast.
+          </div>
+        ),
+        quiz: {
+          question: "A spaceship is drifting through deep space at 10,000 km/h with its engines OFF. What is the net force acting on it?",
+          options: ["10,000 N", "Zero", "It depends on the mass"],
+          correctIndex: 1
+        }
+      },
+      {
+        id: "second_law",
+        title: "Part 2: Newton's Second Law (Acceleration)",
+        icon: <Zap className="w-6 h-6" />,
+        text: "What happens when forces are NOT balanced? The object changes its speed or direction. This 'change' is what we call Acceleration.",
+        equations: [
+          { 
+            name: "The Formula", 
+            type: "Vector Equation", 
+            formula: "ΣF = ma" 
+          },
+          { 
+            name: "In Words", 
+            type: "Meaning", 
+            formula: "Resultant Force = Mass × Acceleration" 
+          }
+        ],
+        insight: "Crucial: The acceleration 'a' always points in the exact same direction as the Resultant Force 'ΣF'.",
+        // Static Image Placeholder
+        imageTag: (
+          <div className="mt-4 text-center text-sm opacity-60 italic">
+            [Image showing F, m, and a relationship triangle]
+            <br/>More Force = More Acceleration. More Mass = Less Acceleration.
+          </div>
+        ),
+        quiz: {
+          question: "You push a 10kg box with 50N of force. Friction resists with 20N. What is the acceleration?",
+          options: ["5 m/s²", "3 m/s²", "2 m/s²"],
+          correctIndex: 1
+        }
+      },
+      {
+        id: "problem_solving",
+        title: "Part 3: Solving Dynamics Problems",
+        icon: <Activity className="w-6 h-6" />,
+        text: "Don't panic when you see a complex diagram. Just follow the 'F=ma' recipe.",
+        conditions: [
+          "1. Draw the Free Body Diagram (FBD).",
+          "2. Choose your positive direction (usually the direction of motion).",
+          "3. Write 'ΣF = ma'.",
+          "4. Replace 'ΣF' with (Forward Forces - Backward Forces).",
+          "5. Solve for 'a' or 'F'."
+        ],
+        quiz: {
+          question: "A lift is accelerating UPWARDS. Which force is larger?",
+          options: ["Tension (Up)", "Weight (Down)", "They are equal"],
+          correctIndex: 0
+        }
       }
-    },
-    ramp: {
-      rotation: 25, // The box tilts 25 degrees
-      zones: {
-        // Weight must counter-rotate to stay absolute vertical
-        weight: { top: '130%', left: '45%', rotation: 0 },
-        // Normal stays perpendicular to the surface (relative rotation 180)
-        normal: { top: '30%', left: '45%', rotation: 180 },
-        // Friction acts up the ramp
-        friction: { top: '80%', left: '-6%', rotation: 90 },
-        tension: { top: '75%', left: '95%', rotation: -90 },
-      }
-    }
-  };
-
-  const currentConfig = SCENARIOS[scene];
-
-  // Sub-component for the sidebar items
-  const DraggableArrow = ({ force, onDragEnd, isPlaced }) => {
-    // If placed, we dim the sidebar item
-    if (isPlaced) {
-      return (
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border border-slate-100 opacity-40 cursor-not-allowed">
-          <div className={`w-3 h-3 rounded-full ${force.color}`} />
-          <span className="font-medium text-slate-400 line-through">{force.label}</span>
-        </div>
-      );
-    }
-
-    return (
-      <motion.div
-        drag
-        dragSnapToOrigin={true} // Bounces back if not handled
-        dragElastic={0.2}
-        dragMomentum={false}
-        whileDrag={{ scale: 1.1, cursor: 'grabbing', zIndex: 50 }}
-        whileHover={{ scale: 1.02, backgroundColor: '#f8fafc' }}
-        onDragEnd={(e, info) => onDragEnd(e, info, force.id)}
-        className="flex items-center gap-3 p-3 rounded-lg bg-white border border-slate-200 shadow-sm cursor-grab active:cursor-grabbing hover:border-blue-200 transition-colors"
-      >
-        <div className={`w-8 h-8 rounded-full ${force.color} bg-opacity-20 flex items-center justify-center`}>
-          <ArrowDown size={16} className={force.color.replace('bg-', 'text-')} />
-        </div>
-        <span className="font-medium text-slate-700">{force.label}</span>
-      </motion.div>
-    );
-  };
-
-  const handleDragEnd = (event, info, forceId) => {
-    const boxRect = boxRef.current.getBoundingClientRect();
-
-    // 🐛 FIX FOR MOBILE/SCROLLING: Adjust the drop point to be viewport-relative
-    // Framer Motion's info.point can be document-relative on some mobile browsers.
-    const dropPoint = {
-      x: info.point.x - (window.scrollX || window.pageXOffset),
-      y: info.point.y - (window.scrollY || window.pageYOffset)
-    };
-
-    // Check if dropped roughly inside the box area
-    // Increased the buffer from 50px to 80px for easier mobile target
-    const buffer = 80;
-    const isOverBox =
-      dropPoint.x >= boxRect.left - buffer &&
-      dropPoint.x <= boxRect.right + buffer &&
-      dropPoint.y >= boxRect.top - buffer &&
-      dropPoint.y <= boxRect.bottom + buffer;
-
-    if (isOverBox) {
-      setPlacedArrows(prev => ({ ...prev, [forceId]: true }));
-      setFeedback({ msg: `Correct! Added ${Forces.find(f => f.id === forceId).label}.`, type: 'success' });
-    } else {
-      setFeedback({ msg: 'Missed! Try dragging closer to the box.', type: 'error' });
-    }
-  };
-
-  const reset = () => {
-    setPlacedArrows({});
-    setFeedback({ msg: 'Reset complete.', type: 'neutral' });
-    setTimeout(() => {
-      setFeedback({ msg: 'Drag forces onto the box', type: 'neutral' });
-    }, 1000)
+    ]
   };
 
   return (
-    // ⚙️ Added min-h-screen for better mobile layout stability
-    <div className="flex flex-col md:flex-row bg-slate-50 p-8 gap-8 font-sans text-slate-800 min-h-screen">
-
-      {/* SIDEBAR PALETTE */}
-      <div className="w-full md:w-64 flex flex-col gap-4 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 z-10">
-        <h2 className="text-xl font-bold text-slate-700 mb-2">Force Palette</h2>
-        <p className="text-sm text-slate-400 mb-4">Drag these arrows onto the object.</p>
-
-        <div className="flex flex-col gap-3">
-          {Forces.map((force) => (
-            <DraggableArrow
-              key={force.id}
-              force={force}
-              onDragEnd={handleDragEnd}
-              isPlaced={placedArrows[force.id]}
-            />
-          ))}
-        </div>
-
-        <div className="mt-auto pt-6 border-t border-slate-100 flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold">Scene:</span>
-            <div className="flex bg-slate-100 p-1 rounded-lg">
-              <button
-                onClick={() => { setScene('flat'); reset(); }}
-                className={`px-3 py-1 text-xs rounded-md transition-all ${scene === 'flat' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}
-              >
-                Flat
-              </button>
-              <button
-                onClick={() => { setScene('ramp'); reset(); }}
-                className={`px-3 py-1 text-xs rounded-md transition-all ${scene === 'ramp' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}
-              >
-                Ramp
-              </button>
+    <>
+      <title>{content.title}</title>
+      <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+        <main className="pt-24 pb-20 px-4 sm:px-6">
+          
+          {/* Back Button */}
+          <div 
+            className={`text-blue-600 font-bold rounded-2xl p-2 not-md:mb-6 cursor-pointer ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"} inline-block`} 
+            onClick={() => navigate(-1)}
+          >
+            <div className='flex items-center gap-x-3'>
+              <ArrowLeft className='w-7 h-7' />
+              <div>Back</div>
             </div>
           </div>
-          <button
-            onClick={reset}
-            className="flex items-center justify-center gap-2 w-full py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
-          >
-            <RotateCcw size={16} /> Reset Diagram
-          </button>
-        </div>
-      </div>
 
-      {/* MAIN CANVAS */}
-      <div className="flex-1 relative bg-white rounded-3xl shadow-inner border border-slate-200 flex flex-col items-center justify-center">
+          <div className="max-w-3xl mx-auto space-y-12">
 
-        {/* Feedback Toast */}
-        <div className={`absolute top-6 px-6 py-2 rounded-full text-sm font-medium shadow-sm transition-colors duration-300 flex items-center gap-2
-          ${feedback.type === 'success' ? 'bg-green-100 text-green-700' :
-            feedback.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600'}`}>
-          {feedback.type === 'success' && <CheckCircle2 size={16} />}
-          {feedback.type === 'error' && <XCircle size={16} />}
-          {feedback.msg}
-        </div>
+            {/* Header Section */}
+            <header className="text-center space-y-4 animate-fade-in-up">
+              <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase ${darkMode ? 'bg-indigo-900/50 text-indigo-300' : 'bg-indigo-100 text-indigo-700'}`}>
+                {content.module}
+              </span>
+              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+                {content.title}
+              </h1>
+              <p className={`text-xl ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                {content.subtitle}
+              </p>
+            </header>
 
-        {/* The Physics World Container */}
-        <div className="relative w-full max-w-2xl not-md:mt-30 h-96 flex items-center justify-center overflow-x-hidden">
+            {/* Intro Card */}
+            <div className={`p-6 sm:p-8 rounded-2xl border ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+              <p className="text-lg leading-relaxed">
+                {content.intro}
+              </p>
+            </div>
 
-          {/* The Surface (Table/Ramp) */}
-          <motion.div
-            className="absolute w-[120%] h-4 bg-slate-800 rounded-full"
-            animate={{ rotate: currentConfig.rotation }}
-            transition={{ type: "spring", stiffness: 60 }}
-            style={{ top: '60%' }}
-          />
+            {/* --- SECTIONS LOOP --- */}
+            {content.sections.map((section, idx) => {
+              const isUnlocked = idx <= unlockedIndex;
+              const isCurrent = idx === unlockedIndex;
+              const isLast = idx === content.sections.length - 1;
 
-          {/* The Object (Box) */}
-          <motion.div
-            ref={boxRef}
-            animate={{
-              rotate: currentConfig.rotation,
-              y: -15 // Sit exactly on the line
-            }}
-            transition={{ type: "spring", stiffness: 60 }}
-            className="relative w-32 h-32 not-md:w-20 not-md:h-20 bg-slate-200 rounded-lg border-2 border-slate-300 shadow-sm z-0"
-          >
-            {/* Center of Mass Dot */}
-            <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-slate-800 rounded-full -translate-x-1/2 -translate-y-1/2 z-20" />
+              if (!isUnlocked) return null;
 
-            {/* PLACED ARROWS RENDERED HERE */}
-            <AnimatePresence>
-              {Object.keys(placedArrows).map((key) => {
-                if (!placedArrows[key]) return null;
-                const zone = currentConfig.zones[key];
-                const forceData = Forces.find(f => f.id === key);
-
-                // Rotation logic for the arrow's graphic
-                let arrowRotation = zone.rotation;
-
-                // If the scene is a ramp, the box is rotated. 
-                // We need to counter-rotate Weight to keep it vertical, 
-                // but the others stay relative to the box's tilt.
-                if (scene === 'ramp') {
-                  if (key === 'weight') {
-                    // Weight is always straight down (0 deg absolute)
-                    arrowRotation = 0;
-                  } else {
-                    // Normal, Friction, Tension rotate with the box 
-                    // (already handled by being a child of the rotated box)
-                    // but we need to remove the box's rotation from the arrow's rotation prop 
-                    // if we want them to appear perpendicular to the surface *inside* the box's coordinate system.
-                    // However, since the rotation is applied to the parent (the box), 
-                    // the arrow's zone.rotation is what it *should* look like on a flat surface.
-                    // The ramp tilt *automatically* rotates it. So we just need to ensure Weight is 0.
-                    // I will keep the original zone.rotation values for Normal/Friction/Tension to ensure they are surface-relative.
-                    arrowRotation = zone.rotation;
-                  }
-                }
-
-                return (
-                  <motion.div
-                    key={key}
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    className="absolute pointer-events-none flex items-center"
-                    style={{
-                      top: zone.top,
-                      left: zone.left,
-                      // We apply manual offsets to fine-tune placement
-                      x: zone.xOffset,
-                      y: zone.yOffset,
-                      transformOrigin: '0 0',
-                      width: 0, // Zero width so it acts as a point
-                      height: 0
-                    }}
-                  >
-                    {/* The Actual Arrow Graphic */}
-                    <div
-                      className="relative flex flex-col items-center"
-                      style={{
-                        transform: `rotate(${arrowRotation}deg)`,
-                        transformOrigin: 'top center' // Pivot around the attachment point
-                      }}
-                    >
-                      {/* Line */}
-                      <div className={`w-1 h-16 ${forceData.color} rounded-full`} />
-                      {/* Arrow Head */}
-                      <div className={`w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-${forceData.color.replace('bg-', '')}`} />
-
-                      {/* Label */}
-                      <span className={`absolute top-full mt-1 text-xs font-bold ${forceData.color.replace('bg-', 'text-')} whitespace-nowrap`}>
-                        {forceData.label}
-                      </span>
+              return (
+                <section
+                  key={section.id}
+                  ref={el => sectionRefs.current[idx] = el}
+                  className={`space-y-6 transition-opacity duration-700 ${isCurrent ? 'opacity-100' : 'opacity-80'}`}
+                >
+                  {/* Section Header */}
+                  <div className="flex items-center space-x-3 pt-4">
+                    <div className={`p-2 rounded-lg ${darkMode ? 'bg-indigo-500/10 text-indigo-400' : 'bg-indigo-50 text-indigo-600'}`}>
+                      {section.icon}
                     </div>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+                    <h2 className="text-2xl font-bold">{section.title}</h2>
+                  </div>
 
-          </motion.div>
-        </div>
+                  {/* Main Text */}
+                  <p className={`text-lg ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                    {section.text}
+                  </p>
 
+                  {/* --- LAYOUTS --- */}
+                  
+                  {/* COMPARISON/RULE LAYOUT (First Law) */}
+                  {section.id === "first_law" && (
+                    <div className="space-y-4">
+                      <div className={`rounded-xl overflow-hidden divide-y ${darkMode ? 'divide-slate-700 border border-slate-700' : 'divide-slate-200 border border-slate-200'}`}>
+                        {section.comparison.map((item) => (
+                          <div key={item.label} className={`p-4 flex flex-col sm:flex-row gap-4 ${darkMode ? 'bg-slate-800/30' : 'bg-white'}`}>
+                            <span className="font-bold sm:w-1/3 shrink-0">{item.label}</span>
+                            <span className={`sm:w-2/3 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>{item.desc}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className={`p-4 rounded-l-md border-l-4 ${darkMode ? 'bg-amber-900/20 border-amber-500 text-amber-200' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
+                        <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
+                        {section.goldenRule}
+                      </div>
+                      {/* Image Render */}
+                      {section.imageTag}
+                    </div>
+                  )}
+
+                  {/* EQUATIONS LAYOUT (Second Law) */}
+                  {section.id === "second_law" && (
+                    <div className="space-y-4">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        {section.equations.map((eq) => (
+                          <div key={eq.name} className={`p-5 rounded-xl border text-center ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                            <div className="text-sm uppercase tracking-widest opacity-60 mb-2">{eq.type}</div>
+                            <div className="text-xl font-serif italic mb-2 font-bold tracking-wide">
+                              {eq.formula}
+                            </div>
+                            <div className="text-xs opacity-50">{eq.name}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className={`p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
+                        {section.insight}
+                      </div>
+                      {/* Image Render */}
+                      {section.imageTag}
+                    </div>
+                  )}
+
+                  {/* LIST/STEPS LAYOUT (Problem Solving) */}
+                  {section.id === "problem_solving" && (
+                    <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+                      <ul className="space-y-4">
+                        {section.conditions.map((cond, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <div className={`mt-1.5 w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-xs font-bold ${darkMode ? 'bg-indigo-500 text-white' : 'bg-indigo-600 text-white'}`}>
+                              {i + 1}
+                            </div>
+                            <span>{cond}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Checkpoint */}
+                  {isCurrent && (
+                    <div className="mt-12 mb-20 animate-fade-in-up">
+                      <Checkpoint
+                        darkMode={darkMode}
+                        quiz={section.quiz}
+                        isLast={isLast}
+                        nextSectionTitle={!isLast ? content.sections[idx + 1].title : 'Finish'}
+                        onUnlock={() => setUnlockedIndex(prev => prev + 1)}
+                      />
+                    </div>
+                  )}
+                </section>
+              );
+            })}
+
+          </div>
+        </main>
       </div>
-    </div>
+    </>
   );
-};
+}

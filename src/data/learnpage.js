@@ -85,10 +85,10 @@ export const topicDetailsContainer = {
       key: "TDC15"
     },
     {
-      Name: "Centre of Gravity & The Principle of Moments",
+      Name: "Newton's First & Second Laws",
       Circle: "bg-[#FFC107] shadow-[0px_9px_1px_#eab207] hover:bg-[#fcc92f] hover:shadow-[0px_9px_1px_#d3a007] ml-[50px]",
       ToolTipColor: "bg-[#d3a007]",
-      Lecture: "",
+      Lecture: "newton'sFirst&SecondLaws",
       key: "TDC16"
     }
   ],

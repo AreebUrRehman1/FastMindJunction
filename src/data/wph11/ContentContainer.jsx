@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split, LayoutList, Target, Box, Move, Maximize2 } from 'lucide-react';
+import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split, LayoutList, Target, Box, Move, Maximize2, Scale } from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
 import { GraphsOfMotion } from './AnimationStorage';
@@ -653,6 +653,79 @@ export function contentContainer(darkMode, lessonId, mobile) {
             }
           ],
           goldenRule: "Newton's Second Law: Acceleration happens in the exact same direction as the Net Force.",
+        }
+      ]
+    },
+    "newton'sFirst&SecondLaws": {
+      module: "Module 3.2 • Dynamics",
+      title: "3.2 Newton's First & Second Laws",
+      subtitle: "The Rules of Reality",
+      intro: "Now that we can draw forces, we need to know what they actually DO. Sir Isaac Newton gave us three laws that explain almost all motion in the universe. In this lesson, we focus on the first two: Inertia and Acceleration.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: Newton's First Law (Inertia)",
+          icon: <Scale className="w-6 h-6" />,
+          text: "Objects are lazy. They want to keep doing exactly what they are already doing. If you leave them alone (Balanced Forces), they won't change.",
+          comparison: [
+            {
+              label: "Condition",
+              desc: "Resultant Force (ΣF) is ZERO."
+            },
+            {
+              label: "Result",
+              desc: "Acceleration is ZERO. The object either stays at rest OR moves at a constant velocity in a straight line."
+            }
+          ],
+          goldenRule: "Common Trap: 'Constant Velocity' requires ZERO net force. You don't need a forward force to keep moving; you only need it to overcome friction.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theEquilibriumStates"} />,
+          quiz: {
+            question: "A spaceship is drifting through deep space at 10,000 km/h with its engines OFF. What is the net force acting on it?",
+            options: ["10,000 N", "Zero", "It depends on the mass"],
+            correctIndex: 1
+          }
+        }, {
+          id: "equations",
+          title: "Part 2: Newton's Second Law (Acceleration)",
+          icon: <Zap className="w-6 h-6" />,
+          text: "What happens when forces are NOT balanced? The object changes its speed or direction. This 'change' is what we call Acceleration.",
+          equations: [
+            {
+              name: "The Formula",
+              type: "Vector Equation",
+              formula: "ΣF = ma"
+            },
+            {
+              name: "In Words",
+              type: "Meaning",
+              formula: "Resultant Force = Mass × Acceleration"
+            }
+          ],
+          insight: "Crucial: The acceleration 'a' always points in the exact same direction as the Resultant Force 'ΣF'.",
+          // Static Image Placeholder
+          imageTag: (
+            <div className="mt-4 text-center text-sm opacity-60 italic">
+              [Image showing F, m, and a relationship triangle]
+              <br />More Force = More Acceleration. More Mass = Less Acceleration.
+            </div>
+          ),
+          quiz: {
+            question: "You push a 10kg box with 50N of force. Friction resists with 20N. What is the acceleration?",
+            options: ["5 m/s²", "3 m/s²", "2 m/s²"],
+            correctIndex: 1
+          }
+        }, {
+          id: "strategy",
+          title: "Part 3: Solving Dynamics Problems",
+          icon: <Activity className="w-6 h-6" />,
+          text: "Don't panic when you see a complex diagram. Just follow the 'F=ma' recipe.",
+          conditions: [
+            "1. Draw the Free Body Diagram (FBD).",
+            "2. Choose your positive direction (usually the direction of motion).",
+            "3. Write 'ΣF = ma'.",
+            "4. Replace 'ΣF' with (Forward Forces - Backward Forces).",
+            "5. Solve for 'a' or 'F'."
+          ]
         }
       ]
     }

@@ -54,7 +54,7 @@ export const DisplacementVelocityAndAcceleration = ({ darkMode }) => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-300 ${theme.bg} ${theme.textMain}`}>
+    <div className={`md:h-180 flex flex-col font-sans transition-colors duration-300 ${theme.bg} ${theme.textMain}`}>
 
       {/* MAIN CONTENT */}
       <main className="flex-grow flex flex-col md:flex-row relative">
@@ -329,7 +329,7 @@ export const DisplacementVelocityAndAcceleration2 = ({ darkMode }) => {
   };
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col items-center py-8 transition-colors duration-300 ${theme.bg} ${theme.textMain}`}>
+    <div className={` font-sans flex flex-col items-center py-8 transition-colors duration-300 ${theme.bg} ${theme.textMain}`}>
 
       {/* Header */}
       <div className="text-center mb-6 max-w-2xl px-4">
@@ -993,7 +993,6 @@ export const TheSUVATEquations = ({ darkMode }) => {
 
   // --- DARK MODE THEME ---
   const theme = {
-    bg: darkMode ? 'bg-slate-900' : 'bg-slate-50',
     textMain: darkMode ? 'text-slate-100' : 'text-slate-800',
     textSub: darkMode ? 'text-slate-400' : 'text-slate-500',
     cardBg: darkMode ? 'bg-slate-800' : 'bg-white',
@@ -1011,7 +1010,7 @@ export const TheSUVATEquations = ({ darkMode }) => {
   };
 
   return (
-    <div className={`min-h-screen font-sans p-2 sm:p-4 flex flex-col items-center transition-colors duration-300 ${theme.bg} ${theme.textMain}`}>
+    <div className={`font-sans p-2 sm:p-4 flex flex-col items-center transition-colors duration-300 ${theme.textMain}`}>
 
       <div className={`w-full max-w-5xl rounded-xl shadow-xl overflow-hidden border transition-colors ${theme.cardBg} ${theme.cardBorder}`}>
 

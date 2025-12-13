@@ -21,6 +21,8 @@ import theParticleModelSimplication from '../../assets/lesson/WPH11 - 3.1/the-pa
 import darkTheParticleModelSimplication from '../../assets/lesson/WPH11 - 3.1/dark-the-particle-model-simplification.png'
 import theCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/the-coordinate-system-switch.png'
 import darkTheCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/dark-the-coordinate-system-switch.png'
+import theEquilibriumStates from '../../assets/lesson/WPH11 - 3.2/the-equilibrium-states.png'
+import darkTheEquilibriumStates from '../../assets/lesson/WPH11 - 3.2/dark-the-equilibrium-states.png'
 
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
@@ -48,7 +50,9 @@ export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
     theParticleModelSimplication: darkMode ? (<img src={darkTheParticleModelSimplication} alt='Dark The Particle Model Simplication' className='w-150 not-md:w-100 object-contain' />) : (<img src={theParticleModelSimplication} alt='The Particle Model Simplication' className='w-150 not-md:w-100 object-contain' />),
 
-    theCoordinateSystemSwitch: darkMode ? (<img src={darkTheCoordinateSystemSwitch} alt='Dark The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />) : (<img src={theCoordinateSystemSwitch} alt='Dark The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />),
+    theCoordinateSystemSwitch: darkMode ? (<img src={darkTheCoordinateSystemSwitch} alt='Dark The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />) : (<img src={theCoordinateSystemSwitch} alt='The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />),
+
+    theEquilibriumStates: darkMode ? (<img src={darkTheEquilibriumStates} alt='Dark The Equilibrium States' className='w-150 not-md:w-100 object-contain' />) : (<img src={theEquilibriumStates} alt='The Equilibrium States' className='w-150 not-md:w-100 object-contain' />),
   }
 
 
