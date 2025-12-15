@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowDown, ArrowRight, ArrowLeft, ArrowUp, RotateCcw, CheckCircle2, XCircle } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowLeft, ArrowUp, RotateCcw, CheckCircle2, XCircle, Play, Pause } from 'lucide-react';
 
 export const DisplacementVelocityAndAcceleration = ({ darkMode }) => {
   // --- SCALAR STATE (Thermometer) ---
@@ -2503,37 +2503,37 @@ export const FreeBodyDiagrams = ({ darkMode, mobile }) => {
   const theme = {
     // Layout
     containerText: darkMode ? 'text-slate-200' : 'text-slate-800',
-    
+
     // Sidebar
     sidebarBg: darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100',
     sidebarTitle: darkMode ? 'text-slate-100' : 'text-slate-700',
     sidebarText: darkMode ? 'text-slate-400' : 'text-slate-400',
-    
+
     // Draggable Items (Active)
     dragItemBg: darkMode ? 'bg-slate-700 border-slate-600' : 'bg-white border-slate-200',
     dragItemText: darkMode ? 'text-slate-200' : 'text-slate-700',
     dragItemHoverBorder: darkMode ? 'hover:border-blue-500' : 'hover:border-blue-200',
     dragItemHoverBg: darkMode ? '#334155' : '#f8fafc', // slate-700 vs slate-50
-    
+
     // Draggable Items (Placed)
     placedItemBg: darkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-100',
-    
+
     // Main Canvas Area
     canvasBg: darkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200',
-    
+
     // The Physics World
     surfaceColor: darkMode ? 'bg-slate-600' : 'bg-slate-800',
     boxBg: darkMode ? 'bg-slate-700' : 'bg-slate-200',
     boxBorder: darkMode ? 'border-slate-500' : 'border-slate-300',
     boxDot: darkMode ? 'bg-slate-200' : 'bg-slate-800',
-    
+
     // Controls
     controlsBorder: darkMode ? 'border-slate-700' : 'border-slate-100',
     sceneBtnBg: darkMode ? 'bg-slate-900' : 'bg-slate-100',
     sceneBtnActive: darkMode ? 'bg-slate-600 text-blue-300 shadow' : 'bg-white text-blue-600 shadow',
     sceneBtnInactive: darkMode ? 'text-slate-400 hover:bg-slate-700' : 'text-slate-500 hover:bg-slate-50',
     resetBtn: darkMode ? 'text-slate-400 hover:bg-slate-700' : 'text-slate-500 hover:bg-slate-50',
-    
+
     // Feedback Toast colors
     toastSuccess: darkMode ? 'bg-green-900/50 text-green-300' : 'bg-green-100 text-green-700',
     toastError: darkMode ? 'bg-red-900/50 text-red-300' : 'bg-red-100 text-red-700',
@@ -2615,10 +2615,10 @@ export const FreeBodyDiagrams = ({ darkMode, mobile }) => {
         className={`flex items-center gap-3 p-3 rounded-lg shadow-sm cursor-grab active:cursor-grabbing transition-colors ${theme.dragItemBg} ${theme.dragItemHoverBorder}`}
       >
         <div className={`w-8 h-8 rounded-full ${force.color} bg-opacity-20 flex items-center justify-center`}>
-          {arrowDirection === "ArrowDown" ? <ArrowDown size={16} className={theme.dragItemText} /> : 
-          arrowDirection === "ArrowUp" ? <ArrowUp size={16} className={theme.dragItemText} /> :
-          arrowDirection === "ArrowRight" ? <ArrowRight size={16} className={theme.dragItemText} /> : 
-          <ArrowLeft size={16} className={theme.dragItemText} /> }
+          {arrowDirection === "ArrowDown" ? <ArrowDown size={16} className={theme.dragItemText} /> :
+            arrowDirection === "ArrowUp" ? <ArrowUp size={16} className={theme.dragItemText} /> :
+              arrowDirection === "ArrowRight" ? <ArrowRight size={16} className={theme.dragItemText} /> :
+                <ArrowLeft size={16} className={theme.dragItemText} />}
         </div>
         <span className={`font-medium ${theme.dragItemText}`}>{force.label}</span>
       </motion.div>
@@ -2809,6 +2809,283 @@ export const FreeBodyDiagrams = ({ darkMode, mobile }) => {
             </AnimatePresence>
 
           </motion.div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export const NewtonFirstAndSecondLaws = ({ darkMode, mobile }) => {
+  // --- State Configuration ---
+  const [force, setForce] = useState(50); // Newtons (10-100)
+  const [mass, setMass] = useState(5);    // kg (1-10)
+  const [isRunning, setIsRunning] = useState(false);
+
+  // Container Size Detector For Puff
+  const containerRef = useRef(null);
+  const [dimensions, setDimensions] = useState({ width: 0 });
+
+  useEffect(() => {
+    // Check if the ref has been assigned to the DOM node
+    if (containerRef.current) {
+      const { width } = containerRef.current.getBoundingClientRect();
+      setDimensions({ width: width });
+    }
+  }, []);
+
+  // Physics State
+  const physicsState = useRef({
+    position: 0, // pixels
+    velocity: 0, // pixels per frame
+    lastTime: 0
+  });
+
+  // UI State
+  const [positionX, setPositionX] = useState(0);
+
+  // --- CONFIGURATION CONSTANTS (Mobile vs Desktop) ---
+
+  // 1. Rink Dimensions
+  // Desktop: 615px (Original). Mobile: 320px (Fits standard phones without scroll)
+  const RINK_LENGTH = mobile ? (dimensions ? (dimensions.width.toFixed(0) - 40) : 280) : 615;
+
+  // 2. Puck Size Calculation
+  // Desktop: Base 40 + (8 * mass). Mobile: Base 20 + (4 * mass)
+  const PUCK_BASE = mobile ? 17 : 40;
+  const PUCK_SCALE = mobile ? 2 : 8;
+  const currentPuckSize = PUCK_BASE + (mass * PUCK_SCALE);
+
+  // 3. Physics Visual Multiplier
+  // Desktop: 50 (Original). Mobile: 25 (Slows it down visually for smaller screen)
+  const PHYSICS_MULTIPLIER = mobile ? 25 : 50;
+
+  // 4. Collision Offset (Roughly half the puck or the visual buffer)
+  // Desktop: 50 (Original). Mobile: 30 (Smaller buffer for smaller puck)
+  const COLLISION_OFFSET = mobile ? 30 : 50;
+
+  // Derived Values
+  const acceleration = (force / mass).toFixed(2); // a = F/m
+
+  // --- The Physics Engine ---
+  useEffect(() => {
+    let animationFrameId;
+
+    const loop = () => {
+      if (!isRunning) return;
+
+      const state = physicsState.current;
+      const dt = 0.016; // approx 60fps (16ms)
+
+      const currentAccel = force / mass;
+
+      // Update Velocity
+      state.velocity += currentAccel * dt * PHYSICS_MULTIPLIER;
+
+      // Update Position
+      state.position += state.velocity * dt;
+
+      // Wall Collision Check
+      // Uses the conditional constants to stop correctly on both devices
+      if (state.position >= RINK_LENGTH - COLLISION_OFFSET) {
+        state.position = RINK_LENGTH - COLLISION_OFFSET;
+        state.velocity = 0;
+        setIsRunning(false);
+      }
+
+      setPositionX(state.position);
+      animationFrameId = requestAnimationFrame(loop);
+    };
+
+    if (isRunning) {
+      animationFrameId = requestAnimationFrame(loop);
+    }
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isRunning, force, mass, mobile]); // Added mobile/constants dependencies
+
+  const handleReset = () => {
+    setIsRunning(false);
+    physicsState.current = { position: 0, velocity: 0, lastTime: 0 };
+    setPositionX(0);
+  };
+
+  const togglePlay = () => {
+    if (positionX >= RINK_LENGTH - COLLISION_OFFSET) {
+      handleReset();
+      setTimeout(() => setIsRunning(true), 50);
+    } else {
+      setIsRunning(!isRunning);
+    }
+  };
+
+  // --- Styles ---
+  // Ensure we don't change desktop colors/layout, only swap for mobile if needed
+  const theme = {
+    bg: darkMode ? 'bg-slate-800' : 'bg-white',
+    border: darkMode ? 'border-slate-700' : 'border-slate-200',
+    textMain: darkMode ? 'text-slate-100' : 'text-slate-800',
+    textSub: darkMode ? 'text-slate-400' : 'text-slate-400',
+    rinkBg: darkMode ? 'bg-slate-900' : 'bg-slate-50',
+    gridColor: darkMode ? '#334155' : '#e2e8f0',
+  };
+
+  return (
+    <div className={`flex flex-col items-center justify-center font-sans ${mobile ? 'p-2' : 'p-4'}`}>
+
+      <div className={`w-full max-w-4xl ${theme.bg} rounded-3xl shadow-xl overflow-hidden border ${theme.border}`}>
+
+        {/* --- Header --- */}
+        <div className={`p-6 border-b ${theme.border} flex flex-col md:flex-row justify-between items-center gap-4 ${darkMode ? 'bg-slate-900/50' : 'bg-slate-50/50'}`}>
+          <div className={mobile ? "text-center" : ""}>
+            <h2 className={`text-xl font-bold ${theme.textMain}`}>The Newton Slider</h2>
+            <p className={`text-sm ${theme.textSub}`}>Interactive F = ma Lab</p>
+          </div>
+
+          {/* Math Card */}
+          <div className={`flex items-center gap-4 ${theme.bg} px-6 py-3 rounded-xl shadow-sm border ${theme.border} ${mobile ? 'scale-90' : ''}`}>
+            <div className="text-center">
+              <div className={`text-xs ${theme.textSub} font-semibold uppercase tracking-wider`}>Force</div>
+              <div className="text-xl font-bold text-red-500">{force} N</div>
+            </div>
+            <div className="text-2xl text-slate-300">/</div>
+            <div className="text-center">
+              <div className={`text-xs ${theme.textSub} font-semibold uppercase tracking-wider`}>Mass</div>
+              <div className="text-xl font-bold text-blue-500">{mass} kg</div>
+            </div>
+            <div className="text-2xl text-slate-300">=</div>
+            <div className="text-center">
+              <div className={`text-xs ${theme.textSub} font-semibold uppercase tracking-wider`}>Accel</div>
+              <div className="text-xl font-bold text-green-500">{acceleration} m/s²</div>
+            </div>
+          </div>
+        </div>
+
+        {/* --- The Rink --- */}
+        {/* Mobile: h-48 (smaller height). Desktop: h-80 (original height) */}
+        <div className={`relative w-full ${mobile ? 'h-48' : 'h-80'} ${theme.rinkBg} overflow-hidden group`} ref={containerRef}>
+
+          {/* Grid Lines */}
+          <div className="absolute inset-0"
+            style={{ backgroundImage: `linear-gradient(to right, ${theme.gridColor} 1px, transparent 1px)`, backgroundSize: '100px 100%' }}>
+          </div>
+          <div className={`absolute bottom-0 w-full border-b-2 ${darkMode ? 'border-slate-600' : 'border-slate-300'}`}></div>
+
+          {/* THE PUCK ACTOR */}
+          <div
+            className={`absolute ${mobile ? 'bottom-10' : 'bottom-20'} transition-transform duration-75 ease-linear will-change-transform`}
+            style={{
+              transform: `translateX(${positionX}px)`,
+            }}
+          >
+            {/* 1. The Puck Body */}
+            <div
+              className={`relative rounded-full shadow-2xl border-4 ${darkMode ? 'border-slate-600' : 'border-slate-700'} flex items-center justify-center transition-all duration-300`}
+              style={{
+                width: `${currentPuckSize}px`,
+                height: `${currentPuckSize}px`,
+                backgroundColor: mass > 5 ? (darkMode ? '#475569' : '#475569') : (darkMode ? '#64748b' : '#94a3b8'),
+              }}
+            >
+              {/* Hide label on mobile if puck is too small */}
+              <span className={`text-white ${mobile ? 'text-[8px]' : 'text-[10px]'} font-bold opacity-50`}>m</span>
+            </div>
+
+            {/* 2. Force Vector (Red) */}
+            <div className="absolute top-1/2 left-1/2 -translate-y-1/2 z-10 pointer-events-none transition-all duration-300">
+              <div
+                className="h-1 bg-red-500 flex items-center rounded-r-full opacity-80"
+                style={{ width: `${force * (mobile ? 1.5 : 2.5)}px` }} // Scaled down vector for mobile
+              >
+                <span className="absolute -top-5 left-2 text-xs font-bold text-red-500">F</span>
+                <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-red-500 ml-auto translate-x-1" />
+              </div>
+            </div>
+
+            {/* 3. Acceleration Vector (Green) */}
+            <div className="absolute bottom-full left-1/2 mb-2 z-10 pointer-events-none transition-all duration-300">
+              <div
+                className="h-1 bg-green-500 flex items-center rounded-r-full shadow-[0_0_10px_rgba(34,197,94,0.4)]"
+                style={{ width: `${(force / mass) * (mobile ? 6 : 10)}px` }} // Scaled down vector for mobile
+              >
+                <span className="absolute -top-5 left-2 text-xs font-bold text-green-500">a</span>
+                <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-green-500 ml-auto translate-x-1" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* --- Controls Section --- */}
+        <div className={`p-8 ${theme.bg} border-t ${theme.border}`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+
+            {/* Force Slider */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-end">
+                <label className={`font-bold ${theme.textMain} flex items-center gap-2`}>
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div> Push Force
+                </label>
+                <span className={`text-sm font-mono ${darkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-600'} px-2 py-1 rounded`}>{force} N</span>
+              </div>
+              <input
+                type="range"
+                min="10"
+                max="100"
+                step="5"
+                value={force}
+                onChange={(e) => setForce(Number(e.target.value))}
+                className={`w-full h-2 rounded-lg appearance-none cursor-pointer accent-red-500 ${darkMode ? 'bg-slate-600' : 'bg-slate-200'}`}
+              />
+              <p className={`text-xs ${theme.textSub}`}>Controls the red vector length.</p>
+            </div>
+
+            {/* Mass Slider */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-end">
+                <label className={`font-bold ${theme.textMain} flex items-center gap-2`}>
+                  <div className="w-3 h-3 rounded-full bg-slate-500"></div> Object Mass
+                </label>
+                <span className={`text-sm font-mono ${darkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-600'} px-2 py-1 rounded`}>{mass} kg</span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="10"
+                step="1"
+                value={mass}
+                onChange={(e) => setMass(Number(e.target.value))}
+                className={`w-full h-2 rounded-lg appearance-none cursor-pointer accent-slate-500 ${darkMode ? 'bg-slate-600' : 'bg-slate-200'}`}
+              />
+              <p className={`text-xs ${theme.textSub} flex justify-between`}>
+                <span>Styrofoam (1kg)</span>
+                <span>Iron (10kg)</span>
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 justify-end">
+              <button
+                onClick={handleReset}
+                className={`p-4 rounded-xl font-bold transition-colors ${darkMode ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+              >
+                <RotateCcw size={20} />
+              </button>
+
+              <button
+                onClick={togglePlay}
+                className={`flex-1 flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all transform active:scale-95
+                  ${isRunning ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700'}`}
+              >
+                {isRunning ? (
+                  <> <Pause fill="currentColor" /> Pause </>
+                ) : (
+                  <> <Play fill="currentColor" /> GO </>
+                )}
+              </button>
+            </div>
+
+          </div>
         </div>
 
       </div>

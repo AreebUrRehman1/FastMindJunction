@@ -23,6 +23,8 @@ import theCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/the-coord
 import darkTheCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/dark-the-coordinate-system-switch.png'
 import theEquilibriumStates from '../../assets/lesson/WPH11 - 3.2/the-equilibrium-states.png'
 import darkTheEquilibriumStates from '../../assets/lesson/WPH11 - 3.2/dark-the-equilibrium-states.png'
+import theMassEffect from '../../assets/lesson/WPH11 - 3.2/the-mass-effect.png'
+import darkTheMassEffect from '../../assets/lesson/WPH11 - 3.2/dark-the-mass-effect.png'
 
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
@@ -53,6 +55,8 @@ export const ImageRender = ({ darkMode, imageToDisplay }) => {
     theCoordinateSystemSwitch: darkMode ? (<img src={darkTheCoordinateSystemSwitch} alt='Dark The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />) : (<img src={theCoordinateSystemSwitch} alt='The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />),
 
     theEquilibriumStates: darkMode ? (<img src={darkTheEquilibriumStates} alt='Dark The Equilibrium States' className='w-150 not-md:w-100 object-contain' />) : (<img src={theEquilibriumStates} alt='The Equilibrium States' className='w-150 not-md:w-100 object-contain' />),
+
+    theMassEffect: darkMode ? (<img src={darkTheMassEffect} alt='Dark The Mass Effect' className='w-150 not-md:w-100 object-contain' />) : (<img src={theMassEffect} alt='The Mass Effect' className='w-150 not-md:w-100 object-contain' />),
   }
 
 

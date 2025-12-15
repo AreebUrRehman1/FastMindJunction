@@ -70,10 +70,10 @@ export function LearningPathPage({ darkModeControl, darkMode }) {
 
       <Header darkModeControl={darkModeControl} darkMode={darkMode} />
 
-      <div className={`${darkMode ? "dark" : ""} dark:bg-[#0d0d12] text-gray-700 dark:text-gray-200 pt-[100px]`}>
+      <div className={`${darkMode ? "dark" : ""} dark:bg-[#0d0d12] text-gray-700 dark:text-gray-200 pt-[100px] min-h-screen`}>
         <div className="text-center text-[35px] font-bold dark:text-white">Select Your Learning Path...</div>
 
-        <div className={`flex flex-wrap gap-[20px] justify-center py-[50px] mx-auto max-w-[1150px]`}>
+        <div className={`flex flex-wrap gap-[20px] justify-center pt-[50px] mx-auto max-w-[1150px]`}>
           {staticContainer.map((container) => {
 
             const baseClasses = "border-solid border-[0.5px] border-[#a4a4a4] dark:border-gray-600 text-center rounded-[10px] p-[10px] w-50 h-40 cursor-pointer";

@@ -6,6 +6,7 @@ import { DecodingGraphs } from './AnimationStorage';
 import { VectorMath } from './AnimationStorage';
 import { ProjectileMotionPrinciples } from './AnimationStorage';
 import { FreeBodyDiagrams } from './AnimationStorage';
+import { NewtonFirstAndSecondLaws } from './AnimationStorage';
 import { ImageRender } from './ImageRender';
 
 
@@ -702,13 +703,8 @@ export function contentContainer(darkMode, lessonId, mobile) {
             }
           ],
           insight: "Crucial: The acceleration 'a' always points in the exact same direction as the Resultant Force 'ΣF'.",
-          // Static Image Placeholder
-          imageTag: (
-            <div className="mt-4 text-center text-sm opacity-60 italic">
-              [Image showing F, m, and a relationship triangle]
-              <br />More Force = More Acceleration. More Mass = Less Acceleration.
-            </div>
-          ),
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theMassEffect"} />,
+          animationCue: <NewtonFirstAndSecondLaws darkMode={darkMode} mobile={mobile} />,
           quiz: {
             question: "You push a 10kg box with 50N of force. Friction resists with 20N. What is the acceleration?",
             options: ["5 m/s²", "3 m/s²", "2 m/s²"],
