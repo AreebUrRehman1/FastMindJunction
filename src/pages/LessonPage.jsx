@@ -11,7 +11,6 @@ import back from '../assets/lesson/Back Icon2.png';
 export function LessonPage({ darkMode, darkModeControl }) {
   // --- STATE ---
   const [unlockedIndex, setUnlockedIndex] = useState(0); // Tracks how far the user has progressed (0 = only first section)
-  const sectionRefs = useRef([]); // To handle auto-scrolling
   const navigate = useNavigate();
   const { lessonId } = useParams();
   const mobile = useMediaQuery('(max-width: 768px)');
@@ -21,31 +20,21 @@ export function LessonPage({ darkMode, darkModeControl }) {
   const lectureContentLayout = lectureLayout(lessonId);
 
 
-  // Scroll to new section when unlocked
-  useEffect(() => {
-    if (unlockedIndex > 0 && sectionRefs.current[unlockedIndex]) {
-      setTimeout(() => {
-        sectionRefs.current[unlockedIndex].scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-      }, 100);
-    }
-  }, [unlockedIndex]);
-
   return (
     <>
       <title>Lesson Time!</title>
-      <LessonHeader darkMode={darkMode} darkModeControl={darkModeControl} />
+      <LessonHeader darkMode={darkMode} darkModeControl={darkModeControl} mobile={mobile} navigate={navigate}/>
       <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
         {/* --- Main Content --- */}
-        <main className="pt-24 pb-20 px-4 sm:px-6">
-          <div className={`text-blue-600 font-bold rounded-2xl p-2 not-md:mb-6 ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"} inline-block`} onClick={() => { navigate(-1) }}>
-            <div className='flex items-center gap-x-3'>
-              <img src={back} alt="Back Icon" className='w-7 h-7' />
-              <div>Back</div>
+        <main className=" pt-13 md:pt-24 pb-20 px-4 sm:px-6">
+          {mobile ? <></> : (
+            <div className={`text-blue-600 font-bold rounded-2xl p-2 ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"} inline-block cursor-pointer fixed`} onClick={() => { navigate(-1) }}>
+              <div className='flex items-center gap-x-3'>
+                <img src={back} alt="Back Icon" className='w-7 h-7' />
+                <div>Back</div>
+              </div>
             </div>
-          </div>
+          )}
           <div className="max-w-3xl mx-auto space-y-12">
 
             {/* Header Section */}
@@ -82,7 +71,6 @@ export function LessonPage({ darkMode, darkModeControl }) {
               return (
                 <section
                   key={section.id}
-                  ref={el => sectionRefs.current[idx] = el}
                   className={`space-y-6 transition-opacity duration-700`}
                 >
 
@@ -119,6 +107,7 @@ export function LessonPage({ darkMode, darkModeControl }) {
                         quiz={section.quiz}
                         isLast={isLast}
                         titleFinished={content.title}
+                        navigate={navigate}
                         nextSectionTitle={!isLast ? content.sections[idx + 1].title : 'Finish'}
                         onUnlock={() => setUnlockedIndex(prev => prev + 1)}
                       />

@@ -1,30 +1,35 @@
-import displacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/displacement-vs-velocity-time-graph.png'
-import darkdisplacementVsVelocityTimeGraph from '../../assets/lesson/WPH11 - 1.3/dark-displacement-vs-velocity-time-graph.png'
-import theGradientTriangle from '../../assets/lesson/WPH11 - 1.4/the-gradient-triangle.png'
-import darkTheGradientTriangle from '../../assets/lesson/WPH11 - 1.4/dark-the-gradient-triangle.png'
-import theAreaSplit from '../../assets/lesson/WPH11 - 1.4/the-area-split.png'
-import darkTheAreaSplit from '../../assets/lesson/WPH11 - 1.4/dark-the-area-split.png'
-import theTangentTechnique from '../../assets/lesson/WPH11 - 1.4/the-tangent-technique.png'
-import darkTheTangentTechnique from '../../assets/lesson/WPH11 - 1.4/dark-the-tangent-technique.png'
-import theResolutionTriangle from '../../assets/lesson/WPH11 - 2.1/the-resolution-triangle.png'
-import darkTheResolutionTriangle from '../../assets/lesson/WPH11 - 2.1/dark-the-resolution-triangle.png'
-import theHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/the-head-to-tail-method.png'
-import darkTheHeadToTailMethod from '../../assets/lesson/WPH11 - 2.1/dark-the-head-to-tail-method.png'
-import theVectorAnatomy from '../../assets/lesson/WPH11 - 2.2/the-vector-anatomy.png'
-import darkTheVectorAnatomy from '../../assets/lesson/WPH11 - 2.2/dark-the-vector-anatomy.png'
-import theAngledLaunchResolution from '../../assets/lesson/WPH11 - 2.3/the-angled-launch-resolution.png'
-import DarktheAngledLaunchResolution from '../../assets/lesson/WPH11 - 2.3/dark-the-angled-launch-resolution.png'
-import theHorizontalLaunchProfile from '../../assets/lesson/WPH11 - 2.3/the-horizontal-launch-profile.png'
-import DarktheHorizontalLaunchProfile from '../../assets/lesson/WPH11 - 2.3/dark-the-horizontal-launch-profile.png'
-import theTwoColumnBlueprint from '../../assets/lesson/WPH11 - 2.3/the-two-column-blueprint.png'
-import theParticleModelSimplication from '../../assets/lesson/WPH11 - 3.1/the-particle-model-simplification.png'
-import darkTheParticleModelSimplication from '../../assets/lesson/WPH11 - 3.1/dark-the-particle-model-simplification.png'
-import theCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/the-coordinate-system-switch.png'
-import darkTheCoordinateSystemSwitch from '../../assets/lesson/WPH11 - 3.1/dark-the-coordinate-system-switch.png'
-import theEquilibriumStates from '../../assets/lesson/WPH11 - 3.2/the-equilibrium-states.png'
-import darkTheEquilibriumStates from '../../assets/lesson/WPH11 - 3.2/dark-the-equilibrium-states.png'
-import theMassEffect from '../../assets/lesson/WPH11 - 3.2/the-mass-effect.png'
-import darkTheMassEffect from '../../assets/lesson/WPH11 - 3.2/dark-the-mass-effect.png'
+import displacementVsVelocityTimeGraph from '../../assets/lesson/WPH11/1.3/displacement-vs-velocity-time-graph.png'
+import darkdisplacementVsVelocityTimeGraph from '../../assets/lesson/WPH11/1.3/dark-displacement-vs-velocity-time-graph.png'
+import theGradientTriangle from '../../assets/lesson/WPH11/1.4/the-gradient-triangle.png'
+import darkTheGradientTriangle from '../../assets/lesson/WPH11/1.4/dark-the-gradient-triangle.png'
+import theAreaSplit from '../../assets/lesson/WPH11/1.4/the-area-split.png'
+import darkTheAreaSplit from '../../assets/lesson/WPH11/1.4/dark-the-area-split.png'
+import theTangentTechnique from '../../assets/lesson/WPH11/1.4/the-tangent-technique.png'
+import darkTheTangentTechnique from '../../assets/lesson/WPH11/1.4/dark-the-tangent-technique.png'
+import theResolutionTriangle from '../../assets/lesson/WPH11/2.1/the-resolution-triangle.png'
+import darkTheResolutionTriangle from '../../assets/lesson/WPH11/2.1/dark-the-resolution-triangle.png'
+import theHeadToTailMethod from '../../assets/lesson/WPH11/2.1/the-head-to-tail-method.png'
+import darkTheHeadToTailMethod from '../../assets/lesson/WPH11/2.1/dark-the-head-to-tail-method.png'
+import theVectorAnatomy from '../../assets/lesson/WPH11/2.2/the-vector-anatomy.png'
+import darkTheVectorAnatomy from '../../assets/lesson/WPH11/2.2/dark-the-vector-anatomy.png'
+import theAngledLaunchResolution from '../../assets/lesson/WPH11/2.3/the-angled-launch-resolution.png'
+import DarktheAngledLaunchResolution from '../../assets/lesson/WPH11/2.3/dark-the-angled-launch-resolution.png'
+import theHorizontalLaunchProfile from '../../assets/lesson/WPH11/2.3/the-horizontal-launch-profile.png'
+import DarktheHorizontalLaunchProfile from '../../assets/lesson/WPH11/2.3/dark-the-horizontal-launch-profile.png'
+import theTwoColumnBlueprint from '../../assets/lesson/WPH11/2.3/the-two-column-blueprint.png'
+import theParticleModelSimplication from '../../assets/lesson/WPH11/3.1/the-particle-model-simplification.png'
+import darkTheParticleModelSimplication from '../../assets/lesson/WPH11/3.1/dark-the-particle-model-simplification.png'
+import theCoordinateSystemSwitch from '../../assets/lesson/WPH11/3.1/the-coordinate-system-switch.png'
+import darkTheCoordinateSystemSwitch from '../../assets/lesson/WPH11/3.1/dark-the-coordinate-system-switch.png'
+import theEquilibriumStates from '../../assets/lesson/WPH11/3.2/the-equilibrium-states.png'
+import darkTheEquilibriumStates from '../../assets/lesson/WPH11/3.2/dark-the-equilibrium-states.png'
+import theMassEffect from '../../assets/lesson/WPH11/3.2/the-mass-effect.png'
+import darkTheMassEffect from '../../assets/lesson/WPH11/3.2/dark-the-mass-effect.png'
+import massVsWeight from '../../assets/lesson/WPH11/3.3/mass-vs-weight.png'
+import theDragVectorGrowth from '../../assets/lesson/WPH11/3.3/the-drag-vector-growth.png'
+import darkTheDragVectorGrowth from '../../assets/lesson/WPH11/3.3/dark-the-drag-vector-growth.png'
+import theTerminalVelocityGraph from '../../assets/lesson/WPH11/3.3/the-terminal-velocity-graph.png'
+import darkTheTerminalVelocityGraph from '../../assets/lesson/WPH11/3.3/dark-the-terminal-velocity-graph.png'
 
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
@@ -57,6 +62,12 @@ export const ImageRender = ({ darkMode, imageToDisplay }) => {
     theEquilibriumStates: darkMode ? (<img src={darkTheEquilibriumStates} alt='Dark The Equilibrium States' className='w-150 not-md:w-100 object-contain' />) : (<img src={theEquilibriumStates} alt='The Equilibrium States' className='w-150 not-md:w-100 object-contain' />),
 
     theMassEffect: darkMode ? (<img src={darkTheMassEffect} alt='Dark The Mass Effect' className='w-150 not-md:w-100 object-contain' />) : (<img src={theMassEffect} alt='The Mass Effect' className='w-150 not-md:w-100 object-contain' />),
+
+    massVsWeight: (<img src={massVsWeight} alt='Mass Vs Weight' className='w-150 not-md:w-100 object-contain' />),
+
+    theDragVectorGrowth: darkMode ? (<img src={darkTheDragVectorGrowth} alt='Dark The Drag Vector Growth' className='w-150 not-md:w-100 object-contain' />) : (<img src={theDragVectorGrowth} alt='The Drag Vector Growth' className='w-150 not-md:w-100 object-contain' />),
+
+    theTerminalVelocityGraph: darkMode ? (<img src={darkTheTerminalVelocityGraph} alt='Dark The Terminal Velocity Graph' className='w-150 not-md:w-100 object-contain' />) : (<img src={theTerminalVelocityGraph} alt='The Terminal Velocity Graph' className='w-150 not-md:w-100 object-contain' />),
   }
 
 

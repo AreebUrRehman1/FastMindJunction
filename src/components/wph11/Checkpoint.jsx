@@ -3,7 +3,7 @@ import {CheckCircle, Lock, AlertCircle } from 'lucide-react';
 
 // --- CHECKPOINT COMPONENT ---
 // This acts as the "Gatekeeper" between sections
-export const Checkpoint = ({ darkMode, quiz, onUnlock, titleFinished, nextSectionTitle, isLast }) => {
+export const Checkpoint = ({ darkMode, quiz, onUnlock, titleFinished, navigate, nextSectionTitle, isLast }) => {
   const [selected, setSelected] = useState(null);
   const [status, setStatus] = useState('idle'); // idle, error, success
 
@@ -21,6 +21,9 @@ export const Checkpoint = ({ darkMode, quiz, onUnlock, titleFinished, nextSectio
     }
   };
 
+  const componentName = localStorage.getItem('component');
+
+
   if (isLast) return (
     <div className={`p-8 rounded-2xl text-center border-2 border-dashed ${darkMode ? 'border-green-500/30 bg-green-500/10' : 'border-green-200 bg-green-100'}`}>
       <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500 text-white mb-4 shadow-lg shadow-green-500/30">
@@ -28,6 +31,7 @@ export const Checkpoint = ({ darkMode, quiz, onUnlock, titleFinished, nextSectio
       </div>
       <h3 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Lesson Complete!</h3>
       <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>You've mastered {titleFinished}.</p>
+      <button className="border solid px-2 py-1 rounded-2xl mt-3 animate-pulse cursor-pointer" onClick={() => {navigate(`/learn/${componentName}`)}}>Return</button>
     </div>
   );
 

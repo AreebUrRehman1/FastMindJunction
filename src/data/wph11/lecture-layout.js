@@ -36,6 +36,10 @@ export function lectureLayout(lessonId) {
     "newton'sFirst&SecondLaws": {
       layout: 3,
       sectionIds: ['goldenRule', 'equations', 'strategy']
+    },
+    "gravity&TerminalVelocity": {
+      layout: 3,
+      sectionIds: ['goldenRule', 'variables', 'strategyWithImportantNote']
     }
 
   }

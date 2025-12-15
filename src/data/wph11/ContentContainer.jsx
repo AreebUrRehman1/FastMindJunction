@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowDown, BookOpen, Activity, Zap, Layers, AlertTriangle, Calculator, ListChecks, TrendingUp, GitCommit, MonitorPlay, AreaChart, CornerUpLeft, PlusCircle, Ruler, Split, LayoutList, Target, Box, Move, Maximize2, Scale } from 'lucide-react';
+import * as icons from 'lucide-react';
 import { DisplacementVelocityAndAcceleration, DisplacementVelocityAndAcceleration2, DisplacementVelocityAndAcceleration3 } from './AnimationStorage';
 import { TheSUVATEquations } from './AnimationStorage';
 import { GraphsOfMotion } from './AnimationStorage';
@@ -23,7 +23,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "variables",
           title: "Part 1: Scalars vs. Vectors",
-          icon: <Activity className="w-6 h-6" />,
+          icon: <icons.Activity className="w-6 h-6" />,
           text: "Everything we measure in mechanics falls into two teams: Scalars and Vectors.",
           points: [
             {
@@ -50,7 +50,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "goldenRule",
           title: "Part 2: Distance vs. Displacement",
-          icon: <BookOpen className="w-6 h-6" />,
+          icon: <icons.BookOpen className="w-6 h-6" />,
           text: "This is the most common trap for beginners.",
           comparison: [
             { label: "Distance (Scalar)", desc: "The total ground you covered. If you walk in a circle, your distance is the length of your path." },
@@ -70,7 +70,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equations",
           title: "Part 3: Speed vs. Velocity",
-          icon: <Zap className="w-6 h-6" />,
+          icon: <icons.Zap className="w-6 h-6" />,
           text: "Just like distance and displacement, these two are twins with a major difference.",
           equations: [
             { name: "", type: "Scalar", formula: "Speed = Distance / Time" },
@@ -88,7 +88,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "conceptBreakdown",
           title: "Part 4: Acceleration",
-          icon: <ArrowRight className="w-6 h-6" />,
+          icon: <icons.ArrowRight className="w-6 h-6" />,
           text: "Acceleration is not just 'speeding up.' In Physics, acceleration is a vector defined as the rate of change of velocity.",
           formulaHighlight: (
             <>
@@ -115,7 +115,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "variables",
           title: "Part 1: Decoding SUVAT",
-          icon: <Layers className="w-6 h-6" />,
+          icon: <icons.Layers className="w-6 h-6" />,
           text: "These equations are named after the five variables they connect. You must be able to identify these from word problems.",
           points: [
             {
@@ -152,7 +152,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "goldenRule",
           title: "Part 2: The Golden Rule",
-          icon: <AlertTriangle className="w-6 h-6" />,
+          icon: <icons.AlertTriangle className="w-6 h-6" />,
           text: "These equations are magical, but they are fragile. They only work under one specific condition.",
           comparison: [
             { label: "Constant Acceleration", desc: "Gravity pulling a falling ball, or a car braking steadily on a flat road. SUVAT WORKS here." },
@@ -168,7 +168,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equations",
           title: "Part 3: The 4 Equations",
-          icon: <Calculator className="w-6 h-6" />,
+          icon: <icons.Calculator className="w-6 h-6" />,
           text: "Here represents the mathematical relationship between the 5 variables. Note that each equation leaves out exactly one variable.",
           equations: [
             { name: "Missing 's'", type: "No Displacement", formula: "v = u + at" },
@@ -185,7 +185,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 4: How to Solve Problems",
-          icon: <ListChecks className="w-6 h-6" />,
+          icon: <icons.ListChecks className="w-6 h-6" />,
           text: "Don't panic when you see a word problem. Just follow this algorithm.",
           conditions: [
             "Write down 'S U V A T' vertically on your paper.",
@@ -206,7 +206,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "variables",
           title: "Part 1: The Three Storytellers",
-          icon: <Activity className="w-6 h-6" />,
+          icon: <icons.Activity className="w-6 h-6" />,
           text: "In Physics, the same motion looks completely different depending on which graph you use. Always check the Y-axis first.",
           points: [
             {
@@ -233,7 +233,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "goldenRule",
           title: "Part 2: The Shape Dictionary",
-          icon: <GitCommit className="w-6 h-6" />,
+          icon: <icons.GitCommit className="w-6 h-6" />,
           text: "Memorize how these three basic shapes translate into motion.",
           comparison: [
             { label: "Horizontal Line (-)", desc: "Means 'Constant'. On s-t: Stopped ┇ On v-t: Constant Velocity." },
@@ -250,7 +250,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 3: Real World Translation",
-          icon: <TrendingUp className="w-6 h-6" />,
+          icon: <icons.TrendingUp className="w-6 h-6" />,
           text: "Let's translate real-world scenarios into graph shapes.",
           conditions: [
             "Scenario A: Red Light (Stopped) → s-t is Flat ┇ v-t is Zero.",
@@ -266,7 +266,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "animation_cue",
           title: "Part 4: Visualizing the Link",
-          icon: <MonitorPlay className="w-6 h-6" />,
+          icon: <icons.MonitorPlay className="w-6 h-6" />,
           text: "To truly understand this, we need to see the object move and the graph draw itself simultaneously.",
           animationCue: (<GraphsOfMotion darkMode={darkMode} mobile={mobile} />),
           quiz: {
@@ -286,7 +286,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "goldenRule",
           title: "Part 1: The Slope is the Rate",
-          icon: <TrendingUp className="w-6 h-6" />,
+          icon: <icons.TrendingUp className="w-6 h-6" />,
           text: "The Gradient (Slope) of a line represents the 'Rate of Change'. It tells you how fast the Y-variable is changing compared to the X-variable.",
           comparison: [
             { label: "Slope of s-t Graph", desc: "Calculates Velocity (v). (Change in Position / Time)" },
@@ -302,7 +302,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equations",
           title: "Part 2: The Area is the Accumulator",
-          icon: <AreaChart className="w-6 h-6" />,
+          icon: <icons.AreaChart className="w-6 h-6" />,
           text: "The area trapped between the line and the x-axis represents the 'product' of the axes (Y multiplied by X).",
           equations: [
             { name: "Area under v-t Graph", type: "Equals", formula: "Displacement (s)" },
@@ -318,7 +318,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 3: Advanced - The Curve Decoder",
-          icon: <Zap className="w-6 h-6" />,
+          icon: <icons.Zap className="w-6 h-6" />,
           text: "What if the line is curved? A curve means the slope (velocity or acceleration) is changing every instant. You cannot use 'Rise over Run' directly.",
           conditions: [
             "To find the Instantaneous Rate at a specific time 't':",
@@ -341,7 +341,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "goldenRule",
           title: "Part 1: The Art of Resolving (Breaking Down)",
-          icon: <CornerUpLeft className="w-6 h-6" />,
+          icon: <icons.CornerUpLeft className="w-6 h-6" />,
           text: "Resolving a vector means breaking it into two perpendicular components (usually horizontal and vertical). We do this because the motion in the x-direction is independent of the motion in the y-direction.",
           comparison: [
             {
@@ -364,7 +364,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equations",
           title: "Part 2: Finding the Resultant (Adding Up)",
-          icon: <PlusCircle className="w-6 h-6" />,
+          icon: <icons.PlusCircle className="w-6 h-6" />,
           text: "The resultant vector is the single vector that replaces all other vectors. This is the net effect of multiple forces or displacements acting on an object.",
           equations: [
             {
@@ -388,7 +388,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 3: Calculation vs. Drawing",
-          icon: <Ruler className="w-6 h-6" />,
+          icon: <icons.Ruler className="w-6 h-6" />,
           text: "The syllabus requires you to be able to find the resultant and components using both methods, especially when vectors are NOT at 90 degrees to each other.",
           conditions: [
             "Calculation: Used for accuracy, especially when vectors are perpendicular (using Pythagoras/SOH CAH TOA).",
@@ -407,7 +407,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "goldenRule",
           title: "Part 1: The Golden Rule of Independence",
-          icon: <Split className="w-6 h-6" />,
+          icon: <icons.Split className="w-6 h-6" />,
           text: "The horizontal motion and vertical motion are completely independent. They don't talk to each other. They don't affect each other. The only thing they share is TIME.",
           comparison: [
             {
@@ -429,7 +429,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equations",
           title: "Part 2: Horizontal Motion (The Easy Part)",
-          icon: <ArrowRight className="w-6 h-6" />,
+          icon: <icons.ArrowRight className="w-6 h-6" />,
           text: "Since there is no air resistance (in our ideal physics world) and gravity acts downwards, there is nothing to speed up or slow down the object horizontally.",
           equations: [
             {
@@ -458,7 +458,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 3: Vertical Motion (The SUVAT Part)",
-          icon: <ArrowDown className="w-6 h-6" />,
+          icon: <icons.ArrowDown className="w-6 h-6" />,
           text: "Vertically, the object is just in free fall. It starts with some initial vertical velocity (which might be zero!) and accelerates downwards due to gravity.",
           conditions: [
             "Acceleration (aᵧ) = 9.81 m/s² (Downwards).",
@@ -478,7 +478,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "goldenRule",
           title: "Part 1: The Two-Column Method",
-          icon: <LayoutList className="w-6 h-6" />,
+          icon: <icons.LayoutList className="w-6 h-6" />,
           text: "Never try to do everything in your head. Start every single problem by drawing a table with two columns. This prevents you from accidentally using a vertical acceleration for a horizontal distance.",
           comparison: [
             {
@@ -500,7 +500,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 2: Scenario A - The Horizontal Launch",
-          icon: <ArrowRight className="w-6 h-6" />,
+          icon: <icons.ArrowRight className="w-6 h-6" />,
           text: "This is when an object rolls off a table or is fired flat from a cliff. It is the simpler version because the initial vertical velocity is zero.",
           conditions: [
             "Vertical Initial Velocity (uᵧ) = 0 m/s (Key Concept!).",
@@ -517,7 +517,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equations",
           title: "Part 3: Scenario B - The Angled Launch",
-          icon: <Target className="w-6 h-6" />,
+          icon: <icons.Target className="w-6 h-6" />,
           text: "This is the 'classic' projectile, like kicking a football. You must resolve the initial velocity vector first before you can do anything else.",
           equations: [
             {
@@ -546,7 +546,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 4: The Strategy Guide",
-          icon: <Calculator className="w-6 h-6" />,
+          icon: <icons.Calculator className="w-6 h-6" />,
           text: "When facing a tough exam question, don't panic. Just follow this algorithm.",
           conditions: [
             "1. Resolve Initial Velocity into Uₓ (cos) and Uᵧ (sin).",
@@ -567,7 +567,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "goldenRule",
           title: "Part 1: The Particle Model",
-          icon: <Box className="w-6 h-6" />,
+          icon: <icons.Box className="w-6 h-6" />,
           text: "Real objects are complex shapes (cars, planes, people). In Physics, we simplify them into a single dot called a 'Particle'. We assume all mass is concentrated at this one point.",
           comparison: [
             {
@@ -589,7 +589,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "variables",
           title: "Part 2: The Force Checklist",
-          icon: <ArrowDown className="w-6 h-6" />,
+          icon: <icons.ArrowDown className="w-6 h-6" />,
           text: "Don't guess. Go through this checklist to ensure you haven't missed anything.",
           points: [
             {
@@ -622,7 +622,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 3: The Coordinate System (Signs)",
-          icon: <Move className="w-6 h-6" />,
+          icon: <icons.Move className="w-6 h-6" />,
           text: "This is the most critical step. Forces are vectors, so Direction = Sign. You must choose which way is 'Positive'.",
           conditions: [
             "Standard Convention: Up is (+), Down is (-). Right is (+), Left is (-).",
@@ -639,7 +639,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equationsWithGoldenRule",
           title: "Part 4: The Resultant (Net Force)",
-          icon: <Maximize2 className="w-6 h-6" />,
+          icon: <icons.Maximize2 className="w-6 h-6" />,
           text: "The 'Net Force' (ΣF) is the vector sum of all forces. This is what actually causes acceleration.",
           equations: [
             {
@@ -666,7 +666,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         {
           id: "goldenRule",
           title: "Part 1: Newton's First Law (Inertia)",
-          icon: <Scale className="w-6 h-6" />,
+          icon: <icons.Scale className="w-6 h-6" />,
           text: "Objects are lazy. They want to keep doing exactly what they are already doing. If you leave them alone (Balanced Forces), they won't change.",
           comparison: [
             {
@@ -688,7 +688,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "equations",
           title: "Part 2: Newton's Second Law (Acceleration)",
-          icon: <Zap className="w-6 h-6" />,
+          icon: <icons.Zap className="w-6 h-6" />,
           text: "What happens when forces are NOT balanced? The object changes its speed or direction. This 'change' is what we call Acceleration.",
           equations: [
             {
@@ -713,7 +713,7 @@ export function contentContainer(darkMode, lessonId, mobile) {
         }, {
           id: "strategy",
           title: "Part 3: Solving Dynamics Problems",
-          icon: <Activity className="w-6 h-6" />,
+          icon: <icons.Activity className="w-6 h-6" />,
           text: "Don't panic when you see a complex diagram. Just follow the 'F=ma' recipe.",
           conditions: [
             "1. Draw the Free Body Diagram (FBD).",
@@ -724,7 +724,73 @@ export function contentContainer(darkMode, lessonId, mobile) {
           ]
         }
       ]
-    }
+    },
+    "gravity&TerminalVelocity": {
+    module: "Module 3.3 • Dynamics",
+    title: "3.3 Gravity & Terminal Velocity",
+    subtitle: "The Battle Between Weight and Air",
+    intro: "Why doesn't a raindrop hit you like a bullet? In a vacuum, objects accelerate forever. In the real world, the air fights back. This lesson explains the journey of a falling object from the moment it drops until it hits its maximum possible speed.",
+    sections: [
+      {
+        id: "goldenRule",
+        title: "Part 1: Weight (The Engine)",
+        icon: <icons.ArrowDown className="w-6 h-6" />,
+        text: "Weight is the force of gravity acting on an object's mass. Unlike mass (which is constant), weight depends on where you are (e.g., Earth vs. Moon).",
+        comparison: [
+          { 
+            label: "Mass (m)", 
+            desc: "The amount of 'stuff' in an object. Measured in kg. Constant everywhere." 
+          },
+          { 
+            label: "Weight (W)", 
+            desc: "The force of gravity pulling that mass. Measured in Newtons (N). W = mg." 
+          }
+        ],
+        goldenRule: "On Earth, g ≈ 9.81 m/s². This means a 1kg bag of sugar weighs 9.81 Newtons.",
+        imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"massVsWeight"} />,
+        quiz: {
+          question: "If you take a 10kg object to deep space where g = 0, what happens?",
+          options: ["Mass becomes zero", "Weight becomes zero", "Both become zero"],
+          correctIndex: 1
+        }
+      }, {
+        id: "variables",
+        title: "Part 2: Drag (The Brake)",
+        icon: <icons.Wind className="w-6 h-6" />,
+        text: "As an object speeds up, it smashes into more air molecules every second. This creates a resistive force called Drag (or Air Resistance).",
+        points: [
+          {
+            type: "Velocity Dependence",
+            def: "Drag increases as speed increases. Faster = More Drag.",
+            examples: "Sticking your hand out of a car window."
+          },
+          {
+            type: "Area Dependence",
+            def: "Drag increases with surface area. Bigger = More Drag.",
+            examples: "A parachute vs. a stone."
+          }
+        ],
+        imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theDragVectorGrowth"} />,
+        quiz: {
+          question: "At the exact moment an object is dropped (t = 0), how big is the drag force?",
+          options: ["Equal to Weight", "Maximum", "Zero"],
+          correctIndex: 2
+        }
+      }, {
+        id: "strategyWithImportantNote",
+        title: "Part 3: Reaching Terminal Velocity",
+        icon: <icons.Anchor className="w-6 h-6" />,
+        text: "This is the story of a fall. It happens in three distinct stages.",
+        conditions: [
+          "Stage 1 (Start): Speed is low. Drag is zero. Resultant Force = Weight. Acceleration = 9.81 m/s².",
+          "Stage 2 (Acceleration): Speed rises. Drag rises. Resultant Force (W - D) gets smaller. Acceleration decreases.",
+          "Stage 3 (Terminal Velocity): Drag becomes EQUAL to Weight. Resultant Force = 0. Acceleration = 0. Speed is constant."
+        ],
+        goldenRule: "Terminal Velocity isn't a 'stop'. It's the maximum constant speed where Weight and Drag are perfectly balanced.",
+        imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theTerminalVelocityGraph"} />,
+      }
+    ]
+  }
   }
 
   return LessonContent[lessonId];

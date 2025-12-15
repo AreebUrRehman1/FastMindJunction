@@ -5,16 +5,24 @@ export function Templates({ section, darkMode }) {
   switch (templateId) {
     case 'variables':
       return (
-        <div className="grid md:grid-cols-2 gap-4">
-          {section.points.map((pt, i) => (
-            <div key={i} className={`p-5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{pt.type}</h3>
-              <p className="mb-3 text-sm opacity-90">{pt.def}</p>
-              <div className="text-xs font-mono uppercase tracking-wide opacity-60">Examples:</div>
-              <div className="font-medium text-sm">{pt.examples}</div>
+        <>
+          <div className="grid md:grid-cols-2 gap-4">
+            {section.points.map((pt, i) => (
+              <div key={i} className={`p-5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{pt.type}</h3>
+                <p className="mb-3 text-sm opacity-90">{pt.def}</p>
+                <div className="text-xs font-mono uppercase tracking-wide opacity-60">Examples:</div>
+                <div className="font-medium text-sm">{pt.examples}</div>
+              </div>
+            ))}
+          </div>
+          {/* Image Placeholder */}
+          {section.imageTag && (
+            <div className="flex justify-center mt-4 text-center text-sm italic">
+              {section.imageTag}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       );
 
     case 'goldenRule':
@@ -133,6 +141,32 @@ export function Templates({ section, darkMode }) {
               {section.imageTag}
             </div>
           )}
+        </div>
+      );
+
+    case 'strategyWithImportantNote':
+      return (
+        <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+          <ul className="space-y-4">
+            {section.conditions.map((cond, i) => (
+              <li key={i} className="flex items-center gap-x-3 py-1">
+                <div className={` w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-xs font-bold ${darkMode ? 'bg-indigo-500 text-white' : 'bg-indigo-600 text-white'}`}>
+                  {i + 1}
+                </div>
+                <span>{cond}</span>
+              </li>
+            ))}
+          </ul>
+          {/* Image Placeholder */}
+          {section.imageTag && (
+            <div className="flex justify-center mt-4 text-center text-sm italic">
+              {section.imageTag}
+            </div>
+          )}
+          <div className={`mt-4 p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
+            <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Important Note</strong>
+            {section.goldenRule}
+          </div>
         </div>
       );
 

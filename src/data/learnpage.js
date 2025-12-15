@@ -6,7 +6,7 @@ export const unitDetailsContainer = [
     Name: "Module 2: Vectors & Projectiles",
     key: "UDC2"
   }, {
-    Name: "Unit 3 - Moments",
+    Name: "Module 3.1: Dynamics",
     key: "UDC3"
   }, {
     Name: "Unit 4 - Work, Energy & Power",
@@ -83,14 +83,20 @@ export const topicDetailsContainer = {
       ToolTipColor: "bg-[#d3a007]",
       Lecture: "freeBodyDiagrams",
       key: "TDC15"
-    },
-    {
+    }, {
       Name: "Newton's First & Second Laws",
       Circle: "bg-[#FFC107] shadow-[0px_9px_1px_#eab207] hover:bg-[#fcc92f] hover:shadow-[0px_9px_1px_#d3a007] ml-[50px]",
       ToolTipColor: "bg-[#d3a007]",
       Lecture: "newton'sFirst&SecondLaws",
       key: "TDC16"
+    }, {
+      Name: "Gravity & Terminal Velocity",
+      Circle: "bg-[#FFC107] shadow-[0px_9px_1px_#eab207] hover:bg-[#fcc92f] hover:shadow-[0px_9px_1px_#d3a007] ml-[85px]",
+      ToolTipColor: "bg-[#d3a007]",
+      Lecture: "gravity&TerminalVelocity",
+      key: "TDC17N"
     }
+
   ],
 
   Unit4: [

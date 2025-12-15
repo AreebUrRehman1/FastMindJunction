@@ -1,255 +1,262 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Play, RotateCcw, Pause } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { ArrowDown, Wind, TrendingUp, Anchor, ArrowLeft } from 'lucide-react';
+import { Checkpoint } from './Checkpoint'; 
 
-export const DesignTesting = () => {
-  // --- State Configuration ---
-  const [force, setForce] = useState(50); // Newtons (10-100)
-  const [mass, setMass] = useState(5);    // kg (1-10)
-  const [isRunning, setIsRunning] = useState(false);
+export function DesignTesting({ darkMode }) {
+  // --- STATE ---
+  const [unlockedIndex, setUnlockedIndex] = useState(0); 
+  const sectionRefs = useRef([]); 
+  const navigate = useNavigate();
 
-  // Physics State (kept in refs for smooth animation loop without re-renders)
-  const physicsState = useRef({
-    position: 0, // pixels
-    velocity: 0, // pixels per frame
-    lastTime: 0
-  });
-
-  // We need a state to force re-render the position for the UI to update
-  const [positionX, setPositionX] = useState(0);
-
-  // Constants
-  const PIXELS_PER_METER = 20; // Scale: 20px = 1 meter
-  const RINK_LENGTH = 800;     // Total length of the track in pixels
-
-  // Derived Values
-  const acceleration = (force / mass).toFixed(2); // a = F/m
-
-  // --- The Physics Engine ---
+  // Scroll to new section when unlocked
   useEffect(() => {
-    let animationFrameId;
+    if (unlockedIndex > 0 && sectionRefs.current[unlockedIndex]) {
+      setTimeout(() => {
+        sectionRefs.current[unlockedIndex].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 100);
+    }
+  }, [unlockedIndex]);
 
-    const loop = (time) => {
-      if (!isRunning) return;
-
-      const state = physicsState.current;
-
-      // Calculate Delta Time (in seconds) roughly
-      // For simplicity in this demo, we treat each frame as a fixed time step
-      // to avoid complex dt calculations that might jitter on some screens.
-      const dt = 0.016; // approx 60fps (16ms)
-
-      // Physics Formulas:
-      // a = F / m
-      // v_new = v_old + (a * dt)
-      // x_new = x_old + (v * dt)
-
-      const currentAccel = force / mass;
-
-      // Update Velocity (scaling up accel for visual effect)
-      // Multiplier 50 is just to make the movement visible on screen size
-      state.velocity += currentAccel * dt * 50;
-
-      // Update Position
-      state.position += state.velocity * dt;
-
-      // Wall Collision Check
-      if (state.position >= RINK_LENGTH - 50) { // -50 accounts for puck width roughly
-        state.position = RINK_LENGTH - 50;
-        state.velocity = 0;
-        setIsRunning(false); // Stop simulation
+  // --- CONTENT DATA (Module 3.3) ---
+  const content = {
+    module: "Module 3.3 • Dynamics",
+    title: "3.3 Gravity & Terminal Velocity",
+    subtitle: "The Battle Between Weight and Air",
+    intro: "Why doesn't a raindrop hit you like a bullet? In a vacuum, objects accelerate forever. In the real world, the air fights back. This lesson explains the journey of a falling object from the moment it drops until it hits its maximum possible speed.",
+    sections: [
+      {
+        id: "gravity_only",
+        title: "Part 1: Weight (The Engine)",
+        icon: <ArrowDown className="w-6 h-6" />,
+        text: "Weight is the force of gravity acting on an object's mass. Unlike mass (which is constant), weight depends on where you are (e.g., Earth vs. Moon).",
+        comparison: [
+          { 
+            label: "Mass (m)", 
+            desc: "The amount of 'stuff' in an object. Measured in kg. Constant everywhere." 
+          },
+          { 
+            label: "Weight (W)", 
+            desc: "The force of gravity pulling that mass. Measured in Newtons (N). W = mg." 
+          }
+        ],
+        goldenRule: "On Earth, g ≈ 9.81 m/s². This means a 1kg bag of sugar weighs 9.81 Newtons.",
+        // Static Image Placeholder
+        imageTag: (
+          <div className="mt-4 text-center text-sm opacity-60 italic">
+            [Image comparing a rock on Earth vs Moon: Same Mass, Different Weight vectors]
+            <br/>Mass is invariant; Weight changes with gravity.
+          </div>
+        ),
+        quiz: {
+          question: "If you take a 10kg object to deep space where g=0, what happens?",
+          options: ["Mass becomes zero", "Weight becomes zero", "Both become zero"],
+          correctIndex: 1
+        }
+      },
+      {
+        id: "drag_force",
+        title: "Part 2: Drag (The Brake)",
+        icon: <Wind className="w-6 h-6" />,
+        text: "As an object speeds up, it smashes into more air molecules every second. This creates a resistive force called Drag (or Air Resistance).",
+        points: [
+          {
+            type: "Velocity Dependence",
+            def: "Drag increases as speed increases. Faster = More Drag.",
+            examples: "Sticking your hand out of a car window."
+          },
+          {
+            type: "Area Dependence",
+            def: "Drag increases with surface area. Bigger = More Drag.",
+            examples: "A parachute vs. a stone."
+          }
+        ],
+        // Static Image Placeholder
+        imageTag: (
+          <div className="mt-4 text-center text-sm opacity-60 italic">
+            [Image showing drag force vector growing as velocity vector grows]
+          </div>
+        ),
+        quiz: {
+          question: "At the exact moment an object is dropped (t=0), how big is the drag force?",
+          options: ["Equal to Weight", "Maximum", "Zero"],
+          correctIndex: 2
+        }
+      },
+      {
+        id: "terminal_velocity",
+        title: "Part 3: Reaching Terminal Velocity",
+        icon: <Anchor className="w-6 h-6" />,
+        text: "This is the story of a fall. It happens in three distinct stages.",
+        conditions: [
+          "Stage 1 (Start): Speed is low. Drag is zero. Resultant Force = Weight. Acceleration = 9.81 m/s².",
+          "Stage 2 (Acceleration): Speed rises. Drag rises. Resultant Force (W - D) gets smaller. Acceleration decreases.",
+          "Stage 3 (Terminal Velocity): Drag becomes EQUAL to Weight. Resultant Force = 0. Acceleration = 0. Speed is constant."
+        ],
+        goldenRule: "Terminal Velocity isn't a 'stop'. It's the maximum constant speed where Weight and Drag are perfectly balanced.",
+        // Static Image Placeholder
+        imageTag: (
+          <div className="mt-4 text-center text-sm opacity-60 italic">
+            
+            <br/>The classic 'Terminal Velocity curve'.
+          </div>
+        ),
+        quiz: {
+          question: "A skydiver opens their parachute. What happens immediately?",
+          options: ["Drag increases massively, causing upward acceleration (deceleration)", "Weight decreases", "They stop instantly"],
+          correctIndex: 0
+        }
       }
-
-      // Sync to React State for render
-      setPositionX(state.position);
-
-      animationFrameId = requestAnimationFrame(loop);
-    };
-
-    if (isRunning) {
-      animationFrameId = requestAnimationFrame(loop);
-    }
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [isRunning, force, mass]);
-
-  const handleReset = () => {
-    setIsRunning(false);
-    physicsState.current = { position: 0, velocity: 0, lastTime: 0 };
-    setPositionX(0);
-  };
-
-  const togglePlay = () => {
-    if (positionX >= RINK_LENGTH - 50) {
-      handleReset(); // Auto-reset if at end
-      setTimeout(() => setIsRunning(true), 50);
-    } else {
-      setIsRunning(!isRunning);
-    }
+    ]
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 font-sans p-4">
-
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
-
-        {/* --- Header & Math Display --- */}
-        <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/50">
-          <div>
-            <h2 className="text-xl font-bold text-slate-800">The Newton Slider</h2>
-            <p className="text-sm text-slate-400">Interactive F = ma Lab</p>
-          </div>
-
-          {/* Math Card */}
-          <div className="flex items-center gap-4 bg-white px-6 py-3 rounded-xl shadow-sm border border-slate-200">
-            <div className="text-center">
-              <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Force</div>
-              <div className="text-xl font-bold text-red-500">{force} N</div>
-            </div>
-            <div className="text-2xl text-slate-300">/</div>
-            <div className="text-center">
-              <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Mass</div>
-              <div className="text-xl font-bold text-blue-500">{mass} kg</div>
-            </div>
-            <div className="text-2xl text-slate-300">=</div>
-            <div className="text-center">
-              <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Acceleration</div>
-              <div className="text-xl font-bold text-green-500">{acceleration} m/s²</div>
-            </div>
-          </div>
-        </div>
-
-        {/* --- The Rink (Animation Stage) --- */}
-        <div className="relative w-full h-80 bg-slate-50 overflow-hidden group">
-
-          {/* Grid Lines for reference */}
-          <div className="absolute inset-0"
-            style={{ backgroundImage: 'linear-gradient(to right, #e2e8f0 1px, transparent 1px)', backgroundSize: '100px 100%' }}>
-          </div>
-          <div className="absolute bottom-0 w-full border-b-2 border-slate-300"></div>
-
-          {/* THE PUCK ACTOR */}
-          <div
-            className="absolute bottom-20 transition-transform duration-75 ease-linear will-change-transform"
-            style={{
-              transform: `translateX(${positionX}px)`,
-              // We center the elements relative to the position
-            }}
+    <>
+      <title>{content.title}</title>
+      <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+        <main className="pt-24 pb-20 px-4 sm:px-6">
+          
+          {/* Back Button */}
+          <div 
+            className={`text-blue-600 font-bold rounded-2xl p-2 not-md:mb-6 cursor-pointer ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"} inline-block`} 
+            onClick={() => navigate(-1)}
           >
-            {/* 1. The Puck Body */}
-            {/* Scale changes based on Mass */}
-            <div
-              className="relative rounded-full shadow-2xl border-4 border-slate-700 flex items-center justify-center transition-all duration-300"
-              style={{
-                width: `${40 + (mass * 8)}px`, // Base 40px + 8px per kg
-                height: `${40 + (mass * 8)}px`,
-                backgroundColor: mass > 5 ? '#475569' : '#94a3b8', // Darker (Iron) vs Lighter (Styrofoam)
-              }}
-            >
-              <span className="text-white text-[10px] font-bold opacity-50">m</span>
+            <div className='flex items-center gap-x-3'>
+              <ArrowLeft className='w-7 h-7' />
+              <div>Back</div>
             </div>
-
-            {/* 2. Force Vector (Red) */}
-            {/* Length changes based on Force */}
-            <div className="absolute top-1/2 left-1/2 -translate-y-1/2 z-10 pointer-events-none transition-all duration-300">
-              <div
-                className="h-1 bg-red-500 flex items-center rounded-r-full opacity-80"
-                style={{ width: `${force * 2.5}px` }}
-              >
-                <span className="absolute -top-5 left-2 text-xs font-bold text-red-500">F</span>
-                {/* Arrowhead */}
-                <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-red-500 ml-auto translate-x-1" />
-              </div>
-            </div>
-
-            {/* 3. Acceleration Vector (Green) */}
-            {/* Length changes based on Calculated Acceleration */}
-            <div className="absolute bottom-full left-1/2 mb-2 z-10 pointer-events-none transition-all duration-300">
-              <div
-                className="h-1 bg-green-500 flex items-center rounded-r-full shadow-[0_0_10px_rgba(34,197,94,0.4)]"
-                style={{ width: `${(force / mass) * 10}px` }}
-              >
-                <span className="absolute -top-5 left-2 text-xs font-bold text-green-500">a</span>
-                {/* Arrowhead */}
-                <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-green-500 ml-auto translate-x-1" />
-              </div>
-            </div>
-
           </div>
-        </div>
 
-        {/* --- Controls Section --- */}
-        <div className="p-8 bg-white border-t border-slate-200">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+          <div className="max-w-3xl mx-auto space-y-12">
 
-            {/* Force Slider */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-end">
-                <label className="font-bold text-slate-700 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div> Push Force
-                </label>
-                <span className="text-sm font-mono bg-slate-100 px-2 py-1 rounded text-slate-600">{force} N</span>
-              </div>
-              <input
-                type="range"
-                min="10"
-                max="100"
-                step="5"
-                value={force}
-                onChange={(e) => setForce(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-red-500"
-              />
-              <p className="text-xs text-slate-400">Controls the red vector length.</p>
-            </div>
+            {/* Header Section */}
+            <header className="text-center space-y-4 animate-fade-in-up">
+              <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase ${darkMode ? 'bg-indigo-900/50 text-indigo-300' : 'bg-indigo-100 text-indigo-700'}`}>
+                {content.module}
+              </span>
+              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+                {content.title}
+              </h1>
+              <p className={`text-xl ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                {content.subtitle}
+              </p>
+            </header>
 
-            {/* Mass Slider */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-end">
-                <label className="font-bold text-slate-700 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-slate-500"></div> Object Mass
-                </label>
-                <span className="text-sm font-mono bg-slate-100 px-2 py-1 rounded text-slate-600">{mass} kg</span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="10"
-                step="1"
-                value={mass}
-                onChange={(e) => setMass(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-500"
-              />
-              <p className="text-xs text-slate-400 flex justify-between">
-                <span>Styrofoam (1kg)</span>
-                <span>Iron (10kg)</span>
+            {/* Intro Card */}
+            <div className={`p-6 sm:p-8 rounded-2xl border ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+              <p className="text-lg leading-relaxed">
+                {content.intro}
               </p>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-4 justify-end">
-              <button
-                onClick={handleReset}
-                className="p-4 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors font-bold"
-              >
-                <RotateCcw size={20} />
-              </button>
+            {/* --- SECTIONS LOOP --- */}
+            {content.sections.map((section, idx) => {
+              const isUnlocked = idx <= unlockedIndex;
+              const isCurrent = idx === unlockedIndex;
+              const isLast = idx === content.sections.length - 1;
 
-              <button
-                onClick={togglePlay}
-                className={`flex-1 flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all transform active:scale-95
-                  ${isRunning ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700'}`}
-              >
-                {isRunning ? (
-                  <> <Pause fill="currentColor" /> Pause </>
-                ) : (
-                  <> <Play fill="currentColor" /> GO </>
-                )}
-              </button>
-            </div>
+              if (!isUnlocked) return null;
+
+              return (
+                <section
+                  key={section.id}
+                  ref={el => sectionRefs.current[idx] = el}
+                  className={`space-y-6 transition-opacity duration-700 ${isCurrent ? 'opacity-100' : 'opacity-80'}`}
+                >
+                  {/* Section Header */}
+                  <div className="flex items-center space-x-3 pt-4">
+                    <div className={`p-2 rounded-lg ${darkMode ? 'bg-indigo-500/10 text-indigo-400' : 'bg-indigo-50 text-indigo-600'}`}>
+                      {section.icon}
+                    </div>
+                    <h2 className="text-2xl font-bold">{section.title}</h2>
+                  </div>
+
+                  {/* Main Text */}
+                  <p className={`text-lg ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                    {section.text}
+                  </p>
+
+                  {/* --- LAYOUTS --- */}
+                  
+                  {/* COMPARISON LAYOUT (Weight) */}
+                  {section.id === "gravity_only" && (
+                    <div className="space-y-4">
+                      <div className={`rounded-xl overflow-hidden divide-y ${darkMode ? 'divide-slate-700 border border-slate-700' : 'divide-slate-200 border border-slate-200'}`}>
+                        {section.comparison.map((item) => (
+                          <div key={item.label} className={`p-4 flex flex-col sm:flex-row gap-4 ${darkMode ? 'bg-slate-800/30' : 'bg-white'}`}>
+                            <span className="font-bold sm:w-1/3 shrink-0">{item.label}</span>
+                            <span className={`sm:w-2/3 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>{item.desc}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className={`p-4 rounded-l-md border-l-4 ${darkMode ? 'bg-amber-900/20 border-amber-500 text-amber-200' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
+                        <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Golden Rule</strong>
+                        {section.goldenRule}
+                      </div>
+                      {section.imageTag}
+                    </div>
+                  )}
+
+                  {/* GRID LAYOUT (Drag) */}
+                  {section.id === "drag_force" && (
+                    <div className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {section.points.map((pt) => (
+                          <div key={pt.type} className={`p-5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                            <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{pt.type}</h3>
+                            <p className="mb-3 text-sm opacity-90">{pt.def}</p>
+                            <div className="text-xs font-mono uppercase tracking-wide opacity-60">Example:</div>
+                            <div className="font-medium text-sm">{pt.examples}</div>
+                          </div>
+                        ))}
+                      </div>
+                      {section.imageTag}
+                    </div>
+                  )}
+
+                  {/* LIST/STEPS LAYOUT (Terminal Velocity) */}
+                  {section.id === "terminal_velocity" && (
+                    <div className={`p-6 rounded-xl border ${darkMode ? 'bg-slate-800/30 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+                      <ul className="space-y-4">
+                        {section.conditions.map((cond, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <div className={`mt-1.5 w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-xs font-bold ${darkMode ? 'bg-indigo-500 text-white' : 'bg-indigo-600 text-white'}`}>
+                              {i + 1}
+                            </div>
+                            <span>{cond}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className={`mt-4 p-4 rounded-lg text-sm ${darkMode ? 'bg-indigo-900/30 text-indigo-200' : 'bg-indigo-50 text-indigo-800'}`}>
+                        <strong className="block uppercase text-xs font-bold tracking-wider mb-1 opacity-70">Important Note</strong>
+                        {section.goldenRule}
+                      </div>
+                      {section.imageTag}
+                    </div>
+                  )}
+
+                  {/* Checkpoint */}
+                  {isCurrent && (
+                    <div className="mt-12 mb-20 animate-fade-in-up">
+                      <Checkpoint
+                        darkMode={darkMode}
+                        quiz={section.quiz}
+                        isLast={isLast}
+                        nextSectionTitle={!isLast ? content.sections[idx + 1].title : 'Finish'}
+                        onUnlock={() => setUnlockedIndex(prev => prev + 1)}
+                      />
+                    </div>
+                  )}
+                </section>
+              );
+            })}
 
           </div>
-        </div>
-
+        </main>
       </div>
-    </div>
+    </>
   );
-};
+}

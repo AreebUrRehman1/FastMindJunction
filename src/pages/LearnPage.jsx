@@ -13,6 +13,8 @@ export function LearnPage({ darkModeControl, darkMode }) {
   const [activeTopicKey, setActiveTopicKey] = useState(null);
   const { learnId } = useParams();
 
+  localStorage.setItem('component', learnId)
+
   const small = useMediaQuery('(max-width: 600px)');
   const medium = useMediaQuery('(min-width: 601px) and (max-width: 900px)');
   const tooltipRef = useRef(null);
