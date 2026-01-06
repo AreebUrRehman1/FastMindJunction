@@ -1,75 +1,82 @@
-import displacementVsVelocityTimeGraph from '../../assets/lesson/WPH11/1.3/displacement-vs-velocity-time-graph.png'
-import darkdisplacementVsVelocityTimeGraph from '../../assets/lesson/WPH11/1.3/dark-displacement-vs-velocity-time-graph.png'
-import theGradientTriangle from '../../assets/lesson/WPH11/1.4/the-gradient-triangle.png'
-import darkTheGradientTriangle from '../../assets/lesson/WPH11/1.4/dark-the-gradient-triangle.png'
-import theAreaSplit from '../../assets/lesson/WPH11/1.4/the-area-split.png'
-import darkTheAreaSplit from '../../assets/lesson/WPH11/1.4/dark-the-area-split.png'
-import theTangentTechnique from '../../assets/lesson/WPH11/1.4/the-tangent-technique.png'
-import darkTheTangentTechnique from '../../assets/lesson/WPH11/1.4/dark-the-tangent-technique.png'
-import theResolutionTriangle from '../../assets/lesson/WPH11/2.1/the-resolution-triangle.png'
-import darkTheResolutionTriangle from '../../assets/lesson/WPH11/2.1/dark-the-resolution-triangle.png'
-import theHeadToTailMethod from '../../assets/lesson/WPH11/2.1/the-head-to-tail-method.png'
-import darkTheHeadToTailMethod from '../../assets/lesson/WPH11/2.1/dark-the-head-to-tail-method.png'
-import theVectorAnatomy from '../../assets/lesson/WPH11/2.2/the-vector-anatomy.png'
-import darkTheVectorAnatomy from '../../assets/lesson/WPH11/2.2/dark-the-vector-anatomy.png'
-import theAngledLaunchResolution from '../../assets/lesson/WPH11/2.3/the-angled-launch-resolution.png'
-import DarktheAngledLaunchResolution from '../../assets/lesson/WPH11/2.3/dark-the-angled-launch-resolution.png'
-import theHorizontalLaunchProfile from '../../assets/lesson/WPH11/2.3/the-horizontal-launch-profile.png'
-import DarktheHorizontalLaunchProfile from '../../assets/lesson/WPH11/2.3/dark-the-horizontal-launch-profile.png'
-import theTwoColumnBlueprint from '../../assets/lesson/WPH11/2.3/the-two-column-blueprint.png'
-import theParticleModelSimplication from '../../assets/lesson/WPH11/3.1/the-particle-model-simplification.png'
-import darkTheParticleModelSimplication from '../../assets/lesson/WPH11/3.1/dark-the-particle-model-simplification.png'
-import theCoordinateSystemSwitch from '../../assets/lesson/WPH11/3.1/the-coordinate-system-switch.png'
-import darkTheCoordinateSystemSwitch from '../../assets/lesson/WPH11/3.1/dark-the-coordinate-system-switch.png'
-import theEquilibriumStates from '../../assets/lesson/WPH11/3.2/the-equilibrium-states.png'
-import darkTheEquilibriumStates from '../../assets/lesson/WPH11/3.2/dark-the-equilibrium-states.png'
-import theMassEffect from '../../assets/lesson/WPH11/3.2/the-mass-effect.png'
-import darkTheMassEffect from '../../assets/lesson/WPH11/3.2/dark-the-mass-effect.png'
-import massVsWeight from '../../assets/lesson/WPH11/3.3/mass-vs-weight.png'
-import theDragVectorGrowth from '../../assets/lesson/WPH11/3.3/the-drag-vector-growth.png'
-import darkTheDragVectorGrowth from '../../assets/lesson/WPH11/3.3/dark-the-drag-vector-growth.png'
-import theTerminalVelocityGraph from '../../assets/lesson/WPH11/3.3/the-terminal-velocity-graph.png'
-import darkTheTerminalVelocityGraph from '../../assets/lesson/WPH11/3.3/dark-the-terminal-velocity-graph.png'
-
+// Helper to convert "theVectorAnatomy" -> "the-vector-anatomy"
+const toKebabCase = (str) => {
+  return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+};
 
 export const ImageRender = ({ darkMode, imageToDisplay }) => {
 
-  const imageRender = {
-    displacementVsVelocityTimeGraph: darkMode ? (<img src={darkdisplacementVsVelocityTimeGraph} alt='Displacement Vs Velocity Time Graph' />) : (<img src={displacementVsVelocityTimeGraph} alt='Dark Displacement Vs Velocity Time Graph' />),
+  // 1. CONFIGURATION: Map every image key to its folder number
+  const imageConfig = {
+    // 1.3
+    displacementVsVelocityTimeGraph: { folder: '1.3' },
+    
+    // 1.4
+    theGradientTriangle: { folder: '1.4' },
+    theAreaSplit: { folder: '1.4' },
+    theTangentTechnique: { folder: '1.4' },
+    
+    // 2.1
+    theResolutionTriangle: { folder: '2.1' },
+    theHeadToTailMethod: { folder: '2.1' },
+    
+    // 2.2
+    theVectorAnatomy: { folder: '2.2' },
+    
+    // 2.3
+    theAngledLaunchResolution: { folder: '2.3' },
+    theHorizontalLaunchProfile: { folder: '2.3' },
+    theTwoColumnBlueprint: { folder: '2.3', singleVariant: true }, // No dark mode version
+    
+    // 3.1
+    // Special case: Fixes the typo in your original variable name "Simplication" vs file "simplification"
+    theParticleModelSimplication: { folder: '3.1', filename: 'the-particle-model-simplification' }, 
+    theCoordinateSystemSwitch: { folder: '3.1' },
+    
+    // 3.2
+    theEquilibriumStates: { folder: '3.2' },
+    theMassEffect: { folder: '3.2' },
+    
+    // 3.3
+    massVsWeight: { folder: '3.3', singleVariant: true }, // No dark mode version
+    theDragVectorGrowth: { folder: '3.3' },
+    theTerminalVelocityGraph: { folder: '3.3' },
+    
+    // 3.4
+    theSkaterInteraction: { folder: '3.4' },
+    theEarthMoonPair: { folder: '3.4', singleVariant: true } // No dark mode version
+  };
 
-    theGradientTriangle: darkMode ? (<img src={darkTheGradientTriangle} alt='Dark The Gradient Triangle' className='w-100 h-100 not-md:w-70 not-md:h-70' />) : (<img src={theGradientTriangle} alt='The Gradient Triangle' className='w-100 h-100 not-md:w-70 not-md:h-70' />),
+  const config = imageConfig[imageToDisplay];
 
-    theAreaSplit: darkMode ? (<img src={darkTheAreaSplit} alt='The Area Split' className='w-100 h-100 not-md:w-70 not-md:h-70' />) : (<img src={theAreaSplit} alt='Dark The Area Split' className='w-100 h-100 not-md:w-70 not-md:h-70' />),
+  // Safety check: If the image key isn't found, return null or a placeholder
+  if (!config) return null;
 
-    theTangentTechnique: darkMode ? (<img src={darkTheTangentTechnique} alt='Dark The Tangent Technique' className='w-80 h-80 not-md:w-60 not-md:h-60' />) : (<img src={theTangentTechnique} alt='The Tangent Technique' className='w-80 h-80 not-md:w-60 not-md:h-60' />),
+  // 2. LOGIC: Construct the filename
+  // Use the manual filename if provided (fixes typo), otherwise auto-convert
+  const baseFilename = config.filename || toKebabCase(imageToDisplay);
+  
+  // Determine if we need the 'dark-' prefix
+  // We skip adding 'dark-' if the image is marked as 'singleVariant'
+  const prefix = (darkMode && !config.singleVariant) ? 'dark-' : '';
+  
+  // Build the final path: /assets/lesson/WPH11/FOLDER/FILENAME.png
+  const src = `/lesson/WPH11/${config.folder}/${prefix}${baseFilename}.png`;
 
-    theResolutionTriangle: darkMode ? (<img src={darkTheResolutionTriangle} alt='Dark The Resolution Triangle' className='w-100 not-md:w-60 object-contain' />) : (<img src={theResolutionTriangle} alt='The Resolution Triangle' className='w-100 not-md:w-60 object-contain' />),
-
-    theHeadToTailMethod: darkMode ? (<img src={darkTheHeadToTailMethod} alt='Dark The Head-to-Tail Method' className='w-80 not-md:w-60 object-contain' />) : (<img src={theHeadToTailMethod} alt='The Head-to-Tail Method' className='w-80 not-md:w-60 object-contain' />),
-
-    theVectorAnatomy: darkMode ? (<img src={darkTheVectorAnatomy} alt='Dark The Vector Anatomy' className='w-150 not-md:w-100 object-contain' />) : (<img src={theVectorAnatomy} alt='The Vector Anatomy' className='w-150 not-md:w-100 object-contain' />),
-
-    theAngledLaunchResolution: darkMode ? (<img src={DarktheAngledLaunchResolution} alt='Dark The Angled Launch Resolution' className='w-150 not-md:w-100 object-contain' />) : (<img src={theAngledLaunchResolution} alt='The Angled Launch Resolution' className='w-150 not-md:w-100 object-contain' />),
-
-    theHorizontalLaunchProfile: darkMode ? (<img src={DarktheHorizontalLaunchProfile} alt='Dark The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />) : (<img src={theHorizontalLaunchProfile} alt='The Horizontal Launch Profile' className='w-150 not-md:w-100 object-contain' />),
-
-    theTwoColumnBlueprint: (<img src={theTwoColumnBlueprint} alt='The Two Column Blueprint' className='w-150 not-md:w-100 object-contain' />),
-
-    theParticleModelSimplication: darkMode ? (<img src={darkTheParticleModelSimplication} alt='Dark The Particle Model Simplication' className='w-150 not-md:w-100 object-contain' />) : (<img src={theParticleModelSimplication} alt='The Particle Model Simplication' className='w-150 not-md:w-100 object-contain' />),
-
-    theCoordinateSystemSwitch: darkMode ? (<img src={darkTheCoordinateSystemSwitch} alt='Dark The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />) : (<img src={theCoordinateSystemSwitch} alt='The Coordinate System Switch' className='w-150 not-md:w-100 object-contain' />),
-
-    theEquilibriumStates: darkMode ? (<img src={darkTheEquilibriumStates} alt='Dark The Equilibrium States' className='w-150 not-md:w-100 object-contain' />) : (<img src={theEquilibriumStates} alt='The Equilibrium States' className='w-150 not-md:w-100 object-contain' />),
-
-    theMassEffect: darkMode ? (<img src={darkTheMassEffect} alt='Dark The Mass Effect' className='w-150 not-md:w-100 object-contain' />) : (<img src={theMassEffect} alt='The Mass Effect' className='w-150 not-md:w-100 object-contain' />),
-
-    massVsWeight: (<img src={massVsWeight} alt='Mass Vs Weight' className='w-150 not-md:w-100 object-contain' />),
-
-    theDragVectorGrowth: darkMode ? (<img src={darkTheDragVectorGrowth} alt='Dark The Drag Vector Growth' className='w-150 not-md:w-100 object-contain' />) : (<img src={theDragVectorGrowth} alt='The Drag Vector Growth' className='w-150 not-md:w-100 object-contain' />),
-
-    theTerminalVelocityGraph: darkMode ? (<img src={darkTheTerminalVelocityGraph} alt='Dark The Terminal Velocity Graph' className='w-150 not-md:w-100 object-contain' />) : (<img src={theTerminalVelocityGraph} alt='The Terminal Velocity Graph' className='w-150 not-md:w-100 object-contain' />),
-  }
-
-
-  return imageRender[imageToDisplay];
-}
+  return (
+    <img 
+      src={src} 
+      alt={imageToDisplay} 
+      loading="lazy"
+      className={`object-contain ${
+        // Apply specific sizing if needed, or use a generic responsive class
+        imageToDisplay === 'theEarthMoonPair' ? 'w-200 not-md:w-100' :
+        imageToDisplay === 'theTangentTechnique' ? 'w-80 h-80 not-md:w-60 not-md:h-60' :
+        'w-150 not-md:w-100'
+      }`}
+      onError={(e) => {
+        console.error(`Image failed to load: ${src}`);
+        e.target.style.display = 'none'; 
+      }}
+    />
+  );
+};

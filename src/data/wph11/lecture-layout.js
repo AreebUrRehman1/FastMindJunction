@@ -40,6 +40,10 @@ export function lectureLayout(lessonId) {
     "gravity&TerminalVelocity": {
       layout: 3,
       sectionIds: ['goldenRule', 'variables', 'strategyWithImportantNote']
+    },
+    "newton'sThirdLaw": {
+      layout: 4,
+      sectionIds: ['goldenRule', 'variables', 'strategyWithGoldenRule', 'variables']
     }
 
   }

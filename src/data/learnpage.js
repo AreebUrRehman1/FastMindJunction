@@ -95,6 +95,12 @@ export const topicDetailsContainer = {
       ToolTipColor: "bg-[#d3a007]",
       Lecture: "gravity&TerminalVelocity",
       key: "TDC17N"
+    }, {
+      Name: "Newton's Third Law",
+      Circle: "bg-[#FFC107] shadow-[0px_9px_1px_#eab207] hover:bg-[#fcc92f] hover:shadow-[0px_9px_1px_#d3a007] ml-[110px]",
+      ToolTipColor: "bg-[#d3a007]",
+      Lecture: "newton'sThirdLaw",
+      key: "TDC18N"
     }
 
   ],

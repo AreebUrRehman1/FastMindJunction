@@ -7,7 +7,9 @@ import { VectorMath } from './AnimationStorage';
 import { ProjectileMotionPrinciples } from './AnimationStorage';
 import { FreeBodyDiagrams } from './AnimationStorage';
 import { NewtonFirstAndSecondLaws } from './AnimationStorage';
+import { NewtonThirdLaw } from './AnimationStorage';
 import { ImageRender } from './ImageRender';
+import { m } from 'framer-motion';
 
 
 export function contentContainer(darkMode, lessonId, mobile) {
@@ -726,71 +728,165 @@ export function contentContainer(darkMode, lessonId, mobile) {
       ]
     },
     "gravity&TerminalVelocity": {
-    module: "Module 3.3 • Dynamics",
-    title: "3.3 Gravity & Terminal Velocity",
-    subtitle: "The Battle Between Weight and Air",
-    intro: "Why doesn't a raindrop hit you like a bullet? In a vacuum, objects accelerate forever. In the real world, the air fights back. This lesson explains the journey of a falling object from the moment it drops until it hits its maximum possible speed.",
-    sections: [
-      {
-        id: "goldenRule",
-        title: "Part 1: Weight (The Engine)",
-        icon: <icons.ArrowDown className="w-6 h-6" />,
-        text: "Weight is the force of gravity acting on an object's mass. Unlike mass (which is constant), weight depends on where you are (e.g., Earth vs. Moon).",
-        comparison: [
-          { 
-            label: "Mass (m)", 
-            desc: "The amount of 'stuff' in an object. Measured in kg. Constant everywhere." 
-          },
-          { 
-            label: "Weight (W)", 
-            desc: "The force of gravity pulling that mass. Measured in Newtons (N). W = mg." 
+      module: "Module 3.3 • Dynamics",
+      title: "3.3 Gravity & Terminal Velocity",
+      subtitle: "The Battle Between Weight and Air",
+      intro: "Why doesn't a raindrop hit you like a bullet? In a vacuum, objects accelerate forever. In the real world, the air fights back. This lesson explains the journey of a falling object from the moment it drops until it hits its maximum possible speed.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: Weight (The Engine)",
+          icon: <icons.ArrowDown className="w-6 h-6" />,
+          text: "Weight is the force of gravity acting on an object's mass. Unlike mass (which is constant), weight depends on where you are (e.g., Earth vs. Moon).",
+          comparison: [
+            {
+              label: "Mass (m)",
+              desc: "The amount of 'stuff' in an object. Measured in kg. Constant everywhere."
+            },
+            {
+              label: "Weight (W)",
+              desc: "The force of gravity pulling that mass. Measured in Newtons (N). W = mg."
+            }
+          ],
+          goldenRule: "On Earth, g ≈ 9.81 m/s². This means a 1kg bag of sugar weighs 9.81 Newtons.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"massVsWeight"} />,
+          quiz: {
+            question: "If you take a 10kg object to deep space where g = 0, what happens?",
+            options: ["Mass becomes zero", "Weight becomes zero", "Both become zero"],
+            correctIndex: 1
           }
-        ],
-        goldenRule: "On Earth, g ≈ 9.81 m/s². This means a 1kg bag of sugar weighs 9.81 Newtons.",
-        imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"massVsWeight"} />,
-        quiz: {
-          question: "If you take a 10kg object to deep space where g = 0, what happens?",
-          options: ["Mass becomes zero", "Weight becomes zero", "Both become zero"],
-          correctIndex: 1
-        }
-      }, {
-        id: "variables",
-        title: "Part 2: Drag (The Brake)",
-        icon: <icons.Wind className="w-6 h-6" />,
-        text: "As an object speeds up, it smashes into more air molecules every second. This creates a resistive force called Drag (or Air Resistance).",
-        points: [
-          {
-            type: "Velocity Dependence",
-            def: "Drag increases as speed increases. Faster = More Drag.",
-            examples: "Sticking your hand out of a car window."
-          },
-          {
-            type: "Area Dependence",
-            def: "Drag increases with surface area. Bigger = More Drag.",
-            examples: "A parachute vs. a stone."
+        }, {
+          id: "variables",
+          title: "Part 2: Drag (The Brake)",
+          icon: <icons.Wind className="w-6 h-6" />,
+          text: "As an object speeds up, it smashes into more air molecules every second. This creates a resistive force called Drag (or Air Resistance).",
+          points: [
+            {
+              type: "Velocity Dependence",
+              def: "Drag increases as speed increases. Faster = More Drag.",
+              examples: "Sticking your hand out of a car window."
+            },
+            {
+              type: "Area Dependence",
+              def: "Drag increases with surface area. Bigger = More Drag.",
+              examples: "A parachute vs. a stone."
+            }
+          ],
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theDragVectorGrowth"} />,
+          quiz: {
+            question: "At the exact moment an object is dropped (t = 0), how big is the drag force?",
+            options: ["Equal to Weight", "Maximum", "Zero"],
+            correctIndex: 2
           }
-        ],
-        imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theDragVectorGrowth"} />,
-        quiz: {
-          question: "At the exact moment an object is dropped (t = 0), how big is the drag force?",
-          options: ["Equal to Weight", "Maximum", "Zero"],
-          correctIndex: 2
+        }, {
+          id: "strategyWithImportantNote",
+          title: "Part 3: Reaching Terminal Velocity",
+          icon: <icons.Anchor className="w-6 h-6" />,
+          text: "This is the story of a fall. It happens in three distinct stages.",
+          conditions: [
+            "Stage 1 (Start): Speed is low. Drag is zero. Resultant Force = Weight. Acceleration = 9.81 m/s².",
+            "Stage 2 (Acceleration): Speed rises. Drag rises. Resultant Force (W - D) gets smaller. Acceleration decreases.",
+            "Stage 3 (Terminal Velocity): Drag becomes EQUAL to Weight. Resultant Force = 0. Acceleration = 0. Speed is constant."
+          ],
+          goldenRule: "Terminal Velocity isn't a 'stop'. It's the maximum constant speed where Weight and Drag are perfectly balanced.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theTerminalVelocityGraph"} />,
         }
-      }, {
-        id: "strategyWithImportantNote",
-        title: "Part 3: Reaching Terminal Velocity",
-        icon: <icons.Anchor className="w-6 h-6" />,
-        text: "This is the story of a fall. It happens in three distinct stages.",
-        conditions: [
-          "Stage 1 (Start): Speed is low. Drag is zero. Resultant Force = Weight. Acceleration = 9.81 m/s².",
-          "Stage 2 (Acceleration): Speed rises. Drag rises. Resultant Force (W - D) gets smaller. Acceleration decreases.",
-          "Stage 3 (Terminal Velocity): Drag becomes EQUAL to Weight. Resultant Force = 0. Acceleration = 0. Speed is constant."
-        ],
-        goldenRule: "Terminal Velocity isn't a 'stop'. It's the maximum constant speed where Weight and Drag are perfectly balanced.",
-        imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theTerminalVelocityGraph"} />,
-      }
-    ]
-  }
+      ]
+    },
+    "newton'sThirdLaw": {
+      module: "Module 3.4 • Dynamics",
+      title: "3.4 Newton's Third Law",
+      subtitle: "The Law of Interaction",
+      intro: "Newton's Third Law is the most famous and the most misunderstood. It tells us that forces never exist alone; they are always part of a conversation between two objects. You can't touch something without it touching you back.",
+      sections: [
+        {
+          id: "goldenRule",
+          title: "Part 1: The Definition",
+          icon: <icons.ArrowLeftRight className="w-6 h-6" />,
+          text: "You've heard 'Every action has an equal and opposite reaction.' But physicists are more precise.",
+          comparison: [
+            {
+              label: "The Rule",
+              desc: "If Object A exerts a force on Object B, then Object B exerts a force of the SAME TYPE and SAME MAGNITUDE on Object A, but in the OPPOSITE DIRECTION."
+            },
+            {
+              label: "The Formula",
+              desc: "F(A on B) = - F(B on A)"
+            }
+          ],
+          goldenRule: "Crucial: The two forces act on DIFFERENT objects. This is why they don't cancel each other out.",
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theSkaterInteraction"} />,
+          quiz: {
+            question: "A horse pulls a cart. According to Newton's 3rd Law, what is the 'reaction' force?",
+            options: ["The cart pulling the horse backwards", "The friction on the cart's wheels", "The horse pushing the ground"],
+            correctIndex: 0
+          }
+        }, {
+          id: "variables",
+          title: "Part 2: Identifying Interaction Pairs",
+          icon: <icons.Users className="w-6 h-6" />,
+          text: "A true Newton's Third Law pair must satisfy strict conditions. If they don't meet these rules, they are just two random forces.",
+          points: [
+            {
+              type: "Rule 1: Same Type",
+              def: "If the action is Gravity, the reaction must be Gravity. If action is Friction, reaction is Friction.",
+              examples: "Earth pulls Apple (Gravity) -> Apple pulls Earth (Gravity)."
+            },
+            {
+              type: "Rule 2: Different Objects",
+              def: "Force A is on the 'Pusher'. Force B is on the 'Pushed'.",
+              examples: "You push Wall -> Wall pushes You."
+            }
+          ],
+          imageTag: <ImageRender darkMode={darkMode} imageToDisplay={"theEarthMoonPair"} />,
+          animationCue: <NewtonThirdLaw darkMode={darkMode} mobile={mobile}/> ,
+          quiz: {
+            question: "A book sits on a table. Weight acts down. Normal force acts up. Are these a Newton's 3rd Law pair?",
+            options: ["Yes, they are equal and opposite", "No, they act on the same object (the book)", "Yes, because they balance"],
+            correctIndex: 1
+          }
+        }, {
+          id: "strategyWithGoldenRule",
+          title: "Part 3: The 'Canceling' Myth",
+          icon: <icons.Repeat className="w-6 h-6" />,
+          text: "Students often ask: 'If the forces are equal and opposite, why does anything ever move?'",
+          conditions: [
+            "The Trap: Thinking the forces act on the SAME object.",
+            "The Truth: To check if Object A moves, you look at forces ON Object A.",
+            "The Reaction force acts on Object B, so it has no effect on Object A's motion."
+          ],
+          goldenRule: "Only forces acting ON an object can cancel out. Interaction pairs act on DIFFERENT objects, so they never cancel.",
+          // Static Image Placeholder
+          imageTag: (
+            <div className="mt-4 text-center text-sm opacity-60 italic">
+              <br />The rocket moves because the force is on the Rocket, not the gas.
+            </div>
+          ),
+          quiz: {
+            question: "A bug hits a windshield. Which force is larger?",
+            options: ["The car hitting the bug", "The bug hitting the car", "They are exactly the same size"],
+            correctIndex: 2
+          }
+        }, {
+          id: "variables",
+          title: "Part 4: Real World Examples",
+          icon: <icons.CheckCircle className="w-6 h-6" />,
+          text: "Newton's Third Law is the secret behind almost all propulsion.",
+          points: [
+            {
+              type: "Walking",
+              def: "You push the ground BACKWARDS (Friction). The ground pushes you FORWARDS.",
+              examples: "Slipping on ice happens because you can't push the ground back."
+            },
+            {
+              type: "Swimming",
+              def: "Hand pushes water BACK. Water pushes hand (and body) FORWARD.",
+              examples: "Propellers work the same way."
+            }
+          ]
+        }
+      ]
+    }
   }
 
   return LessonContent[lessonId];
